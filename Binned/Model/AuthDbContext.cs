@@ -3,9 +3,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Account.Model
 {
-
-
-
     public class AuthDbContext : IdentityDbContext
     {
         private readonly IConfiguration _configuration;
