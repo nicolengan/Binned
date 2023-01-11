@@ -7,6 +7,8 @@ using Azure.Core;
 using static System.Net.WebRequestMethods;
 using Stripe;
 using Stripe.Checkout;
+using Microsoft.Extensions.Logging;
+using System.Text.Json.Nodes;
 
 namespace Binned.Pages.Payment
 {
@@ -16,6 +18,14 @@ namespace Binned.Pages.Payment
     }
     public class CheckoutModel : PageModel
     {
+
+        private readonly ILogger<CheckoutModel> _logger;
+
+        public CheckoutModel(ILogger<CheckoutModel> logger)
+        {
+            _logger = logger;
+        }
+
         public async Task<IActionResult> OnGet()
         {
 
@@ -24,19 +34,21 @@ namespace Binned.Pages.Payment
                 Query = "active:'true' AND metadata['ProductId']:'1234'",
             };
             var searchService = new ProductService();
-            searchService.Search(searchOptions);
+            var searched = searchService.Search(searchOptions);
 
-            Console.WriteLine(searchService.Search(searchOptions));
+
+            // need to check if null or else will crash
+            _logger.LogInformation("search result {he}", searched.Data[0].DefaultPriceId);
 
             var domain = "http://localhost:7208";
-            var options = new SessionCreateOptions
+            var sessionOptions = new SessionCreateOptions
             {
                 LineItems = new List<SessionLineItemOptions>
                 {
                   new SessionLineItemOptions
                   {
                     // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                    Price = "price_1MLiHmDRJAN9sJBkj9XQxSq9",
+                    Price = $"{searched.Data[0].DefaultPriceId}",
                     Quantity = 1,
                   },
                 },
@@ -44,8 +56,8 @@ namespace Binned.Pages.Payment
                 SuccessUrl = domain + "/Checkout/Success",
                 CancelUrl = domain + "/Checkout/Failure",
             };
-            var service = new SessionService();
-            Session session = service.Create(options);
+            var sessionService = new SessionService();
+            Session session = sessionService.Create(sessionOptions);
 
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
