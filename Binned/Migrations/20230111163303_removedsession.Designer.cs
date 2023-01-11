@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Binned.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230102063350_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230111163303_removedsession")]
+    partial class removedsession
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,6 +49,10 @@ namespace Binned.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("OrderId");
 
                     b.ToTable("Orders");
@@ -71,9 +75,12 @@ namespace Binned.Migrations
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("date");
 
-                    b.Property<string>("Status")
+                    b.Property<string>("PaymentIntent")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.HasKey("PaymentId");
 

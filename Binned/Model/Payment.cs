@@ -7,15 +7,14 @@ namespace Binned.Model
     {
         [Required]
         public int PaymentId { get; set; }
+        public string PaymentIntent { get; set; }
 
-        [Required]
-        public string Status { get; set; }
+        public bool Status { get; set; }
 
         [Range(0, 1e6)]
         [Column(TypeName = "decimal(7,2)")]
         public decimal Amount { get; set; }
 
-        [Required]
         [DataType(DataType.Date)]
         [Column(TypeName = "date")]
         public DateTime PaymentDate { get; set; }

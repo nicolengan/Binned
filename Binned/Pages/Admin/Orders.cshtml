@@ -1,0 +1,48 @@
+﻿@page
+@model Binned.Pages.Admin.OrdersModel
+@{
+    ViewData["Title"] = "All Orders";
+}
+<script>
+
+</script>
+<h1 class="display-4">@ViewData["Title"]</h1>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.OrderList[0].OrderId)</th>
+            <th>@Html.DisplayNameFor(model => model.OrderList[0].ProductId)</th>
+            <th>@Html.DisplayNameFor(model => model.OrderList[0].UserId)</th>
+            <th>@Html.DisplayNameFor(model => model.OrderList[0].OrderDate)</th>
+            <th>@Html.DisplayNameFor(model => model.OrderList[0].Status)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            @foreach (var item in Model.OrderList)
+            {
+                <form method="get" class="orderForm">
+                <tr>
+
+                    <td><span name = "orderId" value="@item.OrderId">@item.OrderId</span></td>
+                    <td>@item.ProductId</td>
+                    <td>@item.UserId</td>
+                    <td>@item.OrderDate.ToShortDateString()</td>
+                    <td>@item.Status</td>
+                    <td>
+                    <div class="dropdown">
+                              
+                    </div>
+                    </td>
+                    <td>
+                        <a asp-page="/Employees/Details" asp-route-id="@item.OrderId">View</a>
+                    </td>
+                </tr>
+                </form>
+            }
+        }
+    </tbody>
+</table>
+

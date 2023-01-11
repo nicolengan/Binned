@@ -1,16 +1,12 @@
-using Binned.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Binned.Pages.Payment
+namespace Binned.Pages.Admin
 {
-    public class CheckoutModel : PageModel
+    public class DetailsModel : PageModel
     {
-        public string hello = "";
-
         public void OnGet()
         {
-
         }
     }
 }

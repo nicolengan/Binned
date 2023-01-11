@@ -15,6 +15,7 @@ namespace Binned.Migrations
                 {
                     OrderId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Session = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "date", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -32,7 +33,8 @@ namespace Binned.Migrations
                 {
                     PaymentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PaymentIntent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(7,2)", nullable: false),
                     PaymentDate = table.Column<DateTime>(type: "date", nullable: false),
                     OrderForeignKey = table.Column<int>(type: "int", nullable: false)

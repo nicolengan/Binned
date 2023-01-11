@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Binned.Model;
 using Stripe;
+using Binned.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -9,6 +10,7 @@ builder.Logging.AddConsole();
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<MyDbContext>();
+builder.Services.AddScoped<OrderService>();
 
 var app = builder.Build();
 

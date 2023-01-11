@@ -7,9 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\NewFolder1\**" />
+    <Compile Remove="Pages\NewFolder2\**" />
+    <Compile Remove="Pages\NewFolder3\**" />
     <Compile Remove="ViewModels\**" />
+    <Content Remove="Pages\NewFolder1\**" />
+    <Content Remove="Pages\NewFolder2\**" />
+    <Content Remove="Pages\NewFolder3\**" />
     <Content Remove="ViewModels\**" />
+    <EmbeddedResource Remove="Pages\NewFolder1\**" />
+    <EmbeddedResource Remove="Pages\NewFolder2\**" />
+    <EmbeddedResource Remove="Pages\NewFolder3\**" />
     <EmbeddedResource Remove="ViewModels\**" />
+    <None Remove="Pages\NewFolder1\**" />
+    <None Remove="Pages\NewFolder2\**" />
+    <None Remove="Pages\NewFolder3\**" />
     <None Remove="ViewModels\**" />
   </ItemGroup>
 
@@ -41,12 +53,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Pages\Payment\Cart.cshtml" />
-    <None Include="Pages\Payment\Checkout.cshtml" />
+    <None Include="Pages\Payment\Payment.cshtml" />
     <None Include="Pages\Payment\Failure.cshtml" />
     <None Include="Pages\Payment\Success.cshtml" />
   </ItemGroup>

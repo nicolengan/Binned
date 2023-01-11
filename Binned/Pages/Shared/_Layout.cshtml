@@ -13,6 +13,7 @@
         <header>
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
                 <div class="container">
+                @await Html.PartialAsync("_FlashMessage")
                     <a class="navbar-brand" asp-area="" asp-page="/Index">Binned</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
@@ -24,11 +25,11 @@
                                     <li class="nav-item">
                                         <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                                    </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Payment/Cart">pp</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/User/Orders">User Orders</a>
+                        </li>
+                                                <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Orders">Admin Orders</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Payment/Checkout">Payment</a>
