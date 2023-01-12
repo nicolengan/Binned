@@ -9,7 +9,7 @@ namespace Binned.Pages.Admin
 {
     public class Status
     {
-        public int StatusId { get; set; }
+        public string Value { get; set; }
         public string Name { get; set; }
 
     }
@@ -17,15 +17,15 @@ namespace Binned.Pages.Admin
     {
         public static IEnumerable<Status> Statuses = new List<Status> {
             new Status {
-                StatusId = 1,
+                Value = "To Ship",
                 Name = "To Ship"
             },
             new Status {
-                StatusId = 2,
+                Value = "To receieve",
                 Name = "To receieve"
             },
             new Status {
-                StatusId = 3,
+                Value = "Delivered",
                 Name = "Delivered"
             }
         };
