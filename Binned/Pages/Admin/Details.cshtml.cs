@@ -23,16 +23,17 @@ namespace Binned.Pages.Admin
         [BindProperty]
         public int orderid { get; set; }
 
-        public IActionResult OnGet(int id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             Order? order = _orderService.GetOrderById(id);
             _logger.LogInformation($"id: {id}");
+            orderid = id;
             if (order != null)
             {
-                orderid = id;
-                _logger.LogInformation($"order id{id}");
+                _logger.LogInformation($"order id{orderid}");
+                TempData["id"] = id;
                 return Page();
-            }
+            }   
             else
             {
                 
@@ -46,24 +47,27 @@ namespace Binned.Pages.Admin
             // order not found here
             var errors = ModelState.Values.SelectMany(v => v.Errors);   
             _logger.LogInformation($"{status}");
-            _logger.LogInformation($"2nd id{orderid}");
-            Order? order = _orderService.GetOrderById(orderid);
+            var id = Convert.ToInt32(TempData["id"]);
+            Order? order = _orderService.GetOrderById(id);
+            
 
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && order != null)
             {
+
                 order.Status = status;
                 _logger.LogInformation($"{order.ProductId}");
+                _orderService.UpdateOrder(order);
 
-                TempData["FlashMessage.Type"] = "success";
-                TempData["FlashMessage.Text"] = string.Format("Order {0} is updated", order.OrderId);
+                TempData["flashmessage.type"] = "success";
+                TempData["flashmessage.text"] = string.Format("order {0} is updated", order.OrderId);
             }
             else
             {
-                TempData["FlashMessage.Type"] = "danger";
-                TempData["FlashMessage.Text"] = string.Format("Order {0} is updated", order.OrderId);
+                TempData["flashmessage.type"] = "danger";
+                TempData["flashmessage.text"] = string.Format("order {0} cannot be updated", order.OrderId);
             }
-            return Page();
+            return Redirect("/Admin/Orders");
         }
     }
 }

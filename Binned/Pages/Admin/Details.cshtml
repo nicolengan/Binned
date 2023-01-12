@@ -7,7 +7,7 @@
 <h1 class="display-4">@ViewData["Title"]</h1>
 
 <form class="mt-3" method="post">
-    @*<input type="number" asp-for="@Model.orderid" name="id" />*@
+    <span asp-for="@Model.orderid" name="id">@Model.orderid</span>
     <div class="row mb-3">
         <label class="col-sm-2 col-form-label" asp-for="status"></label>
         <div class="col-sm-10">
