@@ -18,36 +18,53 @@ namespace Binned.Pages.Admin
         }
 
         [BindProperty]
-        public Order MyOrder { get; set; } = new();
+        public string status { get; set; }
+
+        [BindProperty]
+        public int orderid { get; set; }
+
         public IActionResult OnGet(int id)
         {
             Order? order = _orderService.GetOrderById(id);
+            _logger.LogInformation($"id: {id}");
             if (order != null)
             {
-                MyOrder = order;
+                orderid = id;
+                _logger.LogInformation($"order id{id}");
                 return Page();
             }
             else
             {
+                
                 TempData["FlashMessage.Type"] = "danger";
                 TempData["FlashMessage.Text"] = string.Format("Order ID {0} not found", id);
                 return Redirect("/Admin/Orders");
             }
         }
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
+            // order not found here
+            var errors = ModelState.Values.SelectMany(v => v.Errors);   
+            _logger.LogInformation($"{status}");
+            _logger.LogInformation($"2nd id{orderid}");
+            Order? order = _orderService.GetOrderById(orderid);
+
+
             if (ModelState.IsValid)
             {
-                _orderService.UpdateOrder(MyOrder);
+                order.Status = status;
+                _logger.LogInformation($"{order.ProductId}");
+
                 TempData["FlashMessage.Type"] = "success";
-                TempData["FlashMessage.Text"] = string.Format("Order {0} is updated", MyOrder.OrderId);
+                TempData["FlashMessage.Text"] = string.Format("Order {0} is updated", order.OrderId);
             }
             else
             {
                 TempData["FlashMessage.Type"] = "danger";
-                TempData["FlashMessage.Text"] = string.Format("Order {0} is updated", MyOrder.OrderId);
+                TempData["FlashMessage.Text"] = string.Format("Order {0} is updated", order.OrderId);
             }
             return Page();
         }
     }
 }
+    
