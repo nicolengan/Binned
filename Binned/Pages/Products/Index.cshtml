@@ -1,0 +1,47 @@
+﻿@page
+@model Binned.Pages.Products.IndexModel
+@{
+    ViewData["Title"] = "Products";
+}
+<h1 class="display-4">@ViewData["Title"]</h1>
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductId)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductName)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductDescription)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductList[0].Size)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductList[0].Length)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductList[0].Waist)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductList[0].Availability)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductList[0].Price)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            @foreach (var item in Model.ProductList)
+            {
+                <tr>
+                    <td>@item.ProductId</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.ProductDescription</td>
+                    <td>@item.Size</td>
+                    <td>@item.Length</td>
+                    <td>@item.Waist</td>
+                    <td>@item.Availability</td>
+                    <td>@item.Price</td>
+                    <td>
+                        <form asp-page-handler="AddToCart" method="post" name="addToCartForm" id="add_cart_form">
+                            <a href="javascript:;" onclick="parentNode.submit();" class="btn btn-info">
+                                <i class="fa fa-shopping-cart"></i> Add To Cart
+                            </a>
+                            <input type="hidden" asp-for="@item.ProductId" name="productId" />
+                        </form>
+
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<a class="btn btn-primary mt-3" href="/Products/Add">Add Product</a>

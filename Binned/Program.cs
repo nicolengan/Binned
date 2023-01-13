@@ -1,12 +1,15 @@
 using Microsoft.AspNetCore.Identity;
-using Account.Model;
+using Binned;
+using Binned.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<AuthDbContext>();
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AuthDbContext>();
+builder.Services.AddDbContext<MyDbContext>();
+builder.Services.AddScoped<CartService>();
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<OrderService>();
 
 var app = builder.Build();
 
