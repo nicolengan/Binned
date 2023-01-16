@@ -19,15 +19,20 @@ namespace Binned.Pages.Products
 
         public Models.Product Product { get; set; }
 
-        public void OnGet()
+		public Models.Cart Cart { get; set; }
+
+		public Models.CartItem CartItem { get; set; }
+		public void OnGet()
         {
             ProductList = _productService.GetAll();
         }
 
         public async Task<IActionResult> OnPostAddToCartAsync(int productId)
         {
-            await _cartService.AddItem("test", productId);
-            return RedirectToPage("/Cart");
-        }
+            
+				await _cartService.AddItem("test", productId);
+				return RedirectToPage("/Cart");
+
+		}
     }
 }

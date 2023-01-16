@@ -42,18 +42,38 @@ namespace Binned.Services
 
         }
 
-        public async Task AddItem(string userName, int productId)
+		public CartItem? GetCartItemByProductId(int id)
+		{
+			CartItem? item = _context.CartItems.FirstOrDefault(x => x.ProductId.Equals(id));
+			return item;
+
+		}
+
+		public Product? GetProductById(int productId)
+		{
+			Product? item = _context.Products.FirstOrDefault(x => x.ProductId.Equals(productId));
+			return item;
+
+		}
+
+		public async Task AddItem(string userName, int productId)
         {
 
             var cart = await GetCartByUserName(userName);
+			Product product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
+            var itemexist = _context.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
 
-            cart.Items.Add(
-               new CartItem
-               {
-                   ProductId = productId,
-                   Price = _context.Products.FirstOrDefault(p => p.ProductId == productId).Price
-               }
-           );
+            if (itemexist == null)
+            {
+                cart.Items.Add(
+                   new CartItem
+                   {
+                       ProductId = productId,
+                       Price = product.Price
+                   }
+                );
+            }
+
             _context.SaveChanges();
         }
 
