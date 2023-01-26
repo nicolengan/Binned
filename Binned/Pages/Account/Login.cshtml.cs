@@ -27,7 +27,7 @@ namespace Binned.Pages
                 LModel.RememberMe, false);
                 if (identityResult.Succeeded)
                 {
-                    return RedirectToPage("Index");
+                    return RedirectToPage("AccountProfile");
                 }
                 ModelState.AddModelError("", "Username or Password incorrect");
             }

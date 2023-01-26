@@ -5,6 +5,7 @@ namespace Binned.ViewModels
 {
     public class Register
     {
+		public int Id { get; set; }
 
 		[Required]
 		[DataType(DataType.Text)]

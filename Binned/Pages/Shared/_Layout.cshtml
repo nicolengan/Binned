@@ -35,24 +35,26 @@
 
                                 <ul class="navbar-nav d-flex justify-content-end">
                                     <li class="nav-item">
-                                        <a class="btn btn-primary" asp-area="" asp-page="/Logout">Logout</a>
+                                        <a class="btn btn-primary" asp-area="" asp-page="/Account/Logout">Logout</a>
                                     </li>
                                 </ul>
                             }
                             else {
-                                <ul class="navbar-nav d-flex justify-content-end flex-grow-1">
+                                <!-- <ul class="navbar-nav d-flex justify-content-end flex-grow-1">
                                     <li class="nav-item">
-                                        <a class="btn btn-primary" asp-page="/Login">Login</a>
+                                        <a class="btn btn-primary" asp-page="/Account/Login">Login</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="btn btn-primary" asp-page="/Register">Register</a>
+                                        <a class="btn btn-primary" asp-page="/Account/Register">Register</a>
                                     </li>
-                                </ul>
+                                </ul> -->
+                                <partial name="_LoginPartial" />
                             }
 
                         }
 
                     </div>
+                    
                 </div>
             </nav>
         </header>
@@ -64,7 +66,7 @@
 
         <footer class="border-top footer text-muted">
             <div class="container">
-                &copy; 2022 - Binned - <a asp-area="" asp-page="/Privacy">Privacy</a>
+                &copy; 2022 - Binned - <a asp-area="" asp-page="/Index">Home</a>
             </div>
         </footer>
 

@@ -5,7 +5,8 @@ namespace Binned.ViewModels
 {
     public class Login
     {
-        [Required]
+		public int Id { get; set; }
+		[Required]
         [DataType(DataType.Text)]
         public string Username { get; set; }
         [Required]

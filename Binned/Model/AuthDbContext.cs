@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Binned.ViewModels;
 
 namespace Account.Model
 {
@@ -14,7 +15,9 @@ namespace Account.Model
         {
             _configuration = configuration;
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public DbSet<Login> Login { get; set; } = null;
+		public DbSet<Register> Register { get; set; } = null;
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString = _configuration.GetConnectionString("AuthConnectionString"); optionsBuilder.UseSqlServer(connectionString);
         }

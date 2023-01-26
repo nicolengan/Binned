@@ -43,7 +43,7 @@ namespace Binned.Pages
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, false);
-                    return RedirectToPage("Index");
+                    return RedirectToPage("AccountProfile");
                 }
                 foreach (var error in result.Errors)
                 {
