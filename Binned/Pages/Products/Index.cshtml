@@ -1,0 +1,34 @@
+﻿@page
+@model Binned.Pages.Products.IndexModel
+@{
+    ViewData["Title"] = "Products";
+}
+<h1 class="display-4">@ViewData["Title"]</h1>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductID)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductName)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductSize)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            @foreach (var item in Model.ProductList)
+            {
+                <tr>
+                    <td>@item.ProductID</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.ProductSize</td>
+                    <td>
+                        <a asp-page="/Products/Details" asp-route-id="@item.ProductID">View</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-primary mt-3" href="/Products/AddProduct">Add Product</a>

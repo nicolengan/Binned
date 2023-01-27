@@ -25,4 +25,8 @@
     <None Include="Pages\Payment\Success.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
 </Project>
