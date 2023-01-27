@@ -12,6 +12,16 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<MyDbContext>();
 builder.Services.AddScoped<OrderService>();
 
+builder.Services.AddDbContext<BinnedContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<BinnedUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<BinnedContext>();
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
