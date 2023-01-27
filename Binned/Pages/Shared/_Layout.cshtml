@@ -11,7 +11,7 @@
     </head>
     <body>
         <header>
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm">
                 <div class="container">
                 @await Html.PartialAsync("_FlashMessage")
                     <a class="navbar-brand" asp-area="" asp-page="/Index">Binned</a>
@@ -25,20 +25,42 @@
                                     <li class="nav-item">
                                         <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                                     </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/User/Orders">User Orders</a>
-                        </li>
-                                                <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Orders">Admin Orders</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Payment/Checkout">Payment</a>
-                        </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/Products/Index">Products</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/Carts/Index">Cart</a>
+                                    </li>
+                                </ul>
+
+                                <ul class="navbar-nav d-flex justify-content-end">
+                                    <li class="nav-item">
+                                        <a class="btn btn-secondary" asp-area="" asp-page="/Logout">Logout</a>
+                                    </li>
+                                </ul>
+                            }
+                            else {
+                                <ul class="navbar-nav d-flex justify-content-end flex-grow-1">
+                                    <li class="nav-item">
+                                        <a class="btn btn-secondary" asp-page="/Login">Login</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="btn btn-secondary" asp-page="/Register">Register</a>
+                                    </li>
                                 </ul>
                     </div>
                 </div>
             </nav>
         </header>
+        <div class="container">
+            @await Html.PartialAsync("_FlashMessage")
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
         <div class="container">
             <main role="main" class="pb-3">
                 @RenderBody()
