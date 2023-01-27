@@ -8,9 +8,9 @@ namespace Binned.Pages.Payment
     {
         public string hello = "";
 
-        public void OnGet()
+        public IActionResult OnPost()
         {
-
+            return Redirect("/Payment/Payment");
         }
     }
 }

@@ -18,36 +18,57 @@ namespace Binned.Pages.Admin
         }
 
         [BindProperty]
-        public Order MyOrder { get; set; } = new();
-        public IActionResult OnGet(int id)
+        public string status { get; set; }
+
+        [BindProperty]
+        public int orderid { get; set; }
+
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             Order? order = _orderService.GetOrderById(id);
+            _logger.LogInformation($"id: {id}");
+            orderid = id;
             if (order != null)
             {
-                MyOrder = order;
+                _logger.LogInformation($"order id{orderid}");
+                TempData["id"] = id;
                 return Page();
-            }
+            }   
             else
             {
+                
                 TempData["FlashMessage.Type"] = "danger";
                 TempData["FlashMessage.Text"] = string.Format("Order ID {0} not found", id);
                 return Redirect("/Admin/Orders");
             }
         }
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
-            if (ModelState.IsValid)
+            // order not found here
+            var errors = ModelState.Values.SelectMany(v => v.Errors);   
+            _logger.LogInformation($"{status}");
+            var id = Convert.ToInt32(TempData["id"]);
+            Order? order = _orderService.GetOrderById(id);
+            
+
+
+            if (ModelState.IsValid && order != null)
             {
-                _orderService.UpdateOrder(MyOrder);
-                TempData["FlashMessage.Type"] = "success";
-                TempData["FlashMessage.Text"] = string.Format("Order {0} is updated", MyOrder.OrderId);
+
+                order.Status = status;
+                _logger.LogInformation($"{order.ProductId}");
+                _orderService.UpdateOrder(order);
+
+                TempData["flashmessage.type"] = "success";
+                TempData["flashmessage.text"] = string.Format("order {0} is updated", order.OrderId);
             }
             else
             {
-                TempData["FlashMessage.Type"] = "danger";
-                TempData["FlashMessage.Text"] = string.Format("Order {0} is updated", MyOrder.OrderId);
+                TempData["flashmessage.type"] = "danger";
+                TempData["flashmessage.text"] = string.Format("order {0} cannot be updated", order.OrderId);
             }
-            return Page();
+            return Redirect("/Admin/Orders");
         }
     }
 }
+    
