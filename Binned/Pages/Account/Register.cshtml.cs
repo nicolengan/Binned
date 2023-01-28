@@ -2,7 +2,7 @@ using Azure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Binned.ViewModels;
+using Binned.Model;
 
 namespace Binned.Pages
 {
@@ -37,7 +37,7 @@ namespace Binned.Pages
                 {
                     UserName = RModel.Username,
                     Email = RModel.Email
-                  
+
                 };
                 var result = await userManager.CreateAsync(user, RModel.Password);
                 if (result.Succeeded)

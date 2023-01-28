@@ -1,7 +1,7 @@
 using Binned.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Binned.Models;
+using Binned.Model;
 
 namespace Binned.Pages.Products
 {
@@ -16,7 +16,7 @@ namespace Binned.Pages.Products
         [BindProperty]
         public Product OurProduct { get; set; } = new();
 
-        public IActionResult OnGet(string id)
+        public IActionResult OnGet(int id)
         {
 
             Product? product = _productService.GetProductById(id);

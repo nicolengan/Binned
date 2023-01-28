@@ -35,7 +35,7 @@ namespace Binned.Pages.Payment
             {
                 Query = "active:'true' AND metadata['ProductId']:'1234'",
             };
-            var searchService = new ProductService();
+            var searchService = new Stripe.ProductService();
             var searched = searchService.Search(searchOptions);
 
             // need to check if null or else will crash

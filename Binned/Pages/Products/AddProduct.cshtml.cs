@@ -1,7 +1,7 @@
 using Binned.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Binned.Models;
+using Binned.Model;
 
 namespace Binned.Pages.Products
 {
@@ -30,11 +30,11 @@ namespace Binned.Pages.Products
         {
             if (ModelState.IsValid)
             {
-                Product? product = _productService.GetProductById(OurProduct.ProductID);
+                Product? product = _productService.GetProductById(OurProduct.ProductId);
                 if (product != null)
                 {
                     TempData["FlashMessage.Type"] = "danger";
-                    TempData["FlashMessage.Text"] = string.Format("Product ID {0} alreay exists", OurProduct.ProductID);
+                    TempData["FlashMessage.Text"] = string.Format("Product ID {0} alreay exists", OurProduct.ProductId);
                     return Page();
                 }
 

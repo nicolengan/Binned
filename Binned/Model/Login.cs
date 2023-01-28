@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace Binned.ViewModels
+namespace Binned.Model
 {
     public class Login
     {
-		public int Id { get; set; }
-		[Required]
+        public int Id { get; set; }
+        [Required]
         [DataType(DataType.Text)]
         public string Username { get; set; }
         [Required]

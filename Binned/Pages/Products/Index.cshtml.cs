@@ -1,7 +1,7 @@
 using Binned.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Binned.Models;
+using Binned.Model;
 
 namespace Binned.Pages.Products
 {

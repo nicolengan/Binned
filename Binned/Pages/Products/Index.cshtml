@@ -8,7 +8,7 @@
 <table class="table mt-3">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductID)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductId)</th>
             <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductName)</th>
             <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductSize)</th>
             <th></th>
@@ -19,11 +19,11 @@
             @foreach (var item in Model.ProductList)
             {
                 <tr>
-                    <td>@item.ProductID</td>
+                    <td>@item.ProductId</td>
                     <td>@item.ProductName</td>
                     <td>@item.ProductSize</td>
                     <td>
-                        <a asp-page="/Products/Details" asp-route-id="@item.ProductID">View</a>
+                        <a asp-page="/Products/Details" asp-route-id="@item.ProductId">View</a>
                     </td>
                 </tr>
             }
