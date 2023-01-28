@@ -24,7 +24,7 @@ namespace Binned.Pages.Payment
             };
             var searchService = new ProductService();
             var searched = searchService.Search(searchOptions);
-            var ifNull = searched.FirstOrDefault(); 
+            var ifNull = searched.FirstOrDefault();
 
             _logger.LogInformation("search null or not {s}", ifNull);
 
