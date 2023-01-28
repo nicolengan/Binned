@@ -1,8 +1,6 @@
+using Binned.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Binned.Services;
-using Binned.Models;
-using System.Drawing;
 
 namespace Binned.Pages.Products
 {
@@ -10,7 +8,6 @@ namespace Binned.Pages.Products
     {
         private readonly CartService _cartService;
         private readonly ProductService _productService;
-        public IndexModel(ProductService productService, CartService cartService)
         {
             _cartService = cartService;
             _productService = productService;
@@ -19,10 +16,9 @@ namespace Binned.Pages.Products
 
         public Models.Product Product { get; set; }
 
-		public Models.Cart Cart { get; set; }
 
 		public Models.CartItem CartItem { get; set; }
-		public void OnGet()
+        public void OnGet()
         {
             ProductList = _productService.GetAll();
         }

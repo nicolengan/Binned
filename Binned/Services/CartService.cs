@@ -1,5 +1,4 @@
-﻿using Binned.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Binned.Services
 {
@@ -42,25 +41,25 @@ namespace Binned.Services
 
         }
 
-		public CartItem? GetCartItemByProductId(int id)
-		{
-			CartItem? item = _context.CartItems.FirstOrDefault(x => x.ProductId.Equals(id));
-			return item;
+        public CartItem? GetCartItemByProductId(int id)
+        {
+            CartItem? item = _context.CartItems.FirstOrDefault(x => x.ProductId.Equals(id));
+            return item;
 
-		}
+        }
 
-		public Product? GetProductById(int productId)
-		{
-			Product? item = _context.Products.FirstOrDefault(x => x.ProductId.Equals(productId));
-			return item;
+        public Product? GetProductById(int productId)
+        {
+            Product? item = _context.Products.FirstOrDefault(x => x.ProductId.Equals(productId));
+            return item;
 
-		}
+        }
 
-		public async Task AddItem(string userName, int productId)
+        public async Task AddItem(string userName, int productId)
         {
 
             var cart = await GetCartByUserName(userName);
-			Product product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
+            Product product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
             var itemexist = _context.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
 
             if (itemexist == null)
@@ -69,7 +68,6 @@ namespace Binned.Services
                    new CartItem
                    {
                        ProductId = productId,
-                       Price = product.Price
                    }
                 );
             }

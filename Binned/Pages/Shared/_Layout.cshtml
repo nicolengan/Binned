@@ -1,96 +1,88 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Binned</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Binned.styles.css" asp-append-version="true" />
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Binned</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Products/Index">Products</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav d-flex justify-content-end">
-                        <li class="nav-item">
-                            <form class="form-inline my-2 my-lg-0">
-                                <a class="btn btn-secondary" asp-area="" asp-page="/Cart">
-                                    <i class="fa fa-shopping-cart"></i>Cart<span class="badge badge-light"></span>
-                                </a>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        @await Html.PartialAsync("_FlashMessage")
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - Binned - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - Binned</title>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/Binned.styles.css" asp-append-version="true" />
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-page="/Index">Binned</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <!-- JS -->
-    <script src="//code.jquery.com/jquery-3.2.1.slim.min.js" type="text/javascript"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" type="text/javascript"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (function () {
-            'use strict';
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        @{
+                            if (SignInManager.IsSignedIn(User)){
+                                <ul class="navbar-nav flex-grow-1">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/Products/Index">Products</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/Carts/Index">Cart</a>
+                                    </li>
+                                </ul>
 
-            window.addEventListener('load', function () {
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.getElementsByClassName('needs-validation');
+                                <ul class="navbar-nav d-flex justify-content-end">
+                                    <li class="nav-item">
+                                        <a class="btn btn-secondary" asp-area="" asp-page="/Logout">Logout</a>
+                                    </li>
+                                </ul>
+                            }
+                            else {
+                                <ul class="navbar-nav d-flex justify-content-end flex-grow-1">
+                                    <li class="nav-item">
+                                        <a class="btn btn-secondary" asp-page="/Login">Login</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="btn btn-secondary" asp-page="/Register">Register</a>
+                                    </li>
+                                </ul>
+                            }
 
-                // Loop over them and prevent submission
-                var validation = Array.prototype.filter.call(forms, function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
                         }
-                        form.classList.add('was-validated');
-                    }, false);
-                });
-            }, false);
-        })();
 
-    </script>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="container">
+            @await Html.PartialAsync("_FlashMessage")
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
 
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2022 - Binned - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            </div>
+        </footer>
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

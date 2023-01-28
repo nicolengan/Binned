@@ -1,10 +1,8 @@
-﻿using Binned.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace Binned.Services
+﻿namespace Binned.Services
 {
     public class ProductService
     {
+
         private readonly MyDbContext _context;
 
         public ProductService(MyDbContext context)
@@ -19,7 +17,6 @@ namespace Binned.Services
 
         public Product? GetProductById(int id)
         {
-            Product? product = _context.Products.FirstOrDefault(x => x.ProductId.Equals(id));
             return product;
         }
 
@@ -28,9 +25,7 @@ namespace Binned.Services
             _context.Products.Add(product);
             _context.SaveChanges();
         }
-        public async Task<IEnumerable<Product>> GetProducts()
         {
-            return await _context.Products.ToListAsync();
         }
 
     }
