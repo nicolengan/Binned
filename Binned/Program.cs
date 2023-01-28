@@ -1,14 +1,26 @@
 using Microsoft.AspNetCore.Identity;
-using Account.Model;
-
+using Binned.Model;
+using Stripe;
+using Binned.Services;
+using Binned.Areas.Identity.Data;
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<AuthDbContext>();
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AuthDbContext>();
+builder.Services.AddDbContext<MyDbContext>();
+builder.Services.AddScoped<OrderService>();
+builder.Services.AddScoped<CartService>();
+builder.Services.AddScoped<Binned.Services.ProductService>();
+
+
+builder.Services.AddDefaultIdentity<BinnedUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<MyDbContext>();
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 

@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Binned.Pages.Account
 {
-    public class AccountProfileModel : PageModel
-    {
+	public class AccountProfileModel : PageModel
+	{
 
-        /*[BindProperty]
+		/*[BindProperty]
 		public Login LModel { get; set; }
 
 		private readonly SignInManager<IdentityUser> signInManager;
@@ -34,9 +34,9 @@ namespace Binned.Pages.Account
 
 
 
-        public void OnGet()
-        {
+		public void OnGet()
+		{
 
-        }
-    }
+		}
+	}
 }

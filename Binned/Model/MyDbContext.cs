@@ -2,9 +2,7 @@
 using System.Reflection.Metadata;
 
 namespace Binned.Model
-{
-
-
+{    
     public class MyDbContext : DbContext
     {
         private readonly IConfiguration _configuration;
@@ -34,8 +32,4 @@ namespace Binned.Model
                 .HasForeignKey<Payment>(b => b.OrderForeignKey);
         }
     }
-
-
-
-
 }

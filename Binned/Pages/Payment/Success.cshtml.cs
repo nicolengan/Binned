@@ -35,7 +35,7 @@ namespace Binned.Pages.Payment
                     UserId = "user1",
                     Status = "shipped",
                     PaymentStatus = true
-                    
+
                 };
 
                 _orderService.AddOrder(newOrder);

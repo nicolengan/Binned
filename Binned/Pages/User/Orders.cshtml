@@ -20,16 +20,16 @@
         @{
             @foreach (var item in Model.OrderList)
             {
-                        <tr>
+                <tr>
                     <td>@item.OrderId</td>
                     <td>@item.ProductId</td>
                     <td>@item.UserId</td>
                     <td>@item.OrderDate.ToShortDateString()</td>
                     <td>@item.Status</td>
-                            <td>
+                    <td>
                         <a asp-page="/User/Details" asp-route-id="@item.OrderId">View</a>
-                            </td>
-                        </tr>
+                    </td>
+                </tr>
             }
         }
     </tbody>

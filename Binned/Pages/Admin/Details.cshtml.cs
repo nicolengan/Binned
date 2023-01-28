@@ -33,10 +33,10 @@ namespace Binned.Pages.Admin
                 _logger.LogInformation($"order id{orderid}");
                 TempData["id"] = id;
                 return Page();
-            }   
+            }
             else
             {
-                
+
                 TempData["FlashMessage.Type"] = "danger";
                 TempData["FlashMessage.Text"] = string.Format("Order ID {0} not found", id);
                 return Redirect("/Admin/Orders");
@@ -45,11 +45,11 @@ namespace Binned.Pages.Admin
         public async Task<IActionResult> OnPostAsync()
         {
             // order not found here
-            var errors = ModelState.Values.SelectMany(v => v.Errors);   
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
             _logger.LogInformation($"{status}");
             var id = Convert.ToInt32(TempData["id"]);
             Order? order = _orderService.GetOrderById(id);
-            
+
 
 
             if (ModelState.IsValid && order != null)
@@ -71,4 +71,3 @@ namespace Binned.Pages.Admin
         }
     }
 }
-    

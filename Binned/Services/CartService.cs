@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Binned.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace Binned.Services
 {
@@ -68,6 +69,7 @@ namespace Binned.Services
                    new CartItem
                    {
                        ProductId = productId,
+                       Price = product.ProductPrice
                    }
                 );
             }

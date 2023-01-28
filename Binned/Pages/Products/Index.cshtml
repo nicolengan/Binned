@@ -10,6 +10,8 @@
         <tr>
             <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductId)</th>
             <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductName)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductSize)</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -19,10 +21,14 @@
                 <tr>
                     <td>@item.ProductId</td>
                     <td>@item.ProductName</td>
+                    <td>@item.ProductSize</td>
                     <td>
+                        <a asp-page="/Products/Details" asp-route-id="@item.ProductId">View</a>
                     </td>
                 </tr>
             }
         }
     </tbody>
 </table>
+
+<a class="btn btn-primary mt-3" href="/Products/AddProduct">Add Product</a>

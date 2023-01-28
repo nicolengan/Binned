@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Binned.Pages
 {
-    public class LogoutModel : PageModel
-    {
+	public class LogoutModel : PageModel
+	{
 		private readonly SignInManager<IdentityUser> signInManager;
 		public LogoutModel(SignInManager<IdentityUser> signInManager)
 		{

@@ -5,33 +5,33 @@ using Binned.Model;
 
 namespace Binned.Pages
 {
-    public class LoginModel : PageModel
-    {
-        [BindProperty]
-        public Login LModel { get; set; }
+	public class LoginModel : PageModel
+	{
+		[BindProperty]
+		public Login LModel { get; set; }
 
-        private readonly SignInManager<IdentityUser> signInManager;
-        public LoginModel(SignInManager<IdentityUser> signInManager)
-        {
-            this.signInManager = signInManager;
-        }
-        public void OnGet()
-        {
-        }
+		private readonly SignInManager<IdentityUser> signInManager;
+		public LoginModel(SignInManager<IdentityUser> signInManager)
+		{
+			this.signInManager = signInManager;
+		}
+		public void OnGet()
+		{
+		}
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (ModelState.IsValid)
-            {
-                var identityResult = await signInManager.PasswordSignInAsync(LModel.Username, LModel.Password,
-                LModel.RememberMe, false);
-                if (identityResult.Succeeded)
-                {
-                    return RedirectToPage("AccountProfile");
-                }
-                ModelState.AddModelError("", "Username or Password incorrect");
-            }
-            return Page();
-        }
-    }
+		public async Task<IActionResult> OnPostAsync()
+		{
+			if (ModelState.IsValid)
+			{
+				var identityResult = await signInManager.PasswordSignInAsync(LModel.Username, LModel.Password,
+				LModel.RememberMe, false);
+				if (identityResult.Succeeded)
+				{
+					return RedirectToPage("AccountProfile");
+				}
+				ModelState.AddModelError("", "Username or Password incorrect");
+			}
+			return Page();
+		}
+	}
 }

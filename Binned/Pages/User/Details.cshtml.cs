@@ -66,5 +66,5 @@ namespace Binned.Pages.User
         }
     }
 
-    }
+}
 
