@@ -34,13 +34,13 @@ namespace Binned.Services
             await _context.SaveChangesAsync();
             return newWishlist;
         }
-        public WishlistItem? GetWishlistItemById(int id)
+
+        public WishlistItem? GetWishlistItemsById(int id)
         {
             WishlistItem? item = _context.WishlistItems.FirstOrDefault(x => x.Id.Equals(id));
             return item;
 
         }
-
         public WishlistItem? GetWishListItemByProductId(int id)
         {
             WishlistItem? item = _context.WishlistItems.FirstOrDefault(x => x.ProductId.Equals(id));
@@ -60,7 +60,7 @@ namespace Binned.Services
 
             var wishlist = await GetWishlistByUserName(userName);
             Product product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
-            var itemexist = _context.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
+            var itemexist = _context.WishlistItems.FirstOrDefault(ci => ci.ProductId == productId);
 
             if (itemexist == null)
             {
@@ -75,11 +75,12 @@ namespace Binned.Services
 
             _context.SaveChanges();
         }
-        public async Task RemoveItem(int CartItemId)
-        {
-            var cartitem = GetWishlistItemById(CartItemId);
 
-            _context.WishlistItems.Remove(cartitem);
+        public async Task RemoveItem(int WishListId)
+        {
+            var wishlistitem = GetWishlistItemsById(WishListId);
+
+            _context.WishlistItems.Remove(wishlistitem);
 
             await _context.SaveChangesAsync();
         }

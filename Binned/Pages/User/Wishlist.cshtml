@@ -29,15 +29,15 @@
                     </thead>
                     <tbody>
 
-                        @foreach (var item in Model.Wishlist.Items)
+                        @foreach (var wishlistitem in Model.Wishlist.Items)
                         {
                             <tr>
-                                <td>@item.Product.ProductName</td>
-                                <td>@item.Product.ProductPrice</td>
+                                <td>@wishlistitem.Product.ProductName</td>
+                                <td>@wishlistitem.Product.ProductPrice</td>
                                 <td class="text-right">
                                     <form asp-page-handler="RemoveFromWishlist" method="post">
                                         <button class="btn btn-sm btn-info"><i class="bi bi-trash"></i></button>
-                                        <input type="hidden" asp-for="@item.Id" name="cartItemId" />
+                                        <input type="hidden" asp-for="@wishlistitem.Id" name="wishlistItemId" />
                                     </form>
 
                                 </td>

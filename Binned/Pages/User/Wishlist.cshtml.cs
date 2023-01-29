@@ -23,9 +23,9 @@ namespace Binned.Pages.User
 
             return Page();
         }
-        public async Task<IActionResult> OnPostRemoveFromWishlistAsync(int WishListId)
+        public async Task<IActionResult> OnPostRemoveFromWishlistAsync(int WishlistItemId)
         {
-            await _wishlistService.RemoveItem(WishListId);
+            await _wishlistService.RemoveItem(WishlistItemId);
 
             return RedirectToPage("/User/Wishlist");
         }
