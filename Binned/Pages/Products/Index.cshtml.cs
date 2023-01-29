@@ -7,10 +7,12 @@ namespace Binned.Pages.Products
 {
     public class IndexModel : PageModel
     {
+        private readonly WishlistService _wishlistService;
         private readonly CartService _cartService;
         private readonly ProductService _productService;
-        public IndexModel(ProductService productService, CartService cartService)
+        public IndexModel(ProductService productService, CartService cartService, WishlistService wishlistService)
         {
+            _wishlistService = wishlistService;
             _cartService = cartService;
             _productService = productService;
         }
@@ -25,11 +27,14 @@ namespace Binned.Pages.Products
 
         public async Task<IActionResult> OnPostAddToCartAsync(int productId)
         {
-            //if (!User.Identity.IsAuthenticated)
-            //    return RedirectToPage("./Account/Login", new { area = "Identity" });
-            //productId = 1;
             await _cartService.AddItem("test", productId);
             return RedirectToPage("/Cart");
+        }
+
+        public async Task<IActionResult> OnPostAddToWishlistAsync(int productId)
+        {
+            await _wishlistService.AddItem("test", productId);
+            return RedirectToPage("/User/Wishlist");
         }
     }
     

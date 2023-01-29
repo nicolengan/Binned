@@ -10,6 +10,7 @@ builder.Logging.AddConsole();
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<MyDbContext>();
+builder.Services.AddScoped<WishlistService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<Binned.Services.ProductService>();

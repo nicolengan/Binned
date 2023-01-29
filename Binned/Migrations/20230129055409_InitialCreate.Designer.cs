@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Binned.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230128161027_InitialCreate")]
+    [Migration("20230129055409_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -231,6 +231,49 @@ namespace Binned.Migrations
                     b.ToTable("Register");
                 });
 
+            modelBuilder.Entity("Binned.Model.Wishlist", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Wishlists");
+                });
+
+            modelBuilder.Entity("Binned.Model.WishlistItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(7,2)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WishlistId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("WishlistId");
+
+                    b.ToTable("WishlistItems");
+                });
+
             modelBuilder.Entity("Binned.Model.CartItem", b =>
                 {
                     b.HasOne("Binned.Model.Cart", null)
@@ -257,6 +300,21 @@ namespace Binned.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("Binned.Model.WishlistItem", b =>
+                {
+                    b.HasOne("Binned.Model.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Binned.Model.Wishlist", null)
+                        .WithMany("Items")
+                        .HasForeignKey("WishlistId");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Binned.Model.Cart", b =>
                 {
                     b.Navigation("Items");
@@ -265,6 +323,11 @@ namespace Binned.Migrations
             modelBuilder.Entity("Binned.Model.Order", b =>
                 {
                     b.Navigation("Payment");
+                });
+
+            modelBuilder.Entity("Binned.Model.Wishlist", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

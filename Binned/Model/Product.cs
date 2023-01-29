@@ -26,6 +26,5 @@ namespace Binned.Model
 
         [Required, MaxLength(1)]
         public string Availability { get; set; }
-
     }
 }
