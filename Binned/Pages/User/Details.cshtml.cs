@@ -18,7 +18,7 @@ namespace Binned.Pages.User
         }
         [BindProperty]
         public Order MyOrder { get; set; } = new();
-        public IActionResult OnGet(int id)
+        public IActionResult OnGet(string id)
         {
             Order? order = _orderService.GetOrderById(id);
             if (order != null)
@@ -43,7 +43,7 @@ namespace Binned.Pages.User
             var errors = ModelState.Values.SelectMany(v => v.Errors);
             _logger.LogInformation($"{errors}");
 
-            var id = Convert.ToInt32(TempData["id"]);
+            var id = TempData["id"].ToString();
             _logger.LogInformation($"{id}");
             Order? order = _orderService.GetOrderById(id);
 

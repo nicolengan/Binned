@@ -3,6 +3,9 @@ using Binned.Model;
 using Stripe;
 using Binned.Services;
 using Binned.Areas.Identity.Data;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http.Json;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();

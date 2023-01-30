@@ -21,9 +21,9 @@ namespace Binned.Pages.Admin
         public string status { get; set; }
 
         [BindProperty]
-        public int orderid { get; set; }
+        public string orderid { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
             Order? order = _orderService.GetOrderById(id);
             _logger.LogInformation($"id: {id}");
@@ -47,7 +47,7 @@ namespace Binned.Pages.Admin
             // order not found here
             var errors = ModelState.Values.SelectMany(v => v.Errors);
             _logger.LogInformation($"{status}");
-            var id = Convert.ToInt32(TempData["id"]);
+            var id = TempData["id"].ToString();
             Order? order = _orderService.GetOrderById(id);
 
 

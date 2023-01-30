@@ -27,6 +27,7 @@ namespace Binned.Pages.Payment
         public async Task<IActionResult> OnGet()
         {
             // to be added in cart code, from cart should be getting an array or whatever of product id then store that into the code, check if each item exist in stripe first
+
             var searchOptions = new ProductSearchOptions
             {
                 Query = "active:'true' AND metadata['ProductId']:'1234'",

@@ -21,21 +21,17 @@ namespace Binned.Pages.Payment
         }
         public async Task<IActionResult> OnGet()
         {
-            if (TempData.ContainsKey("sessionId"))
-            {
-                var id = TempData["sessionId"].ToString();
+            var orderId = TempData["id"].ToString();
 
-                _logger.LogInformation($"session: {id}");
+            _logger.LogInformation($"orderId: {orderId}");
 
-                var user = User.Identity.Name;
+            //var user = User.Identity.Name;
 
-                //ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+            //ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
 
 
-                //_orderService.AddOrder(newOrder);
-
-
-            }
+            //_orderService.AddOrder(newOrder);
+            _orderService.UpdateStatusById(orderId, "Paid");
 
             return Page();
         }

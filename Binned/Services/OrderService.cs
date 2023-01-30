@@ -1,4 +1,6 @@
 ﻿using Binned.Model;
+using Microsoft.EntityFrameworkCore;
+
 namespace Binned.Services
 {
     public class OrderService
@@ -14,7 +16,7 @@ namespace Binned.Services
             return _context.Orders.OrderBy(d => d.OrderId).ToList();
         }
 
-        public Order? GetOrderById(int id)
+        public Order? GetOrderById(string id)
         {
             Order? order = _context.Orders.FirstOrDefault(
             x => x.OrderId.Equals(id));
@@ -24,8 +26,9 @@ namespace Binned.Services
         public List<Order> GetOrderByUserId(string userId)
         {
             return _context.Orders
-                    .Where(b => b.UserId.Contains(userId))
-                    .ToList();
+                .Include(i => i.Products)
+                .Where(item => item.UserId == userId)
+                .ToList();
         }
 
         public void AddOrder(Order order)
@@ -39,12 +42,31 @@ namespace Binned.Services
             _context.Orders.Update(order); // update vs attatched update updates all even if u only change one code, attatched only updates that one column 
             _context.SaveChanges();
         }
-        public void UpdateOrderById(string id, string status)
+        public void UpdateStatusById(string id, string status)
         {
             var current = _context.Orders.FirstOrDefault(item => item.OrderId == id);
             if (current != null)
             {
                 current.Status = status;
+                _context.SaveChanges();
+            }
+        }
+        public void CalculateTotal(string id)
+        {
+            var current = _context.Orders.Include(item => item.Products).FirstOrDefault(item => item.OrderId == id);
+            var productList = current?.Products;
+            decimal total = 0;
+            if (productList != null)
+            {
+                foreach (var i in productList)
+                {
+                    total += i.ProductPrice;
+                }
+
+            }
+            if (current != null)
+            {
+                current.Amount = total;
                 _context.SaveChanges();
             }
         }

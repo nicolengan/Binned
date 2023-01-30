@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
@@ -6,7 +7,7 @@ namespace Binned.Model
 {
     public class Order
     {
-        public string OrderId { get; set; } = Guid.NewGuid().ToString();
+        public string OrderId { get; set; }
         [AllowNull]
         public string UserId { get; set; }
 
@@ -22,9 +23,10 @@ namespace Binned.Model
         public DateTime? ShipDate { get; set; }
 
         public bool PaymentStatus { get; set; } = false;
+        [Range(0, 1e6)]
+        [Column(TypeName = "decimal(7,2)")]
+        public decimal Amount { get; set; }
 
-        public Payment? Payment { get; set; }
-        [AllowNull]
-        public List<Product> Products { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }
