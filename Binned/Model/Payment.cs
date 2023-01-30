@@ -19,7 +19,7 @@ namespace Binned.Model
         [Column(TypeName = "date")]
         public DateTime PaymentDate { get; set; }
 
-        public int OrderForeignKey { get; set; }
+        public string OrderForeignKey { get; set; }
         public Order? Order { get; set; }
     }
 }

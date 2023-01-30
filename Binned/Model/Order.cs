@@ -6,9 +6,7 @@ namespace Binned.Model
 {
     public class Order
     {
-        public int OrderId { get; set; }
-        [AllowNull]
-        public string ProductId { get; set; }
+        public string OrderId { get; set; } = Guid.NewGuid().ToString();
         [AllowNull]
         public string UserId { get; set; }
 
@@ -26,5 +24,7 @@ namespace Binned.Model
         public bool PaymentStatus { get; set; } = false;
 
         public Payment? Payment { get; set; }
+        [AllowNull]
+        public List<Product> Products { get; set; }
     }
 }

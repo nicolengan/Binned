@@ -1,6 +1,7 @@
 using Binned.Model;
 using Binned.Pages.Admin;
 using Binned.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Stripe;
@@ -26,19 +27,12 @@ namespace Binned.Pages.Payment
 
                 _logger.LogInformation($"session: {id}");
 
-                var newOrder = new Order
-                {
-                    //ProductId = "1234",
-                    //UserId = "user1",
-                    //Status = "shipped"
-                    ProductId = "1111",
-                    UserId = "user1",
-                    Status = "shipped",
-                    PaymentStatus = true
-                    
-                };
+                var user = User.Identity.Name;
 
-                _orderService.AddOrder(newOrder);
+                //ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+
+
+                //_orderService.AddOrder(newOrder);
 
 
             }

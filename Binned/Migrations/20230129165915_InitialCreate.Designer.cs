@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Binned.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230128090409_InitialCreate")]
+    [Migration("20230129165915_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -94,21 +94,14 @@ namespace Binned.Migrations
 
             modelBuilder.Entity("Binned.Model.Order", b =>
                 {
-                    b.Property<int>("OrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
+                    b.Property<string>("OrderId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("date");
 
                     b.Property<bool>("PaymentStatus")
                         .HasColumnType("bit");
-
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ShipDate")
                         .HasColumnType("date");
@@ -137,8 +130,9 @@ namespace Binned.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(7,2)");
 
-                    b.Property<int>("OrderForeignKey")
-                        .HasColumnType("int");
+                    b.Property<string>("OrderForeignKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("date");
@@ -171,6 +165,9 @@ namespace Binned.Migrations
                         .HasMaxLength(1)
                         .HasColumnType("nvarchar(1)");
 
+                    b.Property<string>("OrderId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<decimal>("ProductLength")
                         .HasColumnType("decimal(18,2)");
 
@@ -190,6 +187,8 @@ namespace Binned.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("ProductId");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Products");
                 });
@@ -257,6 +256,13 @@ namespace Binned.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("Binned.Model.Product", b =>
+                {
+                    b.HasOne("Binned.Model.Order", null)
+                        .WithMany("Products")
+                        .HasForeignKey("OrderId");
+                });
+
             modelBuilder.Entity("Binned.Model.Cart", b =>
                 {
                     b.Navigation("Items");
@@ -265,6 +271,8 @@ namespace Binned.Migrations
             modelBuilder.Entity("Binned.Model.Order", b =>
                 {
                     b.Navigation("Payment");
+
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

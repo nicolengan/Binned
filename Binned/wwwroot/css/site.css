@@ -30,9 +30,9 @@ body {
     color: white;
 }
 
-input, select {
+/*input, select {
     max-width: 600px;
-}
+}*/
 
 .btn {
     min-width: 80px;

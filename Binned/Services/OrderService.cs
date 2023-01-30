@@ -39,7 +39,7 @@ namespace Binned.Services
             _context.Orders.Update(order); // update vs attatched update updates all even if u only change one code, attatched only updates that one column 
             _context.SaveChanges();
         }
-        public void UpdateOrderById(int id, string status)
+        public void UpdateOrderById(string id, string status)
         {
             var current = _context.Orders.FirstOrDefault(item => item.OrderId == id);
             if (current != null)

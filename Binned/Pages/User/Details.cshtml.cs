@@ -51,7 +51,7 @@ namespace Binned.Pages.User
             {
 
                 order.Status = "Delivered";
-                _logger.LogInformation($"{order.ProductId}");
+                //_logger.LogInformation($"{order.ProductId}");
                 _orderService.UpdateOrder(order);
 
                 TempData["flashmessage.type"] = "success";
@@ -66,5 +66,5 @@ namespace Binned.Pages.User
         }
     }
 
-    }
+}
 
