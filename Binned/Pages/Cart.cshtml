@@ -2,3 +2,68 @@
 @model Binned.Pages.CartModel
 @{
 }
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Cart</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="container mb-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Availability</th>
+                            <th scope="col" class="text-right">Price</th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var cartItem in Model.Cart.Items)
+                        {
+                                <tr>
+                                    <td>@cartItem.Product.ProductName</td>
+                                    <td>@cartItem.Product.Availability</td>
+                                    <td class="text-right">$@(cartItem.Price)</td>
+                                    <td class="text-right">
+
+                                        <form asp-page-handler="RemoveFromCart" method="post">
+                                            <button class="btn btn-sm btn-info"><i class="bi bi-trash">Remove</i></button>
+                                            <input type="hidden" asp-for="@cartItem.Id" name="cartItemId" />
+                                        </form>
+
+                                    </td>
+                                </tr>
+                        }
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td><strong>Total</strong></td>
+                            <td class="text-right"><strong>$@Model.Cart.TotalPrice</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col mb-2">
+            <div class="row">
+                <div class="col-sm-12  col-md-6">
+                    <a asp-page="/Products/Index" class="btn btn-primary">Continue Shopping</a>
+                </div>
+                <div class="col-sm-12 col-md-6 text-right">
+                    <a asp-page="/Payment/Checkout" class="btn btn-primary">Check Out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
