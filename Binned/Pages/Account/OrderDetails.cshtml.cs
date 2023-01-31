@@ -19,21 +19,23 @@ namespace Binned.Pages.Account
             _orderService = orderService;
             _logger = logger;
         }
-        public void OnGet(string id)
+        public IActionResult OnGet(string id)
         {
-
-            OneOrder = _orderService.GetOrderById(id);
-            //_logger.LogInformation(OneOrder.Products.Count().ToString());
-            //if (OneOrder.Status == "To receive")
-            //{
-            //    Button = "Order received";
-            //}
+            if (ModelState.IsValid)
+            {
+                OneOrder = _orderService.GetOrderById(id);
+                return Page();
+            }
+            return Redirect("/Account/Orders");
 
         }
-        public IActionResult OnPost()
+        public void OnPost(string id)
         {
-            _logger.LogInformation("hi");
-            return Redirect("/");
+            OneOrder = _orderService.GetOrderById(id);
+            _orderService.UpdateStatusById(id, "Received");
+            TempData["FlashMessage.Type"] = "success";
+            TempData["FlashMessage.Text"] = string.Format("Order status updated! Your order status has been changed to received.");
+            _logger.LogInformation(id);
         }
     }
 }

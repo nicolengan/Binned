@@ -54,15 +54,9 @@ namespace Binned.Pages.Admin
             _logger.LogInformation($"{myStatus}");
 
         }
-        public IActionResult Onpost(int myStatus)
+        public IActionResult OnPost(int myStatus)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    _orderService.UpdateOrder();
-            //    TempData["FlashMessage.Type"] = "success";
-            //    TempData["FlashMessage.Text"] = string.Format(
-            //    "Employee {0} is updated", MyEmployee.Name);
-            //}
+
             _logger.LogInformation($"output{myStatus}");
 
             return Page();

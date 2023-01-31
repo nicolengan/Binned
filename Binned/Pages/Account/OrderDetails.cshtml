@@ -2,7 +2,7 @@
 @model Binned.Pages.Account.OrderDetailsModel
 @{
 }
-<h2 class="my-4"><a class="text-decoration-none text-reset me-3" href="#"><</a>Order number</h2>
+<h2 class="my-4"><a class="text-decoration-none text-reset me-3" href="#"><</a>#@Model.OneOrder.OrderId</h2>
 <div class="card h-25 mt-3 border border-0" style="background-color:#f1dbdb;">
     <div class="card-body border border-0">
 
@@ -20,10 +20,10 @@
             </div>
             <div class="col-2 d-flex flex-column justify-content-end pe-4">
                 @{
-                    @if (Model.OneOrder.Status == "Paid")
+                    @if (Model.OneOrder.Status == "To receive")
                     {
                         <form method="post">
-                            <button class="btn me-3 w-100" type="submit" aria-disabled="true" style="background-color:#71805D;color:#FFFFFF;">Order received</button>
+                            <button class="btn me-3 w-100" type="submit" aria-disabled="true" style="background-color:#71805D;color:#FFFFFF;font-size:16px;">Order received</button>
                         </form>
                     }
                 }
@@ -41,15 +41,17 @@
                     <div class="col-2">
                         <img src="~/uploads/placeholder.jpg" class="rounded img-fluid h-auto" alt="..." />
                     </div>
-                    <div class="col-10">
-                        @item.ProductName<br>
-                        Size: @item.ProductSize<br>
+                    <div class="col-10" style="font-size:16px;">
+                        <span class="h5">@item.ProductName x 1</span>
+                        <br>
+                        Size: @item.ProductSize
+                        <br>
                         $@item.ProductPrice
                     </div>
                 </div>
             }
         }
-        <div class="row my-3 me-5 d-flex flex-row justify-content-end">
+        <div class="row my-3 me-5 d-flex flex-row justify-content-end h5">
             Total: $@Model.OneOrder.Amount
         </div>
 

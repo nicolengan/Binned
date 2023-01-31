@@ -55,6 +55,7 @@ namespace Binned.Services
                 current.Status = status;
                 _context.SaveChanges();
             }
+
         }
         public void CalculateTotal(string id)
         {
