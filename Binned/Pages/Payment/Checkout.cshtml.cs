@@ -24,6 +24,7 @@ namespace Binned.Pages.Payment
         public Cart OneCart { get; set; }
         public Order NewOrder { get; set; }
         public int id { get; set; }
+
         public CheckoutModel(CartService cartService, OrderService orderService, ILogger<CheckoutModel> logger)
         {
             _cartService = cartService;
