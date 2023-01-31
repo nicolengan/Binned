@@ -2,3 +2,56 @@
 @model Binned.Pages.Account.OrderDetailsModel
 @{
 }
+<h2 class="my-4"><a class="text-decoration-none text-reset me-3" href="#"><</a>Order number</h2>
+<div class="card h-25 mt-3 border border-0" style="background-color:#f1dbdb;">
+    <div class="card-body border border-0">
+
+        <div class="row">
+            <div class="col-10 ps-5 pt-2">
+                <div class="row h4">
+                    Address:
+                </div>
+                <div class="row h4">
+                    Order Date: @Model.OneOrder.OrderDate.ToShortDateString()
+                </div>
+                <div class="row h4">
+                    Order Status: @Model.OneOrder.Status
+                </div>
+            </div>
+            <div class="col-2 d-flex flex-column justify-content-end pe-4">
+                @{
+                    @if (Model.OneOrder.Status == "Paid")
+                    {
+                        <form method="post">
+                            <button class="btn me-3 w-100" type="submit" aria-disabled="true" style="background-color:#71805D;color:#FFFFFF;">Order received</button>
+                        </form>
+                    }
+                }
+            </div>
+
+        </div>
+        <div class="row mx-5 my-4 ">
+            <div class="border-bottom border-dark opacity-50">
+            </div>
+        </div>
+        @{
+            @foreach (var item in Model.OneOrder.Products)
+            {
+                <div class="row mt-3 mx-3">
+                    <div class="col-2">
+                        <img src="~/uploads/placeholder.jpg" class="rounded img-fluid h-auto" alt="..." />
+                    </div>
+                    <div class="col-10">
+                        @item.ProductName<br>
+                        Size: @item.ProductSize<br>
+                        $@item.ProductPrice
+                    </div>
+                </div>
+            }
+        }
+        <div class="row my-3 me-5 d-flex flex-row justify-content-end">
+            Total: $@Model.OneOrder.Amount
+        </div>
+
+    </div>
+</div>

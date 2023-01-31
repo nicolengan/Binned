@@ -11,7 +11,7 @@
     <div class="row mb-3">
         <label class="col-sm-2 col-form-label" asp-for="status"></label>
         <div class="col-sm-10">
-            @Html.DropDownListFor(m => m.status, new SelectList(OrdersModel.Statuses, "Value", "Name"), "-- Select --", new {@class = "form-select"})
+            @Html.DropDownListFor(m => m.status, new SelectList(Status.Statuses, "Value", "Name"), "-- Select --", new {@class = "form-select"})
             <span class="text-danger"></span>
         </div>
     </div>

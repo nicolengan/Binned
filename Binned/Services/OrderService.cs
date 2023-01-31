@@ -13,13 +13,17 @@ namespace Binned.Services
         }
         public List<Order> GetAll()
         {
-            return _context.Orders.OrderBy(d => d.OrderId).ToList();
+            return _context.Orders
+                .Include(i => i.Products)
+                .OrderBy(d => d.OrderId)
+                .ToList();
         }
-
         public Order? GetOrderById(string id)
         {
-            Order? order = _context.Orders.FirstOrDefault(
-            x => x.OrderId.Equals(id));
+            Order? order = _context.Orders
+                .Include(i => i.Products)
+                .Include(s => s.ShippingInfo)
+                .FirstOrDefault(x => x.OrderId.Equals(id));
             return order;
         }
 
@@ -27,6 +31,7 @@ namespace Binned.Services
         {
             return _context.Orders
                 .Include(i => i.Products)
+                .Include(s => s.ShippingInfo)
                 .Where(item => item.UserId == userId)
                 .ToList();
         }
@@ -53,7 +58,10 @@ namespace Binned.Services
         }
         public void CalculateTotal(string id)
         {
-            var current = _context.Orders.Include(item => item.Products).FirstOrDefault(item => item.OrderId == id);
+            var current = _context.Orders
+                .Include(item => item.Products)
+                .Include(s => s.ShippingInfo)
+                .FirstOrDefault(item => item.OrderId == id);
             var productList = current?.Products;
             decimal total = 0;
             if (productList != null)
@@ -70,5 +78,6 @@ namespace Binned.Services
                 _context.SaveChanges();
             }
         }
+
     }
 }
