@@ -2,22 +2,29 @@ using Binned.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Binned.Model;
+using Stripe;
+using Microsoft.Extensions.Logging;
+using Binned.Pages.Payment;
 
 namespace Binned.Pages.Products
 {
     public class AddProductModel : PageModel
     {
-        private readonly ProductService _productService;
+        private readonly Services.ProductService _productService;
+        private readonly ILogger<AddProductModel> _logger;
         //private IWebHostEnvironment _environment;
 
-        public AddProductModel(ProductService productService)
+        public AddProductModel(Services.ProductService productService, ILogger<AddProductModel> logger)
         {
             _productService = productService;
+            _logger = logger;
+
             //_environment = environment;
         }
 
+
         [BindProperty]
-        public Product OurProduct { get; set; } = new();
+        public Model.Product OurProduct { get; set; } = new();
         //[BindProperty]
         //public IFormFile? Upload { get; set; }
 
@@ -30,7 +37,7 @@ namespace Binned.Pages.Products
         {
             if (ModelState.IsValid)
             {
-                Product? product = _productService.GetProductById(OurProduct.ProductId);
+                Model.Product? product = _productService.GetProductById(OurProduct.ProductId);
                 if (product != null)
                 {
                     TempData["FlashMessage.Type"] = "danger";
@@ -59,7 +66,7 @@ namespace Binned.Pages.Products
                 //}
 
                 _productService.AddProduct(OurProduct);
-                TempData["FlashMessage.Type"] = "success";
+                //TempData["FlashMessage.Type"] = "success";
                 TempData["FlashMessage.Text"] = string.Format("Product {0} is added", OurProduct.ProductName);
                 return Redirect("/Products/Index");
             }

@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Pages\Payment\Cart.cshtml" />
     <None Include="Pages\Payment\Payment.cshtml" />
     <None Include="Pages\Payment\Failure.cshtml" />
     <None Include="Pages\Payment\Success.cshtml" />

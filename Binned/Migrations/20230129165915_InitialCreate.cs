@@ -43,9 +43,7 @@ namespace Binned.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    OrderId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OrderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "date", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -55,24 +53,6 @@ namespace Binned.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.OrderId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    ProductId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    ProductPrice = table.Column<decimal>(type: "decimal(7,2)", nullable: false),
-                    ProductSize = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProductLength = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ProductWaist = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Availability = table.Column<string>(type: "nvarchar(1)", maxLength: 1, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.ProductId);
                 });
 
             migrationBuilder.CreateTable(
@@ -103,7 +83,7 @@ namespace Binned.Migrations
                     Status = table.Column<bool>(type: "bit", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(7,2)", nullable: false),
                     PaymentDate = table.Column<DateTime>(type: "date", nullable: false),
-                    OrderForeignKey = table.Column<int>(type: "int", nullable: false)
+                    OrderForeignKey = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -114,6 +94,30 @@ namespace Binned.Migrations
                         principalTable: "Orders",
                         principalColumn: "OrderId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ProductPrice = table.Column<decimal>(type: "decimal(7,2)", nullable: false),
+                    ProductSize = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductLength = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ProductWaist = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Availability = table.Column<string>(type: "nvarchar(1)", maxLength: 1, nullable: false),
+                    OrderId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.ProductId);
+                    table.ForeignKey(
+                        name: "FK_Products_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "OrderId");
                 });
 
             migrationBuilder.CreateTable(
@@ -157,6 +161,11 @@ namespace Binned.Migrations
                 table: "Payments",
                 column: "OrderForeignKey",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_OrderId",
+                table: "Products",
+                column: "OrderId");
         }
 
         /// <inheritdoc />

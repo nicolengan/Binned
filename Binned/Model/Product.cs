@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.Extensions.Hosting;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection.Metadata;
 
 namespace Binned.Model
 {
@@ -26,6 +28,8 @@ namespace Binned.Model
 
         [Required, MaxLength(1)]
         public string Availability { get; set; }
+
+        public ICollection<Order> Orders { get; set; }
 
     }
 }

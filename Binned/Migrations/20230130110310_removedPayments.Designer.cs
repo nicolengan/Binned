@@ -4,6 +4,7 @@ using Binned.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Binned.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230130110310_removedPayments")]
+    partial class removedPayments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,8 +106,8 @@ namespace Binned.Migrations
                     b.Property<bool>("PaymentStatus")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ShippingInfoId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<DateTime?>("ShipDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -115,8 +118,6 @@ namespace Binned.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("OrderId");
-
-                    b.HasIndex("ShippingInfoId");
 
                     b.ToTable("Orders");
                 });
@@ -133,6 +134,9 @@ namespace Binned.Migrations
                         .IsRequired()
                         .HasMaxLength(1)
                         .HasColumnType("nvarchar(1)");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("ProductLength")
                         .HasColumnType("decimal(18,2)");
@@ -153,6 +157,8 @@ namespace Binned.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("ProductId");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Products");
                 });
@@ -194,61 +200,6 @@ namespace Binned.Migrations
                     b.ToTable("Register");
                 });
 
-            modelBuilder.Entity("Binned.Model.ShippingInfo", b =>
-                {
-                    b.Property<string>("ShippingInfoId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Block")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ShipDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("StreetName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UnitNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ShippingInfoId");
-
-                    b.ToTable("ShippingInfo");
-                });
-
-            modelBuilder.Entity("OrderProduct", b =>
-                {
-                    b.Property<string>("OrdersOrderId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ProductsProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrdersOrderId", "ProductsProductId");
-
-                    b.HasIndex("ProductsProductId");
-
-                    b.ToTable("OrderProduct");
-                });
-
             modelBuilder.Entity("Binned.Model.CartItem", b =>
                 {
                     b.HasOne("Binned.Model.Cart", null)
@@ -264,28 +215,11 @@ namespace Binned.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Binned.Model.Order", b =>
-                {
-                    b.HasOne("Binned.Model.ShippingInfo", "ShippingInfo")
-                        .WithMany("Orders")
-                        .HasForeignKey("ShippingInfoId");
-
-                    b.Navigation("ShippingInfo");
-                });
-
-            modelBuilder.Entity("OrderProduct", b =>
+            modelBuilder.Entity("Binned.Model.Product", b =>
                 {
                     b.HasOne("Binned.Model.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Binned.Model.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Products")
+                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("Binned.Model.Cart", b =>
@@ -293,9 +227,9 @@ namespace Binned.Migrations
                     b.Navigation("Items");
                 });
 
-            modelBuilder.Entity("Binned.Model.ShippingInfo", b =>
+            modelBuilder.Entity("Binned.Model.Order", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

@@ -15,7 +15,7 @@ namespace Binned.Pages
             _productService = productService;
         }
 
-        public Models.Cart Cart { get; set; } = new Models.Cart();
+        public Model.Cart Cart { get; set; } = new Model.Cart();
 
         public async Task<IActionResult> OnGetAsync()
         {
