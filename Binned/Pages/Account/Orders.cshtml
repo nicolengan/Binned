@@ -13,7 +13,7 @@
                     <div class="row">
                         <div class="col-10">
                             <div class="row">
-                                <p class="h4 ms-1">@item.OrderId</p>
+                                <p class="h4 ms-1">#@item.OrderId</p>
                                 <div class="col-3">
                                     <img src="~/uploads/placeholder.jpg" class="rounded img-fluid h-auto" alt="..." />
                                 </div>
@@ -23,14 +23,14 @@
                                     <ul>
                                         @foreach (var product in item.Products)
                                         {
-                                        <li>@product.ProductName</li>
+                                            <li style="font-size:18px;">@product.ProductName</li>
                                         }
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         <div class="col-2 d-flex flex-column justify-content-end">
-                            <div class="">total</div>
+                            <div class="h5">Total: $@item.Amount</div>
                             <a class="btn me-3 w-100" asp-page="/Account/OrderDetails" asp-route-id="@item.OrderId" role="button" aria-disabled="true" style="background-color:#71805D;color:#FFFFFF;">View</a>
                         </div>
                     </div>

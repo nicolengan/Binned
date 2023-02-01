@@ -29,7 +29,7 @@ namespace Binned.Model
         [Required, MaxLength(1)]
         public string Availability { get; set; }
 
-        public ICollection<Order> Orders { get; set; }
+        public ICollection<Order>? Orders { get; set; }
 
     }
 }

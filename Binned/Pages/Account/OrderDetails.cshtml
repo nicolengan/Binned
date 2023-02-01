@@ -2,20 +2,34 @@
 @model Binned.Pages.Account.OrderDetailsModel
 @{
 }
-<h2 class="my-4"><a class="text-decoration-none text-reset me-3" href="#"><</a>#@Model.OneOrder.OrderId</h2>
+<h2 class="my-4"><a class="text-decoration-none text-reset me-3" href="/Account/Orders"><</a>#@Model.OneOrder.OrderId</h2>
 <div class="card h-25 mt-3 border border-0" style="background-color:#f1dbdb;">
     <div class="card-body border border-0">
 
         <div class="row">
             <div class="col-10 ps-5 pt-2">
                 <div class="row h4">
-                    Address:
-                </div>
-                <div class="row h4">
                     Order Date: @Model.OneOrder.OrderDate.ToShortDateString()
                 </div>
                 <div class="row h4">
                     Order Status: @Model.OneOrder.Status
+                </div>
+                <div class="row h4">
+                    Delivery Address:
+                </div>
+                <div class="row" style="font-size:18px;">
+                    @Model.OneOrder.FirstName First name @Model.OneOrder.LastName last
+                </div>
+                <div class="row" style="font-size:18px;">
+                    <div class="ps-0">
+                        @Model.OneOrder.Address address
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="ps-0" style="font-size:18px;">
+                        @Model.OneOrder.Address2 address 2 <br>
+                        @Model.OneOrder.PostalCode postal code
+                    </div>
                 </div>
             </div>
             <div class="col-2 d-flex flex-column justify-content-end pe-4">

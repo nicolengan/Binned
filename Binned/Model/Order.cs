@@ -14,15 +14,25 @@ namespace Binned.Model
         [DataType(DataType.Date)]
         [Column(TypeName = "date")]
         public DateTime OrderDate { get; set; } = DateTime.Now;
+        [DataType(DataType.Date)]
+        [Column(TypeName = "date")]
+        [AllowNull]
+        public DateTime? ShipDate { get; set; }
+
         public string Status { get; set; }
 
-        public bool PaymentStatus { get; set; } = false;
         [Range(0, 1e6)]
         [Column(TypeName = "decimal(7,2)")]
         public decimal Amount { get; set; }
 
         public ICollection<Product> Products { get; set; }
 
-        public ShippingInfo ShippingInfo { get; set; }
+        public string Address { get; set; }
+        [AllowNull]
+        public string? Address2 { get; set; }
+        public int PostalCode { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
     }
 }

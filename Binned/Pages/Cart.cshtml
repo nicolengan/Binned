@@ -38,7 +38,7 @@
                                 <td class="text-right">
 
                                     <form asp-page-handler="RemoveFromCart" method="post">
-                                        <button class="btn btn-sm btn-info"><i class="bi bi-trash"></i></button>
+                                        <button type="button" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash h5"></i></button>
                                         <input type="hidden" asp-for="@cartItem.Id" name="cartItemId" />
                                     </form>
 
@@ -60,9 +60,13 @@
                 <div class="col-sm-12  col-md-6">
                     <a asp-page="/Products/Index" class="btn btn-primary">Continue Shopping</a>
                 </div>
-                <div class="col-sm-12 col-md-6 text-right">
-                    <a asp-page="/Payment/Checkout" class="btn btn-primary">Check Out</a>
-                </div>
+                @if (Model.Cart.Items.Count != 0)
+                {
+                    <div class="col-sm-12 col-md-6 text-right">
+                        <a asp-page="/Payment/Checkout" class="btn btn-primary">Check Out</a>
+                    </div>
+                }
+
             </div>
         </div>
     </div>

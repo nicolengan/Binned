@@ -22,7 +22,6 @@ namespace Binned.Services
         {
             Order? order = _context.Orders
                 .Include(i => i.Products)
-                .Include(s => s.ShippingInfo)
                 .FirstOrDefault(x => x.OrderId.Equals(id));
             return order;
         }
@@ -31,7 +30,6 @@ namespace Binned.Services
         {
             return _context.Orders
                 .Include(i => i.Products)
-                .Include(s => s.ShippingInfo)
                 .Where(item => item.UserId == userId)
                 .ToList();
         }
@@ -57,11 +55,10 @@ namespace Binned.Services
             }
 
         }
-        public void CalculateTotal(string id)
+        public async Task<decimal> CalculateTotal(string id)
         {
             var current = _context.Orders
                 .Include(item => item.Products)
-                .Include(s => s.ShippingInfo)
                 .FirstOrDefault(item => item.OrderId == id);
             var productList = current?.Products;
             decimal total = 0;
@@ -76,8 +73,9 @@ namespace Binned.Services
             if (current != null)
             {
                 current.Amount = total;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
+            return total;
         }
 
     }

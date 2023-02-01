@@ -6,6 +6,7 @@ using Stripe.Checkout;
 using Stripe;
 using Microsoft.AspNetCore.Http.Features;
 using Stripe.Issuing;
+using System.ComponentModel.DataAnnotations;
 
 namespace Binned.Pages.Payment
 {
@@ -14,16 +15,29 @@ namespace Binned.Pages.Payment
         public string option { get; set; }
     }
 
+    public class ShippingInfo
+    {
+        public string Address { get; set; }
+        public string? Address2 { get; set; }
+        [RegularExpression(@"^\d{6}$",
+        ErrorMessage = "Postal Code should be 6 numbers long")]
+        public string PostalCode { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+    }
+
     public class CheckoutModel : PageModel
     {
         private readonly CartService _cartService;
         private readonly ILogger<CheckoutModel> _logger;
         private readonly OrderService _orderService;
-        [BindProperty]
-        public List<Model.Product> ProductList { get; set; } = new List<Model.Product>();
+        public List<Model.Product>? ProductList { get; set; } = new List<Model.Product>();
         public Cart OneCart { get; set; }
         public Order NewOrder { get; set; }
         public int id { get; set; }
+        [BindProperty]
+        public ShippingInfo ShippingInfo { get; set; }
 
         public CheckoutModel(CartService cartService, OrderService orderService, ILogger<CheckoutModel> logger)
         {
@@ -39,7 +53,7 @@ namespace Binned.Pages.Payment
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-        public async Task<IActionResult> OnGetAsync()
+        public async Task OnGetAsync()
         {
             //var user = User.Identity.Name;
             OneCart = await _cartService.GetCartByUserName("test");
@@ -49,40 +63,40 @@ namespace Binned.Pages.Payment
             {
                 ProductList.Add(i.Product);
             }
-            //await _cartService.RemoveItem(id);
+            _logger.LogInformation($"cart {ProductList.Count}");
+        }
+
+        public async Task<IActionResult> OnPostAsync(int id)
+        {
+            //_logger.LogInformation($"product {id}");
+            OneCart = await _cartService.GetCartByUserName("test");
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+            foreach (var i in OneCart.Items)
+            {
+                ProductList.Add(i.Product);
+            }
+            _logger.LogInformation($"cart {ProductList.Count}");
+
             NewOrder = new Order
             {
                 OrderId = RandomString(10),
                 Products = ProductList,
-                UserId = "test",
                 Status = "Processing",
-                PaymentStatus = false,
+                UserId = ShippingInfo.Email,
+                Address = ShippingInfo.Address,
+                Address2 = ShippingInfo.Address2,
+                PostalCode = Int32.Parse(ShippingInfo.PostalCode),
+                FirstName = ShippingInfo.FirstName,
+                LastName = ShippingInfo.LastName,
             };
-            TempData["orderId"] = NewOrder.OrderId;
-            _logger.LogInformation($"cart {ProductList.Count}");
-
             _orderService.AddOrder(NewOrder);
-            _orderService.CalculateTotal(NewOrder.OrderId);
+            var totalAmt = await _orderService.CalculateTotal(NewOrder.OrderId);
 
-            return Page();
-        }
+            _logger.LogInformation($"hello2 {NewOrder.OrderId}");
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            var orderId = TempData["orderId"].ToString();
-            _logger.LogInformation($"hello2 {orderId}");
-            var totalAmt = _orderService.GetOrderById(orderId).Amount;
-            _logger.LogInformation($"hello2 {totalAmt}");
-            // to be added in cart code, from cart should be getting an array or whatever of product id then store that into the code, check if each item exist in stripe first
-            //var searchOptions = new ProductSearchOptions
-            //{
-            //    Query = $"active:'true' AND metadata['OrderId']:'{orderId}'",
-            //};
-            //var searchService = new Stripe.ProductService();
-            //var searched = searchService.Search(searchOptions);
-
-            // need to check if null or else will crash
-            //_logger.LogInformation("search result {he}", searched.Data[0].DefaultPriceId);
             var port = HttpContext.Features.Get<IHttpConnectionFeature>()?.LocalPort;
             var domain = $"https://localhost:{port}";
 
@@ -90,7 +104,7 @@ namespace Binned.Pages.Payment
             {
                 Metadata = new Dictionary<string, string>
                 {
-                    { "OrderId", $"{orderId}" }
+                    { "OrderId", $"{totalAmt}" }
                 },
                 LineItems = new List<SessionLineItemOptions>
                 {
@@ -99,7 +113,7 @@ namespace Binned.Pages.Payment
                     // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
                     PriceData = new SessionLineItemPriceDataOptions
                     {
-                        UnitAmount = (long?)(totalAmt * 100),
+                        UnitAmount = (long?)(NewOrder.Amount * 100),
                         Currency = "SGD",
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
@@ -112,7 +126,7 @@ namespace Binned.Pages.Payment
                 },
                 Mode = "payment",
                 SuccessUrl = $"{domain}/Payment/Success",
-                CancelUrl = domain + "/Payment/Failure",
+                CancelUrl = $"{domain}/Payment/Failure",
             };
             var sessionService = new SessionService();
             Session session = sessionService.Create(sessionOptions);
@@ -127,7 +141,6 @@ namespace Binned.Pages.Payment
 
             Response.Headers.Add("Location", $"{session.Url}");
             //_logger.LogInformation($"json checkout: {session}, {session.PaymentIntentId}");
-
             return new StatusCodeResult(303);
         }
     }
