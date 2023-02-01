@@ -53,7 +53,6 @@ namespace Binned.Services
         {
             Product? item = _context.Products.FirstOrDefault(x => x.ProductId.Equals(productId));
             return item;
-
         }
 
         public async Task AddItem(string userName, int productId)
