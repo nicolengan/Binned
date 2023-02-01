@@ -5,10 +5,15 @@ using Binned.Services;
 using Binned.Areas.Identity.Data;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.EntityFrameworkCore;
+using static Binned.Pages.RegisterModel;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
+
+var connectionString = builder.Configuration.GetConnectionString("AuthConnectionString") ?? throw new InvalidOperationException("Connection string 'AuthConnectionString' not found.");
+
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -19,9 +24,21 @@ builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<Binned.Services.ProductService>();
 
 
-builder.Services.AddDefaultIdentity<BinnedUser>(options => options.SignIn.RequireConfirmedAccount = false)
+/*builder.Services.AddDefaultIdentity<BinnedUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<MyDbContext>();
+    .AddEntityFrameworkStores<MyDbContext>();*/
+
+
+builder.Services.AddIdentity<BinnedUser, IdentityRole>(
+options =>
+{
+    options.Stores.MaxLengthForKeys = 128;
+})
+.AddEntityFrameworkStores<MyDbContext>()
+.AddRoles<IdentityRole>()
+.AddDefaultUI()
+.AddDefaultTokenProviders();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -48,5 +65,18 @@ app.UseAuthorization();
 app.UseAuthentication();
 
 app.MapRazorPages();
+
+
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+
+//    var context = services.GetRequiredService<MyDbContext>();
+
+//    var userMgr = services.GetRequiredService<UserManager<BinnedUser>>();
+//    var roleMgr = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+//    RolesManagement.Initialize(context, userMgr, roleMgr).Wait();
+//}
 
 app.Run();

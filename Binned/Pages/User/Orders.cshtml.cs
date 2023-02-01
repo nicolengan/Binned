@@ -4,22 +4,30 @@ using Binned.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Binned.Pages.User
+namespace Binned.Pages.Account
 {
     public class OrdersModel : PageModel
     {
-        private readonly OrderService _orderService;
+        [BindProperty]
+        public List<Order> OrderList { get; set; }
         private readonly ILogger<OrdersModel> _logger;
-
+        private readonly OrderService _orderService;
         public OrdersModel(OrderService orderService, ILogger<OrdersModel> logger)
         {
             _orderService = orderService;
             _logger = logger;
         }
-        public List<Order> OrderList { get; set; } = new();
         public void OnGet()
         {
-            OrderList = _orderService.GetOrderByUserId("user1");
+            OrderList = _orderService.GetOrderByUserId("test");
+            foreach (var i in OrderList)
+            {
+                _logger.LogInformation($"{i.Products}");
+                foreach (var b in i.Products)
+                {
+                    _logger.LogInformation($"{b.ProductName}");
+                }
+            }
         }
     }
 }
