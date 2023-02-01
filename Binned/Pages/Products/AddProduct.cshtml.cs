@@ -12,21 +12,22 @@ namespace Binned.Pages.Products
     {
         private readonly Services.ProductService _productService;
         private readonly ILogger<AddProductModel> _logger;
-        //private IWebHostEnvironment _environment;
+        private IWebHostEnvironment _environment;
 
-        public AddProductModel(Services.ProductService productService, ILogger<AddProductModel> logger)
+        public AddProductModel(Services.ProductService productService, ILogger<AddProductModel> logger, IWebHostEnvironment environment, Model.Product ourProduct)
         {
             _productService = productService;
             _logger = logger;
-
-            //_environment = environment;
+            _environment = environment;
+            OurProduct = ourProduct;
         }
 
 
         [BindProperty]
         public Model.Product OurProduct { get; set; } = new();
-        //[BindProperty]
-        //public IFormFile? Upload { get; set; }
+
+        [BindProperty]
+        public IFormFile? Upload { get; set; }
 
         //public void OnGet()
         //{update
@@ -45,25 +46,21 @@ namespace Binned.Pages.Products
                     return Page();
                 }
 
-                //if (Upload != null)
-                //{
-                //    if (Upload.Length > 2 * 1024 * 1024)
-                //    {
-                //        ModelState.AddModelError("Upload",
-                //        "File size cannot exceed 2MB.");
-                //        return Page();
-                //    }
-                //    var uploadsFolder = "uploads";
-                //    var imageFile = Guid.NewGuid() + Path.GetExtension(
-                //    Upload.FileName);
-                //    var imagePath = Path.Combine(_environment.ContentRootPath,
-                //    "wwwroot", uploadsFolder, imageFile);
-                //    using var fileStream = new FileStream(imagePath,
-                //    FileMode.Create);
-                //    await Upload.CopyToAsync(fileStream);
-                //    OurProduct.ImageURL = string.Format("/{0}/{1}", uploadsFolder,
-                //    imageFile);
-                //}
+                if (Upload != null)
+                {
+                    if (Upload.Length > 2 * 1024 * 1024)
+                    {
+                        ModelState.AddModelError("Upload", "File size cannot exceed 2MB.");
+                        return Page();
+                    }
+
+                    var uploadsFolder = "uploads";
+                    var imageFile = Guid.NewGuid() + Path.GetExtension(Upload.FileName);
+                    var imagePath = Path.Combine(_environment.ContentRootPath, "wwwroot", uploadsFolder, imageFile);
+                    using var fileStream = new FileStream(imagePath, FileMode.Create);
+                    await Upload.CopyToAsync(fileStream);
+                    OurProduct.ImageURL = string.Format("/{0}/{1}", uploadsFolder, imageFile);
+                }
 
                 _productService.AddProduct(OurProduct);
                 //TempData["FlashMessage.Type"] = "success";
