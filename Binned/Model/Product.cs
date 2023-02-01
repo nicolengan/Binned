@@ -13,6 +13,9 @@ namespace Binned.Model
         [Required, MaxLength(50)]
         public string ProductName { get; set; } = string.Empty;
 
+        [Required, MaxLength(500)]
+        public string ProductDescription { get; set; } = string.Empty;
+
         [Range(1, 200)]
         [Column(TypeName = "decimal(7,2)")]
         public decimal ProductPrice { get; set; }
@@ -20,16 +23,13 @@ namespace Binned.Model
         [Required, MinLength(1)]
         public string ProductSize { get; set; }
 
-        [Required, Range(1, 200)]
-        public decimal ProductLength { get; set; }
-
-        [Required, Range(1, 200)]
-        public decimal ProductWaist { get; set; }
-
         [Required, MaxLength(1)]
         public string Availability { get; set; }
 
-        public ICollection<Order> Orders { get; set; }
+        [MaxLength(50)]
+        public string? ImageURL { get; set; }
+
+        public ICollection<Order>? Orders { get; set; }
 
     }
 }
