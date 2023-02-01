@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Binned.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230130055816_removedcartfk")]
-    partial class removedcartfk
+    [Migration("20230201120045_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,8 +97,8 @@ namespace Binned.Migrations
                     b.Property<string>("OrderId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CartForeignKey")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(7,2)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("date");
@@ -106,8 +106,8 @@ namespace Binned.Migrations
                     b.Property<bool>("PaymentStatus")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("ShipDate")
-                        .HasColumnType("date");
+                    b.Property<string>("ShippingInfoId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -119,43 +119,9 @@ namespace Binned.Migrations
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("CartForeignKey")
-                        .IsUnique();
+                    b.HasIndex("ShippingInfoId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("Binned.Model.Payment", b =>
-                {
-                    b.Property<int>("PaymentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(7,2)");
-
-                    b.Property<string>("OrderForeignKey")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("PaymentIntent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.HasKey("PaymentId");
-
-                    b.HasIndex("OrderForeignKey")
-                        .IsUnique();
-
-                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("Binned.Model.Product", b =>
@@ -170,9 +136,6 @@ namespace Binned.Migrations
                         .IsRequired()
                         .HasMaxLength(1)
                         .HasColumnType("nvarchar(1)");
-
-                    b.Property<string>("OrderId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("ProductLength")
                         .HasColumnType("decimal(18,2)");
@@ -193,8 +156,6 @@ namespace Binned.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("ProductId");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("Products");
                 });
@@ -236,6 +197,104 @@ namespace Binned.Migrations
                     b.ToTable("Register");
                 });
 
+            modelBuilder.Entity("Binned.Model.ShippingInfo", b =>
+                {
+                    b.Property<string>("ShippingInfoId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Block")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PhoneNumber")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ShipDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("StreetName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UnitNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ShippingInfoId");
+
+                    b.ToTable("ShippingInfo");
+                });
+
+            modelBuilder.Entity("Binned.Model.Wishlist", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Wishlists");
+                });
+
+            modelBuilder.Entity("Binned.Model.WishlistItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(7,2)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WishlistId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("WishlistId");
+
+                    b.ToTable("WishlistItems");
+                });
+
+            modelBuilder.Entity("OrderProduct", b =>
+                {
+                    b.Property<string>("OrdersOrderId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ProductsProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrdersOrderId", "ProductsProductId");
+
+                    b.HasIndex("ProductsProductId");
+
+                    b.ToTable("OrderProduct");
+                });
+
             modelBuilder.Entity("Binned.Model.CartItem", b =>
                 {
                     b.HasOne("Binned.Model.Cart", null)
@@ -253,45 +312,56 @@ namespace Binned.Migrations
 
             modelBuilder.Entity("Binned.Model.Order", b =>
                 {
-                    b.HasOne("Binned.Model.Cart", "Cart")
-                        .WithOne("Order")
-                        .HasForeignKey("Binned.Model.Order", "CartForeignKey")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Binned.Model.ShippingInfo", "ShippingInfo")
+                        .WithMany("Orders")
+                        .HasForeignKey("ShippingInfoId");
 
-                    b.Navigation("Cart");
+                    b.Navigation("ShippingInfo");
                 });
 
-            modelBuilder.Entity("Binned.Model.Payment", b =>
+            modelBuilder.Entity("Binned.Model.WishlistItem", b =>
                 {
-                    b.HasOne("Binned.Model.Order", "Order")
-                        .WithOne("Payment")
-                        .HasForeignKey("Binned.Model.Payment", "OrderForeignKey")
+                    b.HasOne("Binned.Model.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Order");
+                    b.HasOne("Binned.Model.Wishlist", null)
+                        .WithMany("Items")
+                        .HasForeignKey("WishlistId");
+
+                    b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Binned.Model.Product", b =>
+            modelBuilder.Entity("OrderProduct", b =>
                 {
                     b.HasOne("Binned.Model.Order", null)
-                        .WithMany("Products")
-                        .HasForeignKey("OrderId");
+                        .WithMany()
+                        .HasForeignKey("OrdersOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Binned.Model.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Binned.Model.Cart", b =>
                 {
                     b.Navigation("Items");
-
-                    b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("Binned.Model.Order", b =>
+            modelBuilder.Entity("Binned.Model.ShippingInfo", b =>
                 {
-                    b.Navigation("Payment");
+                    b.Navigation("Orders");
+                });
 
-                    b.Navigation("Products");
+            modelBuilder.Entity("Binned.Model.Wishlist", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

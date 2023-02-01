@@ -35,6 +35,28 @@ namespace Binned.Services
             return newWishlist;
         }
 
+        // cart:
+        public async Task<Cart> GetCartByUserName(string userName)
+        {
+            var cart = _context.Carts
+                        .Include(c => c.Items)
+                            .ThenInclude(i => i.Product)
+                        .FirstOrDefault(c => c.UserName == userName);
+
+            if (cart != null)
+                return cart;
+
+            // if it is first attempt create new
+            var newCart = new Cart
+            {
+                UserName = userName
+            };
+
+            _context.Carts.Add(newCart);
+            await _context.SaveChangesAsync();
+            return newCart;
+        }
+
         public WishlistItem? GetWishlistItemsById(int id)
         {
             WishlistItem? item = _context.WishlistItems.FirstOrDefault(x => x.Id.Equals(id));
@@ -72,7 +94,10 @@ namespace Binned.Services
                    }
                 );
             }
-
+            else
+            {
+               
+            }
             _context.SaveChanges();
         }
 
@@ -84,5 +109,8 @@ namespace Binned.Services
 
             await _context.SaveChangesAsync();
         }
+
+        // Add to cart from wishlist button:
+
     }
 }
