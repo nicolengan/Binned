@@ -66,19 +66,19 @@
         </div>
     </div>
     <div class="row mb-3">
-        <label class="col-sm-2 col-form-label" asp-for="OurProduct.ProductLength"></label>
+        <label class="col-sm-2 col-form-label" asp-for="OurProduct.ProductDescription"></label>
         <div class="col-sm-10">
-            <input class="form-control" type="number" asp-for="OurProduct.ProductLength" />
-            <span asp-validation-for="OurProduct.ProductLength" class="text-danger"></span>
+            <input class="form-control" type="number" asp-for="OurProduct.ProductDescription" />
+            <span asp-validation-for="OurProduct.ProductDescription" class="text-danger"></span>
         </div>
     </div>
-    <div class="row mb-3">
+    <@*div class="row mb-3">
         <label class="col-sm-2 col-form-label" asp-for="OurProduct.ProductWaist"></label>
         <div class="col-sm-10">
             <input class="form-control" type="number" asp-for="OurProduct.ProductWaist" />
             <span asp-validation-for="OurProduct.ProductWaist" class="text-danger"></span>
         </div>
-    </div>
+    </div>*@
 
     <div class="row mb-3">
         <label class="col-sm-2 col-form-label" asp-for="OurProduct.Availability"></label>
@@ -94,6 +94,16 @@
             <span asp-validation-for="OurProduct.Availability" class="text-danger"></span>
         </div>
     </div>
+     <div class="col-md-4">
+            <div class="mb-3">
+                <input type="file" accept="image/*" asp-for="Upload" class="form-control" onchange="showImgPreview(this)" />
+                <span asp-validation-for="Upload" class="text-danger"></span>
+            </div>
+            <img id="imgPreview" class="rounded-circle" style="height:300px;width:300px;object-fit:cover"
+                 src="@(string.IsNullOrEmpty(Model.OurProduct.ImageURL) ? "/uploads/user.png" : Model.OurProduct.ImageURL)"
+                 onerror="this.src='/uploads/product.png'" />
+            <input class="form-control d-none" asp-for="OurProduct.ImageURL" />
+        </div>
     <div>
         <input type="submit" value="Update" class="btn btn-primary" />
         <a class="btn btn-secondary ms-2" href="/Products">Cancel</a>

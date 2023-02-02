@@ -147,8 +147,14 @@ namespace Binned.Migrations
                         .HasMaxLength(1)
                         .HasColumnType("nvarchar(1)");
 
-                    b.Property<decimal>("ProductLength")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("ImageURL")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ProductDescription")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
@@ -161,9 +167,6 @@ namespace Binned.Migrations
                     b.Property<string>("ProductSize")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("ProductWaist")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("ProductId");
 
