@@ -53,6 +53,10 @@ namespace Binned.Pages.Admin
 
             order.Status = status;
             //_logger.LogInformation($"{order.ProductId}");
+            if (status == "To receive")
+            {
+                order.ShipDate = DateTime.Now;
+            }
             _orderService.UpdateOrder(order);
 
             TempData["flashmessage.type"] = "success";
