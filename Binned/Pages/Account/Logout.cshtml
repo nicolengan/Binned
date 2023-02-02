@@ -1,18 +1,22 @@
 ﻿@page
 @model Binned.Pages.LogoutModel
 @{
+    ViewData["Title"] = "Log Out";
 }
 
-<form method="post">
-	<div class="container mt-5">
-		<div class="row justify-content-center">
-			<div class="col-sm-12 col-md-12 col-lg-4">
-				<p> Are you sure you want to logout? </p>
-				<p>
-					<button class="btn btn-primary" asp-page-handler="Logout">Yes</button>
-					<button class="btn btn-light ml-5 border-dark" asp-page-handler="DontLogout">No</button>
-				</p>
-			</div>
-		</div>
-	</div>
-</form>
+<header>
+    <h1>@ViewData["Title"]</h1>
+    @{
+        if (User.Identity.IsAuthenticated)
+        {
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                <button type="submit" class="nav-link btn btn-link text-dark">Click here to Logout</button>
+            </form>
+        }
+        else
+        {
+            <p>You have successfully logged out of the application.</p>
+        }
+    }
+</header>
+

@@ -23,5 +23,7 @@ namespace Binned.Pages
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
         }
+
+
     }
 }
