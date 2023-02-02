@@ -22,13 +22,15 @@ namespace Binned.Pages.Admin
 
         [BindProperty]
         public string orderid { get; set; }
+        [BindProperty]
+        public Order? Order { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            Order? order = _orderService.GetOrderById(id);
+            Order = _orderService.GetOrderById(id);
             _logger.LogInformation($"id: {id}");
             orderid = id;
-            if (order != null)
+            if (Order != null)
             {
                 _logger.LogInformation($"order id{orderid}");
                 TempData["id"] = id;
