@@ -14,12 +14,11 @@ namespace Binned.Pages.Products
         private readonly ILogger<AddProductModel> _logger;
         private IWebHostEnvironment _environment;
 
-        public AddProductModel(Services.ProductService productService, ILogger<AddProductModel> logger, IWebHostEnvironment environment, Model.Product ourProduct)
+        public AddProductModel(Services.ProductService productService, ILogger<AddProductModel> logger, IWebHostEnvironment environment)
         {
             _productService = productService;
             _logger = logger;
             _environment = environment;
-            OurProduct = ourProduct;
         }
 
 
