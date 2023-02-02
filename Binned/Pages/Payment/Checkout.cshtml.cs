@@ -104,7 +104,7 @@ namespace Binned.Pages.Payment
             {
                 Metadata = new Dictionary<string, string>
                 {
-                    { "OrderId", $"{totalAmt}" }
+                    { "OrderId", $"{NewOrder.OrderId}" }
                 },
                 LineItems = new List<SessionLineItemOptions>
                 {
@@ -113,7 +113,7 @@ namespace Binned.Pages.Payment
                     // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
                     PriceData = new SessionLineItemPriceDataOptions
                     {
-                        UnitAmount = (long?)(NewOrder.Amount * 100),
+                        UnitAmount = (long?)(totalAmt * 100),
                         Currency = "SGD",
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {

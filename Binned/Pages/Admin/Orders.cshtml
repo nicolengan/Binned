@@ -3,20 +3,45 @@
 @{
     ViewData["Title"] = "All Orders";
 }
-<script>
-
-</script>
-<h1 class="display-4">@ViewData["Title"]</h1>
-
-<table class="table mt-3">
+@*<table id="table">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model.OrderList[0].OrderId)</th>
-            @*<th>@Html.DisplayNameFor(model => model.OrderList[0].ProductId)</th>*@
+            <th data-field="orderId">Order ID</th>
+            <th data-field="UserId">Item Name</th>
+            <th data-field="price">Item Price</th>
+        </tr>
+    </thead>
+</table>*@
+@*<script>
+    var $table = $('#table')
+
+    $(function () {
+        var data = @Model.jsonString
+        $table.bootstrapTable({ data: data })
+    })
+</script>*@
+
+
+<table id="table"
+       class="table mt-3"
+       data-toggle="table"
+       data-search="true"
+       data-show-columns="true"
+       data-pagination="true"
+       data-sortable="true">
+    <thead>
+        <tr>
+@*            <th>@Html.DisplayNameFor(model => model.OrderList[0].OrderId)</th>
             <th>@Html.DisplayNameFor(model => model.OrderList[0].UserId)</th>
             <th>@Html.DisplayNameFor(model => model.OrderList[0].OrderDate)</th>
             <th>@Html.DisplayNameFor(model => model.OrderList[0].Status)</th>
-            <th></th>
+            <th></th>*@
+            <th data-field="OrderId"><span name="orderId">Order ID</span></th>
+            <th data-field="UserId" data-sortable="true">Email</th>
+            <th data-field="OrderDate" data-sortable="true">Order Date</th>
+            <th data-field="Status" data-sortable="true">Status</th>
+            <th data-field="Amount" data-sortable="true">Amount</th>
+            <th data-field="action"></th>
         </tr>
     </thead>
     <tbody>
@@ -25,12 +50,13 @@
             {
                 <tr>
 
-                    <td><span name = "orderId" value="@item.OrderId">@item.OrderId</span></td>
+                    <td><span name="orderId" value="@item.OrderId">@item.OrderId</span></td>
                     <td>@item.UserId</td>
                     <td>@item.OrderDate.ToShortDateString()</td>
                     <td>@item.Status</td>
+                    <td >@item.Amount</td>
 
-                              
+
                     <td>
                         <a asp-page="/Admin/Details" asp-route-id="@item.OrderId">View</a>
                     </td>

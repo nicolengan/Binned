@@ -4,6 +4,8 @@ using Binned.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Drawing;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Binned.Pages.Admin
 {
@@ -22,12 +24,8 @@ namespace Binned.Pages.Admin
                 Name = "To Ship"
             },
             new Status {
-                Value = "To Ship",
-                Name = "To Ship"
-            },
-            new Status {
-                Value = "To receieve",
-                Name = "To receieve"
+                Value = "To receive",
+                Name = "To receive"
             },
             new Status {
                 Value = "Delivered",
@@ -41,6 +39,7 @@ namespace Binned.Pages.Admin
         private readonly OrderService _orderService;
         private readonly ILogger<OrdersModel> _logger;
         public string myStatus { get; } = "To Ship";
+        //public string jsonString { get; set; }
 
         public OrdersModel(OrderService orderService, ILogger<OrdersModel> logger)
         {
@@ -51,6 +50,7 @@ namespace Binned.Pages.Admin
         public void OnGet(int myStatus)
         {
             OrderList = _orderService.GetAll();
+            //jsonString = JsonSerializer.Serialize(OrderList);
             _logger.LogInformation($"{myStatus}");
 
         }
