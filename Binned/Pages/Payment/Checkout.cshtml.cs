@@ -7,6 +7,8 @@ using Stripe;
 using Microsoft.AspNetCore.Http.Features;
 using Stripe.Issuing;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
+using Binned.Areas.Identity.Data;
 
 namespace Binned.Pages.Payment
 {
@@ -32,6 +34,7 @@ namespace Binned.Pages.Payment
         private readonly CartService _cartService;
         private readonly ILogger<CheckoutModel> _logger;
         private readonly OrderService _orderService;
+        private readonly UserManager<BinnedUser> userManager;
         public List<Model.Product>? ProductList { get; set; } = new List<Model.Product>();
         public Cart OneCart { get; set; }
         public Order NewOrder { get; set; }
@@ -39,8 +42,9 @@ namespace Binned.Pages.Payment
         [BindProperty]
         public ShippingInfo ShippingInfo { get; set; }
 
-        public CheckoutModel(CartService cartService, OrderService orderService, ILogger<CheckoutModel> logger)
+        public CheckoutModel(UserManager<BinnedUser> userManager, CartService cartService, OrderService orderService, ILogger<CheckoutModel> logger)
         {
+            this.userManager = userManager;
             _cartService = cartService;
             _orderService = orderService;
             _logger = logger;
@@ -68,7 +72,9 @@ namespace Binned.Pages.Payment
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
-            //_logger.LogInformation($"product {id}");
+            var user = await userManager.GetUserAsync(User);
+            var username = user.UserName;
+            _logger.LogInformation($"user {username}");
             OneCart = await _cartService.GetCartByUserName("test");
             if (!ModelState.IsValid)
             {
@@ -85,7 +91,7 @@ namespace Binned.Pages.Payment
                 OrderId = RandomString(10),
                 Products = ProductList,
                 Status = "Processing",
-                UserId = ShippingInfo.Email,
+                UserId = username,
                 Address = ShippingInfo.Address,
                 Address2 = ShippingInfo.Address2,
                 PostalCode = Int32.Parse(ShippingInfo.PostalCode),

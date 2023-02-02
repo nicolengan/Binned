@@ -67,16 +67,16 @@ app.UseAuthentication();
 app.MapRazorPages();
 
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
 
-//    var context = services.GetRequiredService<MyDbContext>();
+    var context = services.GetRequiredService<MyDbContext>();
 
-//    var userMgr = services.GetRequiredService<UserManager<BinnedUser>>();
-//    var roleMgr = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var userMgr = services.GetRequiredService<UserManager<BinnedUser>>();
+    var roleMgr = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-//    RolesManagement.Initialize(context, userMgr, roleMgr).Wait();
-//}
-
+    //    RolesManagement.Initialize(context, userMgr, roleMgr).Wait();
+    //}
+}
 app.Run();
