@@ -14,14 +14,17 @@
                 </a>
             </div>
             <div class="m-3">
+                <div class="row text-start">
+                <p class="text" asp-for="@item.ProductName">@item.ProductName</p>
+                </div>
                 <div class="col-12">
                     <div class="row text-start">
-                        <p class="text-secondary opacity-75 mt-0" asp-for="@item.ProductSize"></p>
+                        <p class="text-secondary opacity-75 mt-0" asp-for="@item.ProductSize">@item.ProductSize</p>
                     </div>
-                    <h4 class="card-title text-start" asp-for="@item.ProductDescription"></h4>
+                    <h4 class="card-title text-start" asp-for="@item.ProductDescription">@item.ProductDescription</h4>
                 </div>
                 <div class="row text-start">
-                    <p class="text" asp-for="@item.ProductPrice"></p>
+                    <p class="text" asp-for="@item.ProductPrice">@item.ProductPrice</p>
                 </div>
             </div>
             <tbody>
