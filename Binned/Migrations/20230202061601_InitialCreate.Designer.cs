@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Binned.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230202012134_addedIndentity")]
-    partial class addedIndentity
+    [Migration("20230202061601_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
