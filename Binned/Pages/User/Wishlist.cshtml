@@ -35,6 +35,14 @@
                                 <td>@wishlistitem.Product.ProductName</td>
                                 <td>@wishlistitem.Product.ProductPrice</td>
                                 <td class="text-right">
+                                    <form asp-page-handler="AddToCart" method="post" name="addToCartForm" id="add_cart_form">
+                                        <a href="javascript:;" onclick="parentNode.submit();" class="btn btn-warning">
+                                            <i class="bi bi-cart"></i>
+                                        </a>
+                                        <input type="hidden" asp-for="@wishlistitem.ProductId" name="productId" />
+                                    </form>
+                                </td>
+                                <td class="text-right">
                                     <form asp-page-handler="RemoveFromWishlist" method="post">
                                         <button class="btn btn-sm btn-info"><i class="bi bi-trash"></i></button>
                                         <input type="hidden" asp-for="@wishlistitem.Id" name="wishlistItemId" />
