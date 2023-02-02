@@ -49,23 +49,28 @@ namespace Binned.Pages.Admin
             var id = TempData["id"].ToString();
             Order? order = _orderService.GetOrderById(id);
 
+            order.Status = status;
+            //_logger.LogInformation($"{order.ProductId}");
+            _orderService.UpdateOrder(order);
 
+            TempData["flashmessage.type"] = "success";
+            TempData["flashmessage.text"] = string.Format("order {0} is updated", order.OrderId);
 
-            if (ModelState.IsValid && order != null)
-            {
+            //if (ModelState.IsValid && order != null)
+            //{
 
-                order.Status = status;
-                //_logger.LogInformation($"{order.ProductId}");
-                _orderService.UpdateOrder(order);
+            //    order.Status = status;
+            //    //_logger.LogInformation($"{order.ProductId}");
+            //    _orderService.UpdateOrder(order);
 
-                TempData["flashmessage.type"] = "success";
-                TempData["flashmessage.text"] = string.Format("order {0} is updated", order.OrderId);
-            }
-            else
-            {
-                TempData["flashmessage.type"] = "danger";
-                TempData["flashmessage.text"] = string.Format("order {0} cannot be updated", order.OrderId);
-            }
+            //    TempData["flashmessage.type"] = "success";
+            //    TempData["flashmessage.text"] = string.Format("order {0} is updated", order.OrderId);
+            //}
+            //else
+            //{
+            //    TempData["flashmessage.type"] = "danger";
+            //    TempData["flashmessage.text"] = string.Format("order {0} cannot be updated", order.OrderId);
+            //}
             return Redirect("/Admin/Orders");
         }
     }

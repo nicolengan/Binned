@@ -22,12 +22,8 @@ namespace Binned.Pages.Admin
                 Name = "To Ship"
             },
             new Status {
-                Value = "To Ship",
-                Name = "To Ship"
-            },
-            new Status {
-                Value = "To receieve",
-                Name = "To receieve"
+                Value = "To receive",
+                Name = "To receive"
             },
             new Status {
                 Value = "Delivered",

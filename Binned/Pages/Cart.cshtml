@@ -38,7 +38,7 @@
                                 <td class="text-right">
 
                                     <form asp-page-handler="RemoveFromCart" method="post">
-                                        <button type="button" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash h5"></i></button>
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash h5"></i></button>
                                         <input type="hidden" asp-for="@cartItem.Id" name="cartItemId" />
                                     </form>
 

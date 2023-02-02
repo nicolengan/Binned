@@ -4,7 +4,7 @@ using Binned.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Binned.Pages.Account
+namespace Binned.Pages.User
 {
     public class OrdersModel : PageModel
     {
@@ -19,7 +19,7 @@ namespace Binned.Pages.Account
         }
         public void OnGet()
         {
-            OrderList = _orderService.GetOrderByUserId("test");
+            OrderList = _orderService.GetOrderByUserId("hello@gmail.com");
             foreach (var i in OrderList)
             {
                 _logger.LogInformation($"{i.Products}");
