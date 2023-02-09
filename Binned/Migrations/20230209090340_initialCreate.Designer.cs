@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Binned.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230201133435_adjustAccount2")]
-    partial class adjustAccount2
+    [Migration("20230209090340_initialCreate")]
+    partial class initialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -151,17 +151,32 @@ namespace Binned.Migrations
                     b.Property<string>("OrderId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Address2")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(7,2)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("date");
 
-                    b.Property<bool>("PaymentStatus")
-                        .HasColumnType("bit");
+                    b.Property<int>("PostalCode")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ShippingInfoId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<DateTime?>("ShipDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -172,8 +187,6 @@ namespace Binned.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("OrderId");
-
-                    b.HasIndex("ShippingInfoId");
 
                     b.ToTable("Orders");
                 });
@@ -191,8 +204,14 @@ namespace Binned.Migrations
                         .HasMaxLength(1)
                         .HasColumnType("nvarchar(1)");
 
-                    b.Property<decimal>("ProductLength")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("ImageURL")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ProductDescription")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
@@ -206,52 +225,9 @@ namespace Binned.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("ProductWaist")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("ProductId");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("Binned.Model.ShippingInfo", b =>
-                {
-                    b.Property<string>("ShippingInfoId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Block")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ShipDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("StreetName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UnitNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ShippingInfoId");
-
-                    b.ToTable("ShippingInfo");
                 });
 
             modelBuilder.Entity("Binned.Model.Wishlist", b =>
@@ -464,15 +440,6 @@ namespace Binned.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Binned.Model.Order", b =>
-                {
-                    b.HasOne("Binned.Model.ShippingInfo", "ShippingInfo")
-                        .WithMany("Orders")
-                        .HasForeignKey("ShippingInfoId");
-
-                    b.Navigation("ShippingInfo");
-                });
-
             modelBuilder.Entity("Binned.Model.WishlistItem", b =>
                 {
                     b.HasOne("Binned.Model.Product", "Product")
@@ -557,11 +524,6 @@ namespace Binned.Migrations
             modelBuilder.Entity("Binned.Model.Cart", b =>
                 {
                     b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("Binned.Model.ShippingInfo", b =>
-                {
-                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Binned.Model.Wishlist", b =>

@@ -28,10 +28,21 @@ options => {
     options.Stores.MaxLengthForKeys = 128;
 })
 .AddEntityFrameworkStores<MyDbContext>()
-.AddRoles<IdentityRole>()
+//.AddRoles<IdentityRole>()
 .AddDefaultUI()
 .AddDefaultTokenProviders();
 
+builder.Services.ConfigureApplicationCookie(
+options => {
+    // Cookie settings (WORKS, logs user out immediately)
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+    options.AccessDeniedPath = "/Admin/AccessDenied";
+    options.SlidingExpiration = true;
+    options.Cookie.Name = "AnotherCookie";
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -53,9 +64,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
 
 app.UseAuthentication();
+app.UseAuthorization();
+
+
 
 app.MapRazorPages();
 

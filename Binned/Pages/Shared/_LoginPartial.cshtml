@@ -3,12 +3,41 @@
 
 @inject SignInManager<BinnedUser> SignInManager
 @inject UserManager<BinnedUser> UserManager
+<a class="navbar-brand" asp-area="" asp-page="/Index">Binned</a>
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+</button>
+<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+    <ul class="navbar-nav flex-grow-1">
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-page="/Products/Index">Products</a>
+        </li>
+
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Orders">Admin</a>
+            </li>
+        }
+    </ul>
+    <ul class="navbar-nav justify-content-end">
+        <li class="nav-item d-flex align-items-center">
+            <a class="" asp-area="" asp-page="/User/Wishlist"><i class="bi bi-suit-heart-fill h3 text-black-50"></i></a>
+        </li>
+        <li class="nav-item d-flex align-items-center ms-2">
+            <a class="" asp-area="" asp-page="/Cart"><i class="bi bi-basket2-fill h3 text-black-50"></i></a>
+        </li>
+    </ul>
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a id="manage" class="nav-link text-dark" asp-area="" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+            <a id="manage" class="nav-link text-dark" asp-page="/Account/Manage/Dashboard" title="Manage">Hello @UserManager.GetUserName(User)!</a>
         </li>
 
         <div class="dropdown d-flex align-items-center ms-2">
