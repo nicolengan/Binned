@@ -4,7 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Win32;
 using System.Reflection.Metadata;
-
+public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<BinnedUser>
+{
+    public void Configure(EntityTypeBuilder<BinnedUser> builder)
+    {
+        builder.Property(u => u.FirstName).HasMaxLength(255);
+        builder.Property(u => u.LastName).HasMaxLength(255);
+    }
+}
 namespace Binned.Model
 {
 
@@ -42,14 +49,8 @@ namespace Binned.Model
         }
 
         public DbSet<Order> Orders { get; set; }
-<<<<<<< Updated upstream
-        public DbSet<Payment> Payments { get; set; }
-        public DbSet<Login> Login { get; set; } = null;
-        public DbSet<Register> Register { get; set; } = null;
-=======
         //public DbSet<Login> Login { get; set; }
         //public DbSet<Register> Register { get; set; }
->>>>>>> Stashed changes
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
