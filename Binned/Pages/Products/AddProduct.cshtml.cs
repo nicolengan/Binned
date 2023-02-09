@@ -62,7 +62,7 @@ namespace Binned.Pages.Products
                 }
 
                 _productService.AddProduct(OurProduct);
-                //TempData["FlashMessage.Type"] = "success";
+                TempData["FlashMessage.Type"] = "success";
                 TempData["FlashMessage.Text"] = string.Format("Product {0} is added", OurProduct.ProductName);
                 return Redirect("/Products/Index");
             }

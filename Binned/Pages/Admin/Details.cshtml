@@ -7,9 +7,25 @@
 <h1 class="display-4">@ViewData["Title"]</h1>
 
 <form class="mt-3" method="post">
-    <span asp-for="@Model.orderid" name="id">@Model.orderid</span>
+    @*<span asp-for="@Model.orderid" name="id">@Model.orderid</span>*@
+    <div class="row mb-3 h3">#@Model.orderid</div>
+    <div class="row mb-3">Customer Email: @Model.Order.UserId</div>
+
+    <div class="row mb-3">Order Date: @Model.Order.OrderDate.ToShortDateString()</div>
+    @if (@Model.Order.ShipDate != null){
+        <div class="row mb-3">Order Date: @Model.Order.ShipDate?.ToShortDateString()</div>
+    }
+
+    <div class="row mb-3">Status: @Model.Order.Status</div>
+
+    <div class="row mb-3">Full Name: @Model.Order.FirstName @Model.Order.LastName</div>
+
+    <div class="row mb-3">Address: @Model.Order.Address, @Model.Order.PostalCode</div>
+    <div class="row mb-3">@Model.Order.Address2</div>
+
     <div class="row mb-3">
-        <label class="col-sm-2 col-form-label" asp-for="status"></label>
+        
+        <label class="col-sm-2 col-form-label" asp-for="status">Update status</label>
         <div class="col-sm-10">
             @Html.DropDownListFor(m => m.status, new SelectList(Status.Statuses, "Value", "Name"), "-- Select --", new {@class = "form-select"})
             <span class="text-danger"></span>

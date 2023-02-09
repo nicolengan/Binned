@@ -1,4 +1,6 @@
+using Binned.Areas.Identity.Data;
 using Binned.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -9,7 +11,8 @@ namespace Binned.Pages
 
         private readonly CartService _cartService;
         private readonly ProductService _productService;
-        public CartModel(ProductService productService, CartService cartService)
+        private readonly UserManager<BinnedUser> userManager;
+        public CartModel(UserManager<BinnedUser> userManager, ProductService productService, CartService cartService)
         {
             _cartService = cartService;
             _productService = productService;
@@ -19,6 +22,8 @@ namespace Binned.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
+            //var user = await userManager.GetUserAsync(User);
+            //var username = user.UserName;
             Cart = await _cartService.GetCartByUserName("test");
 
             return Page();

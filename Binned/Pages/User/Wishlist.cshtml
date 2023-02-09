@@ -8,7 +8,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
-                    <li class="breadcrumb-item"><a asp-page="/Products/Index">Products</a></li>
+                    <li class="breadcrumb-item"><a asp-page="/User/productDisplay">Products</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
                 </ol>
             </nav>
@@ -35,6 +35,14 @@
                                 <td>@wishlistitem.Product.ProductName</td>
                                 <td>@wishlistitem.Product.ProductPrice</td>
                                 <td class="text-right">
+                                    <form asp-page-handler="AddToCart" method="post" name="addToCartForm" id="add_cart_form">
+                                        <a href="javascript:;" onclick="parentNode.submit();" class="btn btn-warning">
+                                            <i class="bi bi-cart"></i>
+                                        </a>
+                                        <input type="hidden" asp-for="@wishlistitem.ProductId" name="productId" />
+                                    </form>
+                                </td>
+                                <td class="text-right">
                                     <form asp-page-handler="RemoveFromWishlist" method="post">
                                         <button class="btn btn-sm btn-info"><i class="bi bi-trash"></i></button>
                                         <input type="hidden" asp-for="@wishlistitem.Id" name="wishlistItemId" />
@@ -50,7 +58,7 @@
         <div class="col mb-2">
             <div class="row">
                 <div class="col-sm-12  col-md-6">
-                    <a asp-page="/Products/Index" class="btn btn-primary">Continue Shopping</a>
+                    <a asp-page="/User/productDisplay" class="btn btn-primary">Continue Shopping</a>
                 </div>
             </div>
         </div>

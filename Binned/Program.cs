@@ -5,6 +5,8 @@ using Binned.Services;
 using Binned.Areas.Identity.Data;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.EntityFrameworkCore;
+using static Binned.Pages.RegisterModel;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -28,7 +30,8 @@ builder.Services.AddScoped<Binned.Services.ProductService>();
 
 
 builder.Services.AddIdentity<BinnedUser, IdentityRole>(
-options => {
+options =>
+{
     options.Stores.MaxLengthForKeys = 128;
 })
 .AddEntityFrameworkStores<MyDbContext>()
@@ -70,12 +73,10 @@ using (var scope = app.Services.CreateScope())
 
     var context = services.GetRequiredService<MyDbContext>();
 
-    context.Database.Migrate();
-
     var userMgr = services.GetRequiredService<UserManager<BinnedUser>>();
     var roleMgr = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-    RolesManagement.Initialize(context, userMgr, roleMgr).Wait();
+    //    RolesManagement.Initialize(context, userMgr, roleMgr).Wait();
+    //}
 }
-
 app.Run();

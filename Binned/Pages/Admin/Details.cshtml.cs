@@ -22,13 +22,15 @@ namespace Binned.Pages.Admin
 
         [BindProperty]
         public string orderid { get; set; }
+        [BindProperty]
+        public Order? Order { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            Order? order = _orderService.GetOrderById(id);
+            Order = _orderService.GetOrderById(id);
             _logger.LogInformation($"id: {id}");
             orderid = id;
-            if (order != null)
+            if (Order != null)
             {
                 _logger.LogInformation($"order id{orderid}");
                 TempData["id"] = id;
@@ -49,23 +51,32 @@ namespace Binned.Pages.Admin
             var id = TempData["id"].ToString();
             Order? order = _orderService.GetOrderById(id);
 
-
-
-            if (ModelState.IsValid && order != null)
+            order.Status = status;
+            //_logger.LogInformation($"{order.ProductId}");
+            if (status == "To receive")
             {
-
-                order.Status = status;
-                //_logger.LogInformation($"{order.ProductId}");
-                _orderService.UpdateOrder(order);
-
-                TempData["flashmessage.type"] = "success";
-                TempData["flashmessage.text"] = string.Format("order {0} is updated", order.OrderId);
+                order.ShipDate = DateTime.Now;
             }
-            else
-            {
-                TempData["flashmessage.type"] = "danger";
-                TempData["flashmessage.text"] = string.Format("order {0} cannot be updated", order.OrderId);
-            }
+            _orderService.UpdateOrder(order);
+
+            TempData["flashmessage.type"] = "success";
+            TempData["flashmessage.text"] = string.Format("order {0} is updated", order.OrderId);
+
+            //if (ModelState.IsValid && order != null)
+            //{
+
+            //    order.Status = status;
+            //    //_logger.LogInformation($"{order.ProductId}");
+            //    _orderService.UpdateOrder(order);
+
+            //    TempData["flashmessage.type"] = "success";
+            //    TempData["flashmessage.text"] = string.Format("order {0} is updated", order.OrderId);
+            //}
+            //else
+            //{
+            //    TempData["flashmessage.type"] = "danger";
+            //    TempData["flashmessage.text"] = string.Format("order {0} cannot be updated", order.OrderId);
+            //}
             return Redirect("/Admin/Orders");
         }
     }

@@ -4,7 +4,7 @@ using Binned.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Binned.Pages.Account
+namespace Binned.Pages.User
 {
     public class OrderDetailsModel : PageModel
     {
