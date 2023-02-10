@@ -1,45 +1,55 @@
 ﻿@page
 @model Binned.Pages.User.OrdersModel
+@Html.AntiForgeryToken()
 @{
 }
 @*e2b8b8*@
-<h2>Your Orders</h2>
-<div class="d-inline-block flex-column container">
-    @{
-        @foreach (var item in Model.OrderList)
-        {
-            <div class="card h-25 mt-3 border border-0" style="background-color:#f1dbdb;">
-                <div class="card-body border border-0">
-                    <div class="row">
-                        <div class="col-10">
-                            <div class="row">
-                                <p class="h4 ms-1">#@item.OrderId</p>
-                                <div class="col-3">
-                                @if (item.Products.FirstOrDefault().ImageURL != null){
-                                        <img src="@item.Products.FirstOrDefault().ImageURL" alt="Poster" class="img-fluid"
-                                     onerror="this.src='/uploads/placeholder.jpeg'">
-                                }
-                                    
-                                </div>
-                                <div class="col-9">
-                                    <span class="h5" style="color:#71805D;">@item.Status</span><br>
-                                    <span class="h5">Order Date: @item.OrderDate.ToShortDateString()</span>
-                                    <ul>
-                                        @foreach (var product in item.Products)
-                                        {
-                                            <li style="font-size:18px;">@product.ProductName</li>
-                                        }
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-2 d-flex flex-column justify-content-end">
-                            <div class="h5">Total: $@item.Amount</div>
-                            <a class="btn me-3 w-100" asp-page="/User/OrderDetails" asp-route-id="@item.OrderId" role="button" aria-disabled="true" style="background-color:#71805D;color:#FFFFFF;">View</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    }
+<div class="mt-3 row">
+    <h2 class="col-7">Your Orders</h2>
+    <div class="col-5">
+        <ul class="nav justify-content-between border-success border-bottom border-opacity-25">
+            <li class="nav-item">
+                <a class="nav-link active status" aria-current="page">All Orders</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link status">To Pay</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link status">To Ship</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link status">To Receive</a>
+            </li>
+        </ul>
+    </div>
 </div>
+<div id="grid"></div>
+@*<div class="row">
+    <div class="col-9"></div>
+    <div class="col-3 w-25 border border-success border-bottom border-opacity-25">
+        <hr class="w-25 justify-content-end">
+    </div>
+</div>*@
+    <script>
+        var val1
+        $(".status").click(function () {
+            val1 = $(this).text()
+            console.log($(this).text())
+            $.ajax({
+                type: "GET",
+                url: "/User/Orders?handler=OrderPartial",
+                data: { status: val1 },
+                dataType: "text",
+                headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                }
+            }).done(function (result) {
+                    $('#grid').html(result);
+                });
+            //console.log("hi")
+            //console.log(val1)
+            //$('#grid').load('/User/Orders?handler=OrderPartial&status=' + val1, function () { });
+            //$('#grid').load("/User/Orders?handler=OrderPartial&", { status: val1 })
+        });
+    </script>

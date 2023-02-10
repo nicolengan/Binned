@@ -34,10 +34,11 @@ namespace Binned.Services
                 .Where(item => item.UserId == userId)
                 .ToList();
         }
-        public List<Order> FilterOrder(string status)
+        public List<Order> FilterOrder(string userId, string status)
         {
             return _context.Orders
                 .Include(i => i.Products)
+                .Where(item => item.UserId == userId)
                 .Where(item => item.Status == status)
                 .OrderBy(d => d.OrderDate)
                 .ToList();
