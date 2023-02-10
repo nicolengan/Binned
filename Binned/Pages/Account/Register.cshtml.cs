@@ -46,7 +46,6 @@ namespace Binned.Pages
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
-            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -113,12 +112,16 @@ namespace Binned.Pages
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string? ConfirmPassword { get; set; }
+
+            [DataType(DataType.Text)]
+            [Display(Name = "Admin Number")]
+            public string AdmNo { get; set; }
         }
 
 
 
         // Roles management
-        public class RolesManagement
+        /*public class RolesManagement
         {
             public static async Task Initialize(MyDbContext context,
            UserManager<BinnedUser> userManager,
@@ -157,7 +160,7 @@ namespace Binned.Pages
                     }
                 }
             }
-        }
+        }*/
 
 
 
@@ -180,6 +183,29 @@ namespace Binned.Pages
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
 
+                IdentityRole role = await _roleManager.FindByIdAsync("Admin");
+                
+                if (role == null)
+                {
+                    IdentityResult result2 = await _roleManager.CreateAsync(new IdentityRole("Admin"));
+                    if (!result2.Succeeded)
+                    {
+                        ModelState.AddModelError("", "Create role admin failed");
+                    }
+                }
+
+                IdentityRole userRole = await _roleManager.FindByIdAsync("Member");
+                if (userRole == null)
+                {
+                    IdentityResult result3 = await _roleManager.CreateAsync(new IdentityRole("Member"));
+                    if (!result3.Succeeded)
+                    {
+                        ModelState.AddModelError("", "Create role member failed");
+                    }
+                }
+
+
+
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -188,12 +214,23 @@ namespace Binned.Pages
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var defaultrole = _roleManager.FindByNameAsync("Member").Result;
+                    /*var defaultrole = _roleManager.FindByNameAsync("Member").Result;
 
                     if (defaultrole != null)
                     {
                         IdentityResult roleresult = await _userManager.AddToRoleAsync(user, defaultrole.Name);
+                    }*/
+
+                    //Add users to role, incomplete
+                    if (Input.AdmNo == "211717C")
+                    {
+                        result = await _userManager.AddToRoleAsync(user, "Admin");
                     }
+                    else
+                    {
+                        result = await _userManager.AddToRoleAsync(user, "Member");
+                    }
+                    
 
 
                     var userId = await _userManager.GetUserIdAsync(user);
