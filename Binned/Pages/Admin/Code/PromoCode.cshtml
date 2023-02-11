@@ -1,0 +1,42 @@
+﻿@page
+@model Binned.Pages.Admin.Code.PromoCodeModel
+@{
+}
+<table id="table"
+       class="table mt-3"
+       data-toggle="table"
+       data-search="true"
+       data-toolbar="#toolbar"
+       data-show-columns="true"
+       data-pagination="true"
+       data-sortable="true">
+    <thead>
+        <tr>
+            <th data-field="OrderId"><span name="orderId">Order ID</span></th>
+            <th data-field="UserId" data-sortable="true">Email</th>
+            <th data-field="OrderDate" data-sortable="true">Order Date</th>
+            <th data-field="Status" data-sortable="true">Status</th>
+            <th data-field="Amount" data-sortable="true">Amount</th>
+            <th data-field="action"></th>
+        </tr>
+    </thead>
+    <tbody>
+@*        @{
+            @foreach (var item in Model.TotalOrders)
+            {
+                <tr>
+
+                    <td><span name="orderId" value="@item.OrderId">@item.OrderId</span></td>
+                    <td>@item.UserId</td>
+                    <td>@item.OrderDate.ToShortDateString()</td>
+                    <td>@item.Status</td>
+                    <td>@item.Amount</td>
+                    <td>
+                        <a asp-page="/Admin/Details" asp-route-id="@item.OrderId">View</a>
+                    </td>
+                </tr>
+
+            }
+        }*@
+    </tbody>
+</table>

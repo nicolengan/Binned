@@ -40,7 +40,8 @@ options =>
 .AddDefaultTokenProviders();
 
 builder.Services.ConfigureApplicationCookie(
-options => {
+options =>
+{
     // Cookie settings (WORKS, logs user out immediately)
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
@@ -59,7 +60,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
+    app.UseExceptionHandler("/errors");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
@@ -68,6 +69,8 @@ StripeConfiguration.ApiKey = "sk_test_51MLgtkDRJAN9sJBkdSsIFHtxbiKKFYuz7IySriyQN
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseStatusCodePagesWithRedirects("/errors/{0}");
 
 app.UseRouting();
 

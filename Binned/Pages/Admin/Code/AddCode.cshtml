@@ -1,0 +1,26 @@
+﻿@page
+@model Binned.Pages.Admin.Code.AddCodeModel
+@{
+}
+<form>
+    <div class="row mb-3 mt-4">
+        <label class="col-sm-2 col-form-label">Code Name</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-2 col-form-label">Validity Period (Days)</label>
+        <div class="col-sm-10">
+            <input type="number" class="form-control">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-2 col-form-label">Discount</label>
+        <div class="col-sm-10">
+            <input type="range" class="form-range" min="0" max="100" step="5" oninput="this.nextElementSibling.value = this.value + '%'">
+            <output></output>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Code</button>
+</form>
