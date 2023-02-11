@@ -60,7 +60,9 @@ namespace Binned.Pages.Payment
         public async Task OnGetAsync()
         {
             //var user = User.Identity.Name;
-            OneCart = await _cartService.GetCartByUserName("test");
+            var user = await userManager.GetUserAsync(User);
+            var username = user.UserName;
+            OneCart = await _cartService.GetCartByUserName(username);
             _logger.LogInformation($"cart {OneCart.Items}");
             id = OneCart.Id;
             foreach (var i in OneCart.Items)
@@ -75,7 +77,7 @@ namespace Binned.Pages.Payment
             var user = await userManager.GetUserAsync(User);
             var username = user.UserName;
             _logger.LogInformation($"user {username}");
-            OneCart = await _cartService.GetCartByUserName("test");
+            OneCart = await _cartService.GetCartByUserName(username);
             if (!ModelState.IsValid)
             {
                 return Page();

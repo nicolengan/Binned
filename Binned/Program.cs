@@ -28,6 +28,10 @@ builder.Services.AddScoped<Binned.Services.ProductService>();
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<MyDbContext>();*/
 
+builder.Services.ConfigureApplicationCookie(Config =>
+{
+    Config.LoginPath = "/Login";
+});
 
 builder.Services.AddIdentity<BinnedUser, IdentityRole>(
 options =>

@@ -22,47 +22,48 @@
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Orders">Admin</a>
             </li>
+            @*signed in user*@
+            <ul class="navbar-nav justify-content-end">
+                <li class="nav-item d-flex align-items-center">
+                    <a class="" asp-area="" asp-page="/User/Wishlist"><i class="bi bi-suit-heart-fill h3 text-black-50"></i></a>
+                </li>
+                <li class="nav-item d-flex align-items-center ms-2">
+                    <a class="" asp-area="" asp-page="/User/Cart"><i class="bi bi-basket2-fill h3 text-black-50"></i></a>
+                </li>
+            </ul>
         }
     </ul>
-    <ul class="navbar-nav justify-content-end">
-        <li class="nav-item d-flex align-items-center">
-            <a class="" asp-area="" asp-page="/User/Wishlist"><i class="bi bi-suit-heart-fill h3 text-black-50"></i></a>
-        </li>
-        <li class="nav-item d-flex align-items-center ms-2">
-            <a class="" asp-area="" asp-page="/Cart"><i class="bi bi-basket2-fill h3 text-black-50"></i></a>
-        </li>
+
+    <ul class="navbar-nav">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <li class="nav-item">
+                <a id="manage" class="nav-link text-dark" asp-page="/Account/Manage/Dashboard" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+            </li>
+
+            <div class="dropdown d-flex align-items-center ms-2">
+                <a class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-fill h3"></i></a>
+
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" asp-page="/User/Orders">My Orders</a></li>
+
+                    <li class="dropdown-item">
+                        <form id="logoutForm" class="form-inline" asp-area="" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                            <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                        </form>
+                    </li>
+
+                </ul>
+
+            </div>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" id="register" asp-area="" asp-page="/Account/Register">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" id="login" asp-area="" asp-page="/Account/Login">Login</a>
+            </li>
+        }
     </ul>
-
-<ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <li class="nav-item">
-            <a id="manage" class="nav-link text-dark" asp-page="/Account/Manage/Dashboard" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-        </li>
-
-        <div class="dropdown d-flex align-items-center ms-2">
-            <a class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-fill h3"></i></a>
-
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" asp-page="/User/Orders">My Orders</a></li>
-
-                <li class="dropdown-item">
-                    <form id="logoutForm" class="form-inline" asp-area="" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-                        <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                    </form>
-                </li>
-
-            </ul>
-
-        </div>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" id="register" asp-area="" asp-page="/Account/Register">Register</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" id="login" asp-area="" asp-page="/Account/Login">Login</a>
-        </li>
-    }
-</ul>

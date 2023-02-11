@@ -55,6 +55,14 @@ namespace Binned.Services
             return item;
 
         }
+        public Order? GetOrderStatusByStatus(int orderId, string status)
+        {
+            //Order? item = _context.Orders.FirstOrDefault(a => a.OrderId.Equals(orderId));
+            Order? itemstatus = _context.Orders.FirstOrDefault(x => x.Status.Equals(status));
+            return itemstatus;
+
+        }
+
 
         public async Task AddItem(string userName, int productId)
         {
@@ -85,5 +93,20 @@ namespace Binned.Services
 
             await _context.SaveChangesAsync();
         }
+
+        //public async Task RemoveSuccessfulItem(int CartItemId, string itemstatus)
+        //{
+        //    var cartitem = GetCartItemById(CartItemId);
+        //    var cart = await GetCartByUserName(userName);
+        //    Product product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
+        //    var itemexist = _context.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
+        //    if (GetOrderStatusByStatus = Paid)
+        //    {
+
+        //    }
+        //    _context.CartItems.Remove(cartitem);
+
+        //    await _context.SaveChangesAsync();
+        //}
     }
 }

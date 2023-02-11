@@ -31,18 +31,18 @@ namespace Binned.Pages.User
 
         public async Task<IActionResult> OnPostAddToCartAsync(int productId)
         {
-            //var user = await userManager.GetUserAsync(User);
-            //var username = user.UserName;
-            //await _cartService.AddItem(username, productId);
-            await _cartService.AddItem("test", productId);
-            return RedirectToPage("/Cart");
+            var user = await userManager.GetUserAsync(User);
+            var username = user.UserName;
+            await _cartService.AddItem(username, productId);
+            //await _cartService.AddItem("test", productId);
+            return RedirectToPage("/User/Cart");
         }
 
         public async Task<IActionResult> OnPostAddToWishlistAsync(int productId)
         {
-            //var user = await userManager.GetUserAsync(User);
-            //var username = user.UserName;
-            await _wishlistService.AddItem("test", productId);
+            var user = await userManager.GetUserAsync(User);
+            var username = user.UserName;
+            await _wishlistService.AddItem(username, productId);
             return RedirectToPage("/User/Wishlist");
         }
     }
