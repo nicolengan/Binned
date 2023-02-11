@@ -1,3 +1,4 @@
+using Binned.Areas.Identity.Data;
 using Binned.Model;
 using Binned.Pages.Admin;
 using Binned.Services;
@@ -12,13 +13,19 @@ namespace Binned.Pages.Payment
     public class SuccessModel : PageModel
     {
         private readonly OrderService _orderService;
+        private readonly CartService _cartService;
+        private readonly UserManager<BinnedUser> _userManager;
         private readonly ILogger<SuccessModel> _logger;
 
-        public SuccessModel(OrderService orderService, ILogger<SuccessModel> logger)
+        public SuccessModel(UserManager<BinnedUser> userManager, OrderService orderService, ILogger<SuccessModel> logger, CartService cartService)
         {
             _orderService = orderService;
             _logger = logger;
+            _userManager = userManager;
+            _cartService = cartService;
         }
+        [BindProperty]
+        public Cart Cart { get; set; }
         public async Task<IActionResult> OnGet()
         {
             var orderId = TempData["id"].ToString();
@@ -31,7 +38,14 @@ namespace Binned.Pages.Payment
 
 
             //_orderService.AddOrder(newOrder);
+
+            var user = await _userManager.GetUserAsync(User);
+            var username = user.UserName;
+            Cart = await _cartService.GetCartByUserName(username);
+
             _orderService.UpdateStatusById(orderId, "Paid");
+            _cartService.ClearCart(username);
+
 
             return Page();
         }

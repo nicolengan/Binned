@@ -37,10 +37,6 @@ namespace Binned.Pages
 
             return RedirectToPage("/User/Cart");
         }
-        
-        //public async Task<IActionResult> OnPostRemoveFromCartCheck(int CartItemId)
-        //{
-        //    if (_orderService.)
-        //}
+
     }
 }

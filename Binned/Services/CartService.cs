@@ -1,5 +1,6 @@
 ﻿using Binned.Model;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Specialized;
 
 namespace Binned.Services
 {
@@ -55,9 +56,9 @@ namespace Binned.Services
             return item;
 
         }
-        public Order? GetOrderStatusByStatus(int orderId, string status)
+        public Order? GetOrderStatusByStatus(string status)
         {
-            //Order? item = _context.Orders.FirstOrDefault(a => a.OrderId.Equals(orderId));
+            //getting order status column
             Order? itemstatus = _context.Orders.FirstOrDefault(x => x.Status.Equals(status));
             return itemstatus;
 
@@ -93,20 +94,13 @@ namespace Binned.Services
 
             await _context.SaveChangesAsync();
         }
+        public async Task ClearCart(string userName)
+        {
+            var cart = await GetCartByUserName(userName);
 
-        //public async Task RemoveSuccessfulItem(int CartItemId, string itemstatus)
-        //{
-        //    var cartitem = GetCartItemById(CartItemId);
-        //    var cart = await GetCartByUserName(userName);
-        //    Product product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
-        //    var itemexist = _context.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
-        //    if (GetOrderStatusByStatus = Paid)
-        //    {
+            cart.Items.Clear();
 
-        //    }
-        //    _context.CartItems.Remove(cartitem);
-
-        //    await _context.SaveChangesAsync();
-        //}
+            await _context.SaveChangesAsync();
+        }
     }
 }
