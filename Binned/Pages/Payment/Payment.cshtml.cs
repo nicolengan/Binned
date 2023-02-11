@@ -13,10 +13,6 @@ using Binned.Services;
 
 namespace Binned.Pages.Payment
 {
-    public class StripeOptions
-    {
-        public string option { get; set; }
-    }
     public class PaymentModel : PageModel
     {
         private readonly OrderService _orderService;
@@ -31,6 +27,7 @@ namespace Binned.Pages.Payment
         public async Task<IActionResult> OnGet()
         {
             // to be added in cart code, from cart should be getting an array or whatever of product id then store that into the code, check if each item exist in stripe first
+
             var searchOptions = new ProductSearchOptions
             {
                 Query = "active:'true' AND metadata['ProductId']:'1234'",
@@ -39,7 +36,7 @@ namespace Binned.Pages.Payment
             var searched = searchService.Search(searchOptions);
 
             // need to check if null or else will crash
-            _logger.LogInformation("search result {he}", searched.Data[0].DefaultPriceId);
+            //_logger.LogInformation("search result {he}", searched.Data[0].DefaultPriceId);
 
             var domain = "https://localhost:7208";
             var sessionOptions = new SessionCreateOptions
@@ -68,7 +65,7 @@ namespace Binned.Pages.Payment
             }
 
             Response.Headers.Add("Location", $"{session.Url}");
-            _logger.LogInformation($"json checkout: {session}, {session.PaymentIntentId}");
+            //_logger.LogInformation($"json checkout: {session}, {session.PaymentIntentId}");
 
             return new StatusCodeResult(303);
         }

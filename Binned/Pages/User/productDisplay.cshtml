@@ -1,0 +1,49 @@
+﻿@page
+@model Binned.Pages.User.productDisplayModel
+@{
+}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4"></main>
+<div class="container">
+    @foreach (var item in Model.ProductList)
+    {
+        <div class="card border-2 mb-2">
+            <div>
+                <a asp-for="@item.ProductName" data-toggle="lightbox">
+                    <img src="@item.ImageURL" alt="Poster" class="img-fluid"
+                     onerror="this.src='/uploads/product.png'">
+                </a>
+            </div>
+            <div class="m-3">
+                <div class="col-12">
+                    <div class="row text-start">
+                        <p class="text-secondary opacity-75 mt-0" asp-for="@item.ProductSize"></p>
+                    </div>
+                    <h4 class="card-title text-start" asp-for="@item.ProductDescription"></h4>
+                </div>
+                <div class="row text-start">
+                    <p class="text" asp-for="@item.ProductPrice"></p>
+                </div>
+            </div>
+            <tbody>
+                <tr>
+                    <td>
+                        <form asp-page-handler="AddToWishlist" method="post" name="addToWishlistForm" id="add_wishlist_form">
+                            <a href="javascript:;" onclick="parentNode.submit();" class="btn btn-outline-danger btn-sm">
+                                <i class="bi bi-suit-heart-fill h5"></i>
+                            </a>
+                            <input type="hidden" asp-for="@item.ProductId" name="productId" />
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-page-handler="AddToCart" method="post" name="addToCartForm" id="add_cart_form">
+                            <a href="javascript:;" onclick="parentNode.submit();" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-basket2-fill h5"></i>
+                            </a>
+                            <input type="hidden" asp-for="@item.ProductId" name="productId" />
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </div>
+    }
+</div>

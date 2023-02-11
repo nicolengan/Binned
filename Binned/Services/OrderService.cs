@@ -1,4 +1,6 @@
 ﻿using Binned.Model;
+using Microsoft.EntityFrameworkCore;
+
 namespace Binned.Services
 {
     public class OrderService
@@ -11,21 +13,25 @@ namespace Binned.Services
         }
         public List<Order> GetAll()
         {
-            return _context.Orders.OrderBy(d => d.OrderId).ToList();
+            return _context.Orders
+                .Include(i => i.Products)
+                .OrderBy(d => d.OrderId)
+                .ToList();
         }
-
-        public Order? GetOrderById(int id)
+        public Order? GetOrderById(string id)
         {
-            Order? order = _context.Orders.FirstOrDefault(
-            x => x.OrderId.Equals(id));
+            Order? order = _context.Orders
+                .Include(i => i.Products)
+                .FirstOrDefault(x => x.OrderId.Equals(id));
             return order;
         }
 
         public List<Order> GetOrderByUserId(string userId)
         {
             return _context.Orders
-                    .Where(b => b.UserId.Contains(userId))
-                    .ToList();
+                .Include(i => i.Products)
+                .Where(item => item.UserId == userId)
+                .ToList();
         }
 
         public void AddOrder(Order order)
@@ -39,7 +45,7 @@ namespace Binned.Services
             _context.Orders.Update(order); // update vs attatched update updates all even if u only change one code, attatched only updates that one column 
             _context.SaveChanges();
         }
-        public void UpdateOrderById(int id, string status)
+        public void UpdateStatusById(string id, string status)
         {
             var current = _context.Orders.FirstOrDefault(item => item.OrderId == id);
             if (current != null)
@@ -47,6 +53,30 @@ namespace Binned.Services
                 current.Status = status;
                 _context.SaveChanges();
             }
+
         }
+        public async Task<decimal> CalculateTotal(string id)
+        {
+            var current = _context.Orders
+                .Include(item => item.Products)
+                .FirstOrDefault(item => item.OrderId == id);
+            var productList = current?.Products;
+            decimal total = 0;
+            if (productList != null)
+            {
+                foreach (var i in productList)
+                {
+                    total += i.ProductPrice;
+                }
+
+            }
+            if (current != null)
+            {
+                current.Amount = total;
+                await _context.SaveChangesAsync();
+            }
+            return total;
+        }
+
     }
 }

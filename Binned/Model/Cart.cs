@@ -13,6 +13,7 @@
                 decimal totalprice = 0;
                 foreach (var item in Items)
                 {
+                    // totalprice += item.Price + item.Price;
                     totalprice += item.Price;
                 }
 

@@ -3,14 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Binned.Model;
 
-namespace Binned.Pages.Products
+namespace Binned.Pages.User
 {
-    public class IndexModel : PageModel
+    public class productDisplayModel : PageModel
     {
         private readonly WishlistService _wishlistService;
         private readonly CartService _cartService;
         private readonly ProductService _productService;
-        public IndexModel(ProductService productService, CartService cartService, WishlistService wishlistService)
+        public productDisplayModel(ProductService productService, CartService cartService, WishlistService wishlistService)
         {
             _wishlistService = wishlistService;
             _cartService = cartService;
@@ -37,5 +37,5 @@ namespace Binned.Pages.Products
             return RedirectToPage("/User/Wishlist");
         }
     }
-    
+
 }

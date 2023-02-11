@@ -69,19 +69,19 @@
     </div>
 
     <div class="row mb-3">
-        <label class="col-sm-2 col-form-label" asp-for="OurProduct.ProductLength"></label>
+        <label class="col-sm-2 col-form-label" asp-for="OurProduct.ProductDescription"></label>
         <div class="col-sm-10">
-            <input class="form-control" type="number" asp-for="OurProduct.ProductLength" />
-            <span asp-validation-for="OurProduct.ProductLength" class="text-danger"></span>
+            <input class="form-control" type="number" asp-for="OurProduct.ProductDescription" />
+            <span asp-validation-for="OurProduct.ProductDescription" class="text-danger"></span>
         </div>
     </div>
-    <div class="row mb-3">
+    @*<div class="row mb-3">
         <label class="col-sm-2 col-form-label" asp-for="OurProduct.ProductWaist"></label>
         <div class="col-sm-10">
             <input class="form-control" type="number" asp-for="OurProduct.ProductWaist" />
             <span asp-validation-for="OurProduct.ProductWaist" class="text-danger"></span>
         </div>
-    </div>
+    </div>*@
 
     <div class="row mb-3">
         <label class="col-sm-2 col-form-label" asp-for="OurProduct.Availability"></label>
@@ -98,16 +98,13 @@
         </div>
     </div>
 
-    @*<div class="col-md-4">
+    <div class="col-md-4">
         <div class="mb-3">
-            <input type="file" accept="image/*" asp-for="Upload"
-                   class="form-control" onchange="showImgPreview(this)" />
+            <input type="file" accept="image/*" asp-for="Upload" class="form-control" onchange="showImgPreview(this)" />
             <span asp-validation-for="Upload" class="text-danger"></span>
         </div>
-        <img id="imgPreview" class="rounded-circle"
-             style="height:300px;width:300px;object-fit:cover"
-             src="/uploads/product.png" />
-    </div>*@
+        <img id="imgPreview" class="square" style="height:300px;width:300px;object-fit:cover" src="/uploads/product.png" />
+    </div>
 
     <div>
         <input type="submit" value="Add" class="btn btn-primary" />
@@ -115,7 +112,7 @@
     </div>
 </form>
 
-@*<script>
+<script>
     function showImgPreview(input) {
         if (input.files[0]) {
             var uploadimg = new FileReader();
@@ -123,7 +120,7 @@
             uploadimg.readAsDataURL(input.files[0]);
         }
     }
-</script>*@
+</script>
 
 @section Scripts {
     @{
