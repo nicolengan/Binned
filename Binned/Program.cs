@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using static Binned.Pages.RegisterModel;
+using FluentAssertions.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -80,6 +81,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 
+// error pages 404
+app.UseStatusCodePagesWithRedirects("/errors/{0}");
 
 app.MapRazorPages();
 

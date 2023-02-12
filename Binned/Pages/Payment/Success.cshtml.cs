@@ -41,6 +41,8 @@ namespace Binned.Pages.Payment
 
             var user = await _userManager.GetUserAsync(User);
             var username = user.UserName;
+
+            
             Cart = await _cartService.GetCartByUserName(username);
 
             _orderService.UpdateStatusById(orderId, "Paid");

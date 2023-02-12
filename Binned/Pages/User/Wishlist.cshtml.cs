@@ -1,12 +1,14 @@
 using Binned.Areas.Identity.Data;
 using Binned.Model;
 using Binned.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Binned.Pages.User
 {
+    [Authorize]
     public class WishlistModel : PageModel
     {
         private readonly WishlistService _wishlistService;
