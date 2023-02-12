@@ -1,6 +1,7 @@
 using Binned.Model;
 using Binned.Pages.User;
 using Binned.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Drawing;
@@ -34,6 +35,7 @@ namespace Binned.Pages.Admin
         };
 
     }
+    [Authorize(Roles = "Admin")]
     public class OrdersModel : PageModel
     {
         private readonly OrderService _orderService;
