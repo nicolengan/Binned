@@ -39,7 +39,8 @@ namespace Binned.Pages.Payment
             //_logger.LogInformation("search result {he}", searched.Data[0].DefaultPriceId);
 
             var domain = "https://localhost:7208";
-            var sessionOptions = new SessionCreateOptions
+            var 
+                Options = new SessionCreateOptions
             {
                 LineItems = new List<SessionLineItemOptions>
                 {

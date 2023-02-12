@@ -100,7 +100,8 @@ namespace Binned.Pages.Payment
             var port = HttpContext.Features.Get<IHttpConnectionFeature>()?.LocalPort;
             var domain = $"https://localhost:{port}";
 
-            var sessionOptions = new SessionCreateOptions
+            var 
+                Options = new SessionCreateOptions
             {
                 Metadata = new Dictionary<string, string>
                 {
