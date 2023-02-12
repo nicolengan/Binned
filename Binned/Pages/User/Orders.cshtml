@@ -15,7 +15,11 @@
                             <div class="row">
                                 <p class="h4 ms-1">#@item.OrderId</p>
                                 <div class="col-3">
-                                    <img src="~/uploads/placeholder.jpg" class="rounded img-fluid h-auto" alt="..." />
+                                @if (item.Products.FirstOrDefault().ImageURL != null){
+                                        <img src="@item.Products.FirstOrDefault().ImageURL" alt="Poster" class="img-fluid"
+                                     onerror="this.src='/uploads/placeholder.jpeg'">
+                                }
+                                    
                                 </div>
                                 <div class="col-9">
                                     <span class="h5" style="color:#71805D;">@item.Status</span><br>

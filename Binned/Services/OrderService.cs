@@ -1,4 +1,5 @@
 ﻿using Binned.Model;
+using Binned.Pages.Admin;
 using Microsoft.EntityFrameworkCore;
 
 namespace Binned.Services
@@ -31,6 +32,14 @@ namespace Binned.Services
             return _context.Orders
                 .Include(i => i.Products)
                 .Where(item => item.UserId == userId)
+                .ToList();
+        }
+        public List<Order> FilterOrder(string status)
+        {
+            return _context.Orders
+                .Include(i => i.Products)
+                .Where(item => item.Status == status)
+                .OrderBy(d => d.OrderDate)
                 .ToList();
         }
 

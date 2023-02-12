@@ -89,7 +89,7 @@ using (var scope = app.Services.CreateScope())
     var userMgr = services.GetRequiredService<UserManager<BinnedUser>>();
     var roleMgr = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-//    RolesManagement.Initialize(context, userMgr, roleMgr).Wait();
-//}
-
+    //    RolesManagement.Initialize(context, userMgr, roleMgr).Wait();
+    //}
+}
 app.Run();

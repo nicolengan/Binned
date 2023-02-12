@@ -14,7 +14,7 @@
             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-page="/Products/Index">Products</a>
+            <a class="nav-link text-dark" asp-area="" asp-page="/User/productDisplay">Products</a>
         </li>
 
         @if (SignInManager.IsSignedIn(User))
@@ -38,6 +38,7 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
+            <a id="manage" class="nav-link text-dark" asp-area="" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
             <a id="manage" class="nav-link text-dark" asp-page="/Account/Manage/Dashboard" title="Manage">Hello @UserManager.GetUserName(User)!</a>
         </li>
 
