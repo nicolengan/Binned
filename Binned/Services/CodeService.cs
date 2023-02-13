@@ -17,16 +17,22 @@ namespace Binned.Services
                 .OrderBy(d => d.Id)
                 .ToList();
         }
-        public void AddOrder(PromoCode code)
+        public void AddCode(PromoCode code)
         {
             _context.PromoCodes.Add(code);
             _context.SaveChanges();
         }
 
-        public void UpdateOrder(PromoCode code)
+        public void UpdateCode(PromoCode code)
         {
             _context.PromoCodes.Update(code);
             _context.SaveChanges();
+        }
+        public PromoCode GetCodeByName(string name)
+        {
+            PromoCode? code = _context.PromoCodes
+                .FirstOrDefault(x => x.Name.Equals(name));
+            return code;
         }
     }
 }

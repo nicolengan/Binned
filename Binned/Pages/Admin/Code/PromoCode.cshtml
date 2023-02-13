@@ -2,6 +2,10 @@
 @model Binned.Pages.Admin.Code.PromoCodeModel
 @{
 }
+
+<div id="toolbar">
+    <a id="button" class="btn btn-secondary" asp-page="/Admin/Code/AddCode">Add Code</a>
+</div>
 <table id="table"
        class="table mt-3"
        data-toggle="table"
@@ -12,31 +16,32 @@
        data-sortable="true">
     <thead>
         <tr>
-            <th data-field="OrderId"><span name="orderId">Order ID</span></th>
-            <th data-field="UserId" data-sortable="true">Email</th>
-            <th data-field="OrderDate" data-sortable="true">Order Date</th>
-            <th data-field="Status" data-sortable="true">Status</th>
-            <th data-field="Amount" data-sortable="true">Amount</th>
+            <th data-field="Id"><span name="CodeId">Code ID</span></th>
+            <th data-field="Name" data-sortable="true">Code</th>
+            <th data-field="CreateDate" data-sortable="true">Create Date</th>
+            <th data-field="ExpiryDate" data-sortable="true">Expiry Date</th>
+            <th data-field="Discount" data-sortable="true">Discount</th>
+            <th data-field="Active" data-sortable="true">Active</th>
             <th data-field="action"></th>
         </tr>
     </thead>
     <tbody>
-@*        @{
-            @foreach (var item in Model.TotalOrders)
+        @{
+            @foreach (var item in Model.CodeList)
             {
                 <tr>
 
-                    <td><span name="orderId" value="@item.OrderId">@item.OrderId</span></td>
-                    <td>@item.UserId</td>
-                    <td>@item.OrderDate.ToShortDateString()</td>
-                    <td>@item.Status</td>
-                    <td>@item.Amount</td>
+                    <td><span name="CodeId" value="@item.Id">@item.Id</span></td>
+                    <td>@item.Name</td>
+                    <td>@item.CreateDate.ToShortDateString()</td>
+                    <td>@item.ExpiryDate.ToShortDateString()</td>
+                    <td>@item.Discount</td>
+                    <td>@item.Active</td>
                     <td>
-                        <a asp-page="/Admin/Details" asp-route-id="@item.OrderId">View</a>
+                        <a asp-page="/Admin/Code" asp-route-id="@item.Id">View</a>
                     </td>
                 </tr>
-
             }
-        }*@
+        }
     </tbody>
 </table>

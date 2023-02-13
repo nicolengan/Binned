@@ -21,6 +21,7 @@ builder.Services.AddDbContext<MyDbContext>();
 builder.Services.AddScoped<WishlistService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<CartService>();
+builder.Services.AddScoped<CodeService>();
 builder.Services.AddScoped<Binned.Services.ProductService>();
 
 
@@ -47,7 +48,7 @@ options =>
     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
     options.LoginPath = "/Account/Login";
     options.LogoutPath = "/Account/Logout";
-    options.AccessDeniedPath = "/Admin/AccessDenied";
+    options.AccessDeniedPath = "/errors/403";
     options.SlidingExpiration = true;
     options.Cookie.Name = "AnotherCookie";
 });
