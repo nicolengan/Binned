@@ -65,6 +65,17 @@ namespace Binned.Services
             }
 
         }
+        public List<Order> GetOrderByMonth(int month, int year)
+        {
+            //var year = DateTime.Now.Year;
+            var monthList = _context.Orders
+                .Include(i => i.Products)
+                .Where(date => date.OrderDate.Year == year)
+                .Where(date => date.OrderDate.Month == month)
+                .ToList();
+
+            return monthList;
+        }
         public async Task<decimal> CalculateTotal(string id)
         {
             var current = _context.Orders

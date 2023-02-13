@@ -30,26 +30,26 @@
         <hr class="w-25 justify-content-end">
     </div>
 </div>*@
-    <script>
-        var val1
-        $(".status").click(function () {
-            val1 = $(this).text()
-            console.log($(this).text())
-            $.ajax({
-                type: "GET",
-                url: "/User/Orders?handler=OrderPartial",
-                data: { status: val1 },
-                dataType: "text",
-                headers: {
-                    RequestVerificationToken:
-                        $('input:hidden[name="__RequestVerificationToken"]').val()
-                }
-            }).done(function (result) {
-                    $('#grid').html(result);
-                });
-            //console.log("hi")
-            //console.log(val1)
-            //$('#grid').load('/User/Orders?handler=OrderPartial&status=' + val1, function () { });
-            //$('#grid').load("/User/Orders?handler=OrderPartial&", { status: val1 })
+<script>
+    var val1
+    $(".status").click(function () {
+        val1 = $(this).text()
+        console.log($(this).text())
+        $.ajax({
+            type: "GET",
+            url: "/User/Orders?handler=OrderPartial",
+            data: { status: val1 },
+            dataType: "text",
+            headers: {
+                RequestVerificationToken:
+                    $('input:hidden[name="__RequestVerificationToken"]').val()
+            }
+        }).done(function (result) {
+            $('#grid').html(result);
         });
-    </script>
+        //console.log("hi")
+        //console.log(val1)
+        //$('#grid').load('/User/Orders?handler=OrderPartial&status=' + val1, function () { });
+        //$('#grid').load("/User/Orders?handler=OrderPartial&", { status: val1 })
+    });
+</script>

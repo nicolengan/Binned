@@ -24,33 +24,23 @@ namespace Binned.Pages.User
         }
         public async Task<IActionResult> OnGetAsync()
         {
-            //_logger.LogInformation($"Status: {OrderList.Count()}");
-            //var user = await userManager.GetUserAsync(User);
-            //var username = user.UserName;
-            //OrderList = _orderService.GetOrderByUserId(username);
-            //foreach (var i in OrderList)
-            //{
-            //    _logger.LogInformation($"{i.Products}");
-            //    foreach (var b in i.Products)
-            //    {
-            //        _logger.LogInformation($"{b.ProductName}");
-            //    }
-            //}
+            var user = await userManager.GetUserAsync(User);
+            var username = user.UserName;
+            OrderList = _orderService.GetOrderByUserId(username);
             return Page();
         }
         public async Task<ActionResult> OnGetOrderPartial(string status)
         {
-            _logger.LogInformation("hello2");
             var user = await userManager.GetUserAsync(User);
             var username = user.UserName;
             if (status == "All Orders" || status == null)
             {
-                _logger.LogInformation("all orders");
+                //_logger.LogInformation("all orders");
                 OrderList = _orderService.GetOrderByUserId(username);
             }
             else if (status != null)
             {
-                _logger.LogInformation($"status not null {status}");
+                //_logger.LogInformation($"status not null {status}");
                 OrderList = _orderService.FilterOrder(username, status);
                 _logger.LogInformation($"length {OrderList.Count()}");
             }
