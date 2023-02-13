@@ -44,7 +44,7 @@
                             </div>
                         </div>
                         @if (SignInManager.IsSignedIn(User))
-                        {   
+                        {
                             <div class="d-flex flex-row justify-content-end m-2">
                                 <form asp-page-handler="AddToWishlist" method="post" name="addToWishlistForm" id="add_wishlist_form" class="mx-2">
                                     <a href="javascript:;" onclick="parentNode.submit();" class="btn btn-outline-danger btn-sm">

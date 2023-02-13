@@ -63,6 +63,11 @@ namespace Binned.Services
             return item;
 
         }
+        public Wishlist? GetWishlistIDByUsername(string Username)
+        {
+            Wishlist? item = _context.Wishlists.FirstOrDefault(x => x.UserName.Equals(Username));
+            return item;
+        }
         public WishlistItem? GetWishListItemByProductId(int id)
         {
             WishlistItem? item = _context.WishlistItems.FirstOrDefault(x => x.ProductId.Equals(id));
@@ -110,7 +115,14 @@ namespace Binned.Services
             await _context.SaveChangesAsync();
         }
 
-        // Add to cart from wishlist button:
+        public async Task ClearCart(string userName)
+        {
+            var wishlist = await GetWishlistByUserName(userName);
+            var wishlistitem = GetWishlistIDByUsername(userName);
+            wishlist.Items.Clear();
+            wishlistitem.Items.Clear();
 
+            await _context.SaveChangesAsync();
+        }
     }
 }
