@@ -132,14 +132,14 @@ namespace Binned.Pages.Payment
             var port = HttpContext.Features.Get<IHttpConnectionFeature>()?.LocalPort;
             var domain = $"https://localhost:{port}";
 
-            var 
-                Options = new SessionCreateOptions
-            {
-                Metadata = new Dictionary<string, string>
+            var
+                sessionOptions = new SessionCreateOptions
+                {
+                    Metadata = new Dictionary<string, string>
                 {
                     { "OrderId", $"{NewOrder.OrderId}" }
                 },
-                LineItems = new List<SessionLineItemOptions>
+                    LineItems = new List<SessionLineItemOptions>
                 {
                   new SessionLineItemOptions
                   {
@@ -157,10 +157,10 @@ namespace Binned.Pages.Payment
                     // maybe add customer email so they dont have to retype
                   },
                 },
-                Mode = "payment",
-                SuccessUrl = $"{domain}/Payment/Success",
-                CancelUrl = $"{domain}/Payment/Failure",
-            };
+                    Mode = "payment",
+                    SuccessUrl = $"{domain}/Payment/Success",
+                    CancelUrl = $"{domain}/Payment/Failure",
+                };
             var sessionService = new SessionService();
             Session session = sessionService.Create(sessionOptions);
 
