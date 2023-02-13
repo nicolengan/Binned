@@ -30,7 +30,7 @@ namespace Binned.Pages
             var user = await _userManager.GetUserAsync(User);
             var username = user.UserName;
             Cart = await _cartService.GetCartByUserName(username);
-
+            Console.WriteLine(username);
             return Page();
         }
         public async Task<IActionResult> OnPostRemoveFromCartAsync(int CartItemId)

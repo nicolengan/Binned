@@ -25,7 +25,7 @@ namespace Binned.Services
 
             if (cart != null)
                 return cart;
-                
+
             // if it is first attempt create new
             var newCart = new Cart
             {
@@ -78,7 +78,7 @@ namespace Binned.Services
 
             var cart = await GetCartByUserName(userName);
             Product product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
-            var itemexist = _context.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
+            var itemexist = _context.CartItems.Include(c => c.Cart).Where(x => x.Cart.UserName == userName).FirstOrDefault(ci => ci.ProductId == productId);
             var Avail = product.Availability;
 
 
@@ -107,7 +107,7 @@ namespace Binned.Services
         public async Task ClearCart(string userName)
         {
             var cart = await GetCartByUserName(userName);
-            var cartitem =  GetCartIDByUsername(userName); 
+            var cartitem = GetCartIDByUsername(userName);
             cart.Items.Clear();
             cartitem.Items.Clear();
 
