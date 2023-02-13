@@ -44,6 +44,12 @@ namespace Binned.Pages.Products
             await _wishlistService.AddItem(username, productId);
             return RedirectToPage("/User/Wishlist");
         }
+        public async Task<IActionResult> OnPostDeleteProductAsync(Product product)
+        {
+            await _productService.RemoveItem(product);
+
+            return RedirectToPage("/Products/Index");
+        }
     }
-    
+
 }

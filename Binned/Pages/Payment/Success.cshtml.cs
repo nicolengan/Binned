@@ -19,23 +19,26 @@ namespace Binned.Pages.Payment
     {
         private readonly OrderService _orderService;
         private readonly CartService _cartService;
+        private readonly WishlistService _wishlistService;
         private readonly UserManager<BinnedUser> _userManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<SuccessModel> _logger;
         private Model.Product OurProduct { get; set; } = new();
 
-        public SuccessModel(UserManager<BinnedUser> userManager, OrderService orderService, ILogger<SuccessModel> logger, CartService cartService, IEmailSender emailSender)
+        public SuccessModel(UserManager<BinnedUser> userManager, OrderService orderService, ILogger<SuccessModel> logger, CartService cartService, WishlistService wishlistService, IEmailSender emailSender)
         {
             _orderService = orderService;
             _logger = logger;
             _userManager = userManager;
             _cartService = cartService;
+            _wishlistService = wishlistService;
             _emailSender = emailSender;
             _emailSender = emailSender;
             OurProduct.Availability = "N";
         }
         [BindProperty]
         public Cart Cart { get; set; }
+        public Wishlist Wishlist { get; set; }
         public async Task<IActionResult> OnGet()
         {
             var orderId = TempData["id"].ToString();
@@ -48,8 +51,11 @@ namespace Binned.Pages.Payment
 
             Cart = await _cartService.GetCartByUserName(username);
 
+            Wishlist = await _wishlistService.GetWishlistByUserName(username);
+
             _orderService.UpdateStatusById(orderId, "Paid");
             await _cartService.ClearCart(username);
+            await _wishlistService.ClearCart(username);
 
             var orderUrl = Url.Page(
                     "/User/OrderDetails",
