@@ -63,19 +63,16 @@ namespace Binned.Pages.Payment
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            //var user = User.Identity.Name;
             var user = await userManager.GetUserAsync(User);
             var username = user.UserName;
             OneCart = await _cartService.GetCartByUserName(username);
-            _logger.LogInformation($"cart {OneCart.Items}");
-
-            foreach (var i in OneCart.Items)
+            if (OneCart.Items.Count <= 0)
             {
-                ProductList.Add(i.Product);
+                return Redirect("/User/Cart");
             }
-            _logger.LogInformation($"cart {ProductList.Count}");
+            return Page();
         }
 
         public async Task<IActionResult> OnGetCode(string name)
@@ -94,7 +91,7 @@ namespace Binned.Pages.Payment
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
-            _logger.LogInformation(TempData["code"].ToString());
+            //_logger.LogInformation(TempData["code"].ToString());
             if (totalAmt <= 0)
             {
                 TempData["FlashMessage.Type"] = "danger";
@@ -132,14 +129,14 @@ namespace Binned.Pages.Payment
             var port = HttpContext.Features.Get<IHttpConnectionFeature>()?.LocalPort;
             var domain = $"https://localhost:{port}";
 
-            var 
-                Options = new SessionCreateOptions
-            {
-                Metadata = new Dictionary<string, string>
+            var
+                sessionOptions = new SessionCreateOptions
+                {
+                    Metadata = new Dictionary<string, string>
                 {
                     { "OrderId", $"{NewOrder.OrderId}" }
                 },
-                LineItems = new List<SessionLineItemOptions>
+                    LineItems = new List<SessionLineItemOptions>
                 {
                   new SessionLineItemOptions
                   {
@@ -157,10 +154,10 @@ namespace Binned.Pages.Payment
                     // maybe add customer email so they dont have to retype
                   },
                 },
-                Mode = "payment",
-                SuccessUrl = $"{domain}/Payment/Success",
-                CancelUrl = $"{domain}/Payment/Failure",
-            };
+                    Mode = "payment",
+                    SuccessUrl = $"{domain}/Payment/Success",
+                    CancelUrl = $"{domain}/Payment/Failure",
+                };
             var sessionService = new SessionService();
             Session session = sessionService.Create(sessionOptions);
 

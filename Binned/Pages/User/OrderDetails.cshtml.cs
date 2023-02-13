@@ -49,5 +49,16 @@ namespace Binned.Pages.User
             TempData["FlashMessage.Text"] = string.Format("Order status updated! Your order status has been changed to received.");
             _logger.LogInformation(id);
         }
+
+        public async Task<IActionResult> OnGetEmail(string email, string orderId)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+            OneOrder = _orderService.GetOrderById(orderId);
+            if (user == null! || email != OneOrder.UserId)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden);
+            }
+            return Page();
+        }
     }
 }

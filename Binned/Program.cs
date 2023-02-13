@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using static Binned.Pages.RegisterModel;
 using FluentAssertions.Common;
+using Binned.Settings;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -15,9 +17,12 @@ builder.Logging.AddConsole();
 
 var connectionString = builder.Configuration.GetConnectionString("AuthConnectionString") ?? throw new InvalidOperationException("Connection string 'AuthConnectionString' not found.");
 
+builder.Services.AddRazorPages();
+var emailConfig = builder.Configuration.GetSection("email").Get<EmailSettings>();
+builder.Services.AddSingleton(emailConfig);
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 // Add services to the container.
-builder.Services.AddRazorPages();
 builder.Services.AddDbContext<MyDbContext>();
 builder.Services.AddScoped<WishlistService>();
 builder.Services.AddScoped<OrderService>();
@@ -93,7 +98,7 @@ app.MapRazorPages();
 
 using (var scope = app.Services.CreateScope())
 {
-   var services = scope.ServiceProvider;
+    var services = scope.ServiceProvider;
 
     var context = services.GetRequiredService<MyDbContext>();
 
