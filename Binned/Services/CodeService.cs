@@ -13,9 +13,25 @@ namespace Binned.Services
         }
         public List<PromoCode> GetAll()
         {
-            return _context.PromoCodes
+            var codeList = _context.PromoCodes
                 .OrderBy(d => d.Id)
                 .ToList();
+
+            foreach (var code in codeList)
+            {
+                int result = DateTime.Compare(code.ExpiryDate, DateTime.Now);
+                if (result < 0)
+                {
+                    code.Active = false;
+                }
+                else if (result > 0)
+                {
+                    code.Active = true;
+                }
+                _context.SaveChanges();
+            }
+
+            return codeList;
         }
         public void AddCode(PromoCode code)
         {
@@ -25,13 +41,21 @@ namespace Binned.Services
 
         public void UpdateCode(PromoCode code)
         {
-            _context.PromoCodes.Update(code);
+            var current = _context.PromoCodes.FirstOrDefault(item => item.Id == code.Id);
+            current = code;
+            //_context.PromoCodes.Update(code);
             _context.SaveChanges();
         }
         public PromoCode GetCodeByName(string name)
         {
             PromoCode? code = _context.PromoCodes
                 .FirstOrDefault(x => x.Name.Equals(name));
+            return code;
+        }
+        public PromoCode GetCodeById(int id)
+        {
+            PromoCode? code = _context.PromoCodes
+                .FirstOrDefault(x => x.Id == id);
             return code;
         }
     }

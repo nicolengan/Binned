@@ -13,6 +13,7 @@
                             <div class="row">
                                 <p class="h4 ms-1">#@item.OrderId</p>
                                 <div class="col-3">
+
                                     @if (item.Products.FirstOrDefault().ImageURL != null)
                                     {
                                         <img src="@item.Products.FirstOrDefault().ImageURL" alt="Poster" class="img-fluid"
@@ -32,6 +33,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-2 d-flex flex-column justify-content-end">
                             <div class="h5">Total: $@item.Amount</div>
                             <a class="btn me-3 w-100" asp-page="/User/OrderDetails" asp-route-id="@item.OrderId" role="button" aria-disabled="true" style="background-color:#71805D;color:#FFFFFF;">View</a>

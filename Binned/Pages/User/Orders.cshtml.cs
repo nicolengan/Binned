@@ -2,12 +2,16 @@ using Binned.Areas.Identity.Data;
 using Binned.Model;
 using Binned.Pages.Payment;
 using Binned.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace Binned.Pages.User
 {
+    [Authorize]
     [IgnoreAntiforgeryToken]
     public class OrdersModel : PageModel
     {
@@ -33,19 +37,17 @@ namespace Binned.Pages.User
         {
             var user = await userManager.GetUserAsync(User);
             var username = user.UserName;
-            if (status == "All Orders" || status == null)
+            if (Status.Statuses.All(h => h.Value != status) || status == null)
             {
-                //_logger.LogInformation("all orders");
                 OrderList = _orderService.GetOrderByUserId(username);
             }
             else if (status != null)
             {
-                //_logger.LogInformation($"status not null {status}");
+                _logger.LogInformation(status?.ToString());
                 OrderList = _orderService.FilterOrder(username, status);
                 _logger.LogInformation($"length {OrderList.Count()}");
             }
             return Partial("_OrdersPartial", OrderList);
         }
-
     }
 }

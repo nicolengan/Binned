@@ -56,6 +56,7 @@
 
                 </li>
             </ul>
+            <span id="invalidCode" class="text-danger"></span>
             <div class="input-group">
                 <input id="code" type="text" class="form-control" placeholder="Promo code">
                 <div class="input-group-append">
@@ -144,6 +145,9 @@
                 $('#codetext').text(val1)
                 $('#totalAfter').val(total)
                 $('#redeem').addClass('disabled');
+            }
+            else{
+                $("#invalidCode").text("Invalid code")
             }
         });
     });

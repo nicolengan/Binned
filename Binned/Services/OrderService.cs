@@ -16,7 +16,7 @@ namespace Binned.Services
         {
             return _context.Orders
                 .Include(i => i.Products)
-                .OrderBy(d => d.OrderId)
+                .OrderByDescending(p => p.OrderDate)
                 .ToList();
         }
         public Order? GetOrderById(string id)
@@ -32,6 +32,7 @@ namespace Binned.Services
             return _context.Orders
                 .Include(i => i.Products)
                 .Where(item => item.UserId == userId)
+                .OrderByDescending(p => p.OrderDate)
                 .ToList();
         }
         public List<Order> FilterOrder(string userId, string status)
@@ -39,11 +40,10 @@ namespace Binned.Services
             return _context.Orders
                 .Include(i => i.Products)
                 .Where(item => item.UserId == userId)
-                .Where(item => item.Status == status)
-                .OrderBy(d => d.OrderDate)
+                .Where(s => s.Status == status)
+                .OrderByDescending(p => p.OrderDate)
                 .ToList();
         }
-
         public void AddOrder(Order order)
         {
             _context.Orders.Add(order);
@@ -89,7 +89,6 @@ namespace Binned.Services
                 {
                     total += i.ProductPrice;
                 }
-
             }
             if (current != null)
             {
@@ -98,6 +97,5 @@ namespace Binned.Services
             }
             return total;
         }
-
     }
 }

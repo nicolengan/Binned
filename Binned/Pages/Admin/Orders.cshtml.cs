@@ -8,6 +8,8 @@ using System;
 using System.Drawing;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using IronPdf;
+using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Binned.Pages.Admin
 {
@@ -31,6 +33,7 @@ namespace Binned.Pages.Admin
         public int increase { get; set; }
         public void OnGet(int myStatus)
         {
+
             var now = DateTime.Now;
             var lastMonth = now.AddMonths(-1);
             LastOrders = _orderService.GetOrderByMonth(lastMonth.Month, lastMonth.Year);

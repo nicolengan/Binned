@@ -14,7 +14,7 @@
 
     <div class="row mb-3">Order Date: @Model.Order.OrderDate.ToShortDateString()</div>
     @if (@Model.Order.ShipDate != null){
-        <div class="row mb-3">Order Date: @Model.Order.ShipDate?.ToShortDateString()</div>
+        <div class="row mb-3">Ship Date: @Model.Order.ShipDate?.ToShortDateString()</div>
     }
 
     <div class="row mb-3">Status: @Model.Order.Status</div>

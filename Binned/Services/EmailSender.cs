@@ -1,4 +1,5 @@
-﻿using Binned.Settings;
+﻿using Binned.Model;
+using Binned.Settings;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using sib_api_v3_sdk.Api;
@@ -26,6 +27,7 @@ namespace Binned.Services
             {
                 Configuration.Default.ApiKey.Add("api-key", _configuration.API);
             }
+
             var apiInstance = new TransactionalEmailsApi();
             string SenderName = "Binned";
             string SenderEmail = "Binned@gmail.com";

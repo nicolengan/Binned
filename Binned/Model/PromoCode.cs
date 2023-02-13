@@ -15,7 +15,6 @@ namespace Binned.Model
         [Column(TypeName = "date")]
         public DateTime ExpiryDate { get; set; }
         public double Discount { get; set; }
-        public int Redemptions { get; set; }
         public bool Active { get; set; }
     }
 }

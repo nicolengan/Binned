@@ -4,7 +4,7 @@
 }
 
 <div id="toolbar">
-    <a id="button" class="btn btn-secondary" asp-page="/Admin/Code/AddCode">Add Code</a>
+    <a id="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addCode">Add Code</a>
 </div>
 <table id="table"
        class="table mt-3"
@@ -22,7 +22,7 @@
             <th data-field="ExpiryDate" data-sortable="true">Expiry Date</th>
             <th data-field="Discount" data-sortable="true">Discount</th>
             <th data-field="Active" data-sortable="true">Active</th>
-            <th data-field="action"></th>
+            <th data-field="action" data-events="window.operateEvents"></th>
         </tr>
     </thead>
     <tbody>
@@ -31,17 +31,185 @@
             {
                 <tr>
 
-                    <td><span name="CodeId" value="@item.Id">@item.Id</span></td>
+                    <td>@item.Id</td>
                     <td>@item.Name</td>
                     <td>@item.CreateDate.ToShortDateString()</td>
                     <td>@item.ExpiryDate.ToShortDateString()</td>
                     <td>@item.Discount</td>
                     <td>@item.Active</td>
                     <td>
-                        <a asp-page="/Admin/Code" asp-route-id="@item.Id">View</a>
+                        <a class="edit">Edit</a>
                     </td>
                 </tr>
             }
         }
     </tbody>
 </table>
+
+@*add modal*@
+<div class="modal fade" id="addCode" tabindex="-1" aria-labelledby="addCodeLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCodeLabel">Add promotional code</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form id="form" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="row mb-3 mt-4">
+                        <label class="col-sm-2 col-form-label">Code Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" asp-for="AddInput.Name" class="form-control" oninput="this.value = this.value.toUpperCase()" required>
+                            <span asp-validation-for="AddInput.Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Validity Period (Days)</label>
+                        <div class="col-sm-10">
+                            <input type="number" id="period" class="form-control" min="0" max="365" required>
+                            @*<span asp-validation-for="" class="text-danger"></span>*@
+                        </div>
+                    </div>
+                    <input id="expiryDate" asp-for="AddInput.ExpiryDate" type="hidden" />
+                    <input id="discount" asp-for="AddInput.Discount" type="hidden" />
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Discount</label>
+                        <div class="col-sm-10">
+                            <input type="range" id="percentage" class="form-range" min="0" max="100" step="5" oninput="this.nextElementSibling.value = this.value + '%'" required>
+                            <output></output>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button id="sub" class="btn btn-primary">Add Code</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*edit modal*@
+<div class="modal fade" id="editCode" tabindex="-1" aria-labelledby="addCodeLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCodeLabel">Add promotional code</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-page-handler="EditCode">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="row mb-3 mt-4">
+                        <label class="col-sm-2 col-form-label">Code Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" asp-for="EditInput.Name" id="codeName" class="form-control" oninput="this.value = this.value.toUpperCase()" required>
+                            <span asp-validation-for="EditInput.Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <input id="editDiscount" asp-for="EditInput.Discount" type="hidden" />
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Expiry date</label>
+                        <div class="col-sm-10">
+                            <input type="date" id="Expiry" asp-for="EditInput.ExpiryDate" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Discount</label>
+                        <div class="col-sm-10">
+                            <input type="range" id="editPercentage" class="form-range" min="0" max="100" step="5" oninput="this.nextElementSibling.value = this.value + '%'">
+                            <output id="percentageString"></output>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" id="editPost" class="btn btn-primary">Edit Code</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $("#sub").click(function () {
+        var percentage = $('#percentage').val();
+        $('#discount').val(percentage / 100)
+
+        var now = moment();
+        var days = $('#period').val()
+        var valid = true
+        $('#expiryDate').val(now.add(days, 'days').format('DD/MM/YYYY'))
+
+        $('#form').find('input').each(function () {
+            if ($(this).val() > 0) {
+                valid = true
+            } else {
+                valid = false
+            }
+        });
+        if (valid){
+            console.log("hi")
+            $('#form').submit();
+        }
+
+    });
+
+    var $table = $('#table')
+    window.operateEvents = {
+        'click .edit': function (e, value, row, index) {
+            var rowId = row.Id
+            console.log("hii")
+            $.ajax({
+                type: "GET",
+                url: "/Admin/Code/PromoCode?handler=EditCode",
+                data: { id: rowId },
+                dataType: "text",
+                headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                }
+            })
+                .done(function (result) {
+                    $('#editCode').modal('show');
+                    obj = JSON.parse(result)["editCode"];
+                    console.log(obj)
+                    var expiry = moment(obj.expiryDate).format("YYYY-MM-DD");
+                    console.log(expiry)
+
+                    $('#codeName').val(obj.name)
+                    var percentage = parseFloat(obj.discount) * 100
+                    $('#editPercentage').val(parseInt(percentage))
+
+                    $("#percentageString").text(percentage + "%")
+
+                    var current = moment().format("YYYY-MM-DD");
+                    $("#Expiry").attr("min", current)
+                    $("#Expiry").val(expiry)
+
+                    console.log($("#Expiry").val())
+                    var active = obj.active
+                    if (active) {
+                        $("#ActiveTrue").prop("checked", true);
+                    }
+                    else {
+                        $("#ActiveFalse").prop("checked", true);
+                    }
+                });
+        }
+    }
+    $("#editPost").click(function () {
+        var percentage = $('#editPercentage').val();
+        $('#editDiscount').val(percentage / 100)
+    })
+
+</script>
+@section Scripts
+    {
+    @*<script></script>*@
+}
