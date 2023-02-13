@@ -67,6 +67,8 @@ namespace Binned.Pages.Payment
                     pageHandler: "Email",
                     values: new { email = user.Email, orderId = orderId },
                     protocol: Request.Scheme);
+            _cartService.ClearCart(username);
+            OurProduct.Availability = "N";
 
             string FilePath = Directory.GetCurrentDirectory() + "\\Templates\\orderTemplate.html";
             StreamReader str = new StreamReader(FilePath);
