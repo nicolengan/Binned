@@ -16,6 +16,13 @@
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-page="/User/productDisplay">Products</a>
         </li>
+
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Orders">Admin</a>
+            </li>
+        }
     </ul>
 
     @if (SignInManager.IsSignedIn(User))
@@ -42,12 +49,14 @@
         </li>
     </ul>
 
-    <ul class="navbar-nav">
-        @if (SignInManager.IsSignedIn(User))
-        {
-            <li class="nav-item">
-                <a id="manage" class="nav-link text-dark" asp-page="/Account/Manage/Dashboard" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-            </li>
+</div>
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a id="manage" class="nav-link text-dark" asp-area="" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+            <a id="manage" class="nav-link text-dark" asp-page="/Account/Manage/Dashboard" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+        </li>
 
             <div class="dropdown d-flex align-items-center ms-2">
                 <a class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-fill h3"></i></a>
