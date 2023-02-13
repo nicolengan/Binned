@@ -19,12 +19,6 @@ namespace Binned.Pages.Payment
 
             _logger.LogInformation($"orderId: {orderId}");
 
-            //var user = User.Identity.Name;
-
-            //ApplicationUser currentUser = db.Users.FirstOrDefault(x => x.Id == currentUserId);
-
-
-            //_orderService.AddOrder(newOrder);
             _orderService.UpdateStatusById(orderId, "To Pay");
 
             return Page();

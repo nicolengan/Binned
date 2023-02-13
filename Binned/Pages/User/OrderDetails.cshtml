@@ -54,9 +54,15 @@
             </div>
             <div class="col-2 d-flex flex-column justify-content-end pe-4">
                 @{
-                    @if (Model.OneOrder.Status == "To receive")
+                    @if (Model.OneOrder.Status == "To Receive")
                     {
                         <button class="btn me-3 w-100" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" style="background-color:#71805D;color:#FFFFFF;font-size:16px;">Order received</button>
+                    }
+                }
+                @{
+                    @if (Model.OneOrder.Status == "To Pay")
+                    {
+                        <a class="btn me-3 w-100" asp-page="/Payment/Payment" asp-route-id="@Model.OneOrder.OrderId" style="background-color:#71805D;color:#FFFFFF;font-size:16px;">Make Payment</a>
                     }
                 }
             </div>

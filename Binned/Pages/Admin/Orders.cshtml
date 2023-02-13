@@ -8,8 +8,8 @@
     <div class="col-4">
         <div class="card">
             <div class="card-body">
-                Total Orders<br>
-                @Model.TotalOrders.Count() | <span id="increase">@Model.increase</span><span id="sign">%</span>
+                <h4>Total Orders</h4>
+                <h5>@Model.TotalOrders.Count() | <span id="increase">@Model.increase</span><span id="sign">%</span></h5>
 
             </div>
         </div>
@@ -17,16 +17,18 @@
     <div class="col-4">
         <div class="card">
             <div class="card-body">
-                Pending Orders<br>
-                @Model.TotalOrders.Where(item => item.Status != "Delivered").Count()
+                <h4>
+                    Pending Orders
+                </h4>
+                <h5>@Model.TotalOrders.Where(item => item.Status != "Delivered").Count()</h5>
             </div>
         </div>
     </div>
     <div class="col-4">
         <div class="card">
             <div class="card-body">
-                Delivered Orders<br>
-                @Model.TotalOrders.Where(item => item.Status == "Delivered").Count()
+                <h4>Delivered Orders</h4>
+                <h5>@Model.TotalOrders.Where(item => item.Status == "Delivered").Count()</h5>
             </div>
         </div>
     </div>
@@ -49,8 +51,8 @@
             <th data-field="OrderId"><span name="orderId">Order ID</span></th>
             <th data-field="UserId" data-sortable="true">Email</th>
             <th data-field="OrderDate" data-sortable="true">Order Date</th>
-            <th data-field="Status" data-sortable="true">Status</th>
-            <th data-field="Amount" data-sortable="true">Amount</th>
+            <th data-field="Status" data-sortable="true" data-formatter="statusFormatter">Status</th>
+            <th data-field="Amount" data-sortable="true" data-formatter="priceFormatter">Amount</th>
             <th data-field="action"></th>
         </tr>
     </thead>
@@ -127,4 +129,35 @@
             location.reload();
         })
     })
+
+    function statusFormatter(value, row) {
+        //var icon = row.id % 2 === 0 ? 'fa-star' : 'fa-star-and-crescent'
+        switch (row.Status) {
+            case "To Pay":
+                icon = 'bi-wallet2'
+                break;
+
+            case "To Ship":
+                icon = 'bi-box-seam'
+                //execute code block 2
+                break;
+
+            case "To Receive":
+                icon = 'bi-truck'
+                //execute code block 2
+                break;
+
+            case "Delivered":
+                icon = 'bi-house-check'
+                break;
+
+            default:
+                icon = ""
+            // code to be executed if n is different from case 1 and 2
+        }
+        return '<i class="bi ' + icon + '"></i> ' + value
+    }
+    function priceFormatter(value, row) {
+    return '$' + value
+  }
 </script>
