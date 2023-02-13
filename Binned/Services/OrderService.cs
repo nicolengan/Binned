@@ -34,10 +34,11 @@ namespace Binned.Services
                 .Where(item => item.UserId == userId)
                 .ToList();
         }
-        public List<Order> FilterOrder(string status)
+        public List<Order> FilterOrder(string userId, string status)
         {
             return _context.Orders
                 .Include(i => i.Products)
+                .Where(item => item.UserId == userId)
                 .Where(item => item.Status == status)
                 .OrderBy(d => d.OrderDate)
                 .ToList();
@@ -63,6 +64,17 @@ namespace Binned.Services
                 _context.SaveChanges();
             }
 
+        }
+        public List<Order> GetOrderByMonth(int month, int year)
+        {
+            //var year = DateTime.Now.Year;
+            var monthList = _context.Orders
+                .Include(i => i.Products)
+                .Where(date => date.OrderDate.Year == year)
+                .Where(date => date.OrderDate.Month == month)
+                .ToList();
+
+            return monthList;
         }
         public async Task<decimal> CalculateTotal(string id)
         {
