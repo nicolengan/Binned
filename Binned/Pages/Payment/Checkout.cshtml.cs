@@ -42,7 +42,7 @@ namespace Binned.Pages.Payment
         public Cart OneCart { get; set; }
         public Order NewOrder { get; set; }
         [BindProperty]
-        public double totalAmt { get; set; }
+        public decimal totalAmt { get; set; }
         [BindProperty]
         public ShippingInfo ShippingInfo { get; set; }
         [BindProperty]
@@ -82,9 +82,13 @@ namespace Binned.Pages.Payment
 
             var code = _codeService.GetCodeByName(name);
             TempData["code"] = name;
+
             if (code != null)
             {
-                return new JsonResult(new { code = code.Discount });
+                if (code.Active)
+                {
+                    return new JsonResult(new { code = code.Discount });
+                }
             }
             return new JsonResult(new { code = 0 });
         }
@@ -98,10 +102,15 @@ namespace Binned.Pages.Payment
                 TempData["FlashMessage.Text"] = "Cannot place an order with a negative total.";
                 return Redirect("/Cart");
             }
+
             var user = await userManager.GetUserAsync(User);
             var username = user.UserName;
             _logger.LogInformation($"user {username}");
             OneCart = await _cartService.GetCartByUserName(username);
+            if (user.Email != OneCart.UserName)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden);
+            }
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -122,6 +131,7 @@ namespace Binned.Pages.Payment
                 PostalCode = Int32.Parse(ShippingInfo.PostalCode),
                 FirstName = ShippingInfo.FirstName,
                 LastName = ShippingInfo.LastName,
+                Amount = totalAmt
             };
 
             _orderService.AddOrder(NewOrder);
@@ -133,9 +143,9 @@ namespace Binned.Pages.Payment
                 sessionOptions = new SessionCreateOptions
                 {
                     Metadata = new Dictionary<string, string>
-                {
-                    { "OrderId", $"{NewOrder.OrderId}" }
-                },
+                    {
+                        { "OrderId", $"{NewOrder.OrderId}" }
+                    },
                     LineItems = new List<SessionLineItemOptions>
                 {
                   new SessionLineItemOptions
@@ -163,8 +173,6 @@ namespace Binned.Pages.Payment
 
             if (ModelState.IsValid)
             { // check if in database first
-                TempData["FlashMessage.Type"] = "success";
-                TempData["FlashMessage.Text"] = "Order placed";
                 //_logger.LogInformation($"{session.Metadata["OrderId"]}");
                 TempData["id"] = session.Metadata["OrderId"];
             }
