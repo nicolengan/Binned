@@ -17,7 +17,7 @@ namespace Binned.Services
 
         public List<Product> GetAll()
         {
-            return _context.Products.OrderBy(m => m.ProductName).ToList();
+            return _context.Products.OrderBy(m => m.ProductId).ToList();
         }
         public Product? GetProductById(int id)
         {
@@ -34,6 +34,12 @@ namespace Binned.Services
         {
             _context.Products.Update(product);
             _context.SaveChanges();
+        }
+        public async Task RemoveItem(Product product)
+        {
+            _context.Products.Remove(product);
+
+            await _context.SaveChangesAsync();
         }
     }
 }
