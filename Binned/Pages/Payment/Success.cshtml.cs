@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Stripe;
 using Stripe.Checkout;
+using System.Net.Mail;
+using System.Net.Mime;
 using System.Text.Encodings.Web;
 
 namespace Binned.Pages.Payment
@@ -53,8 +55,13 @@ namespace Binned.Pages.Payment
                     values: new { email = user.Email, orderId = orderId },
                     protocol: Request.Scheme);
 
-            var htmlMsg = @$"<html><body><h1>Your order has been confirmed!<br>Please allow up to 3-5 days processing time before your ordr ships. You will receive a shipment confirmation email when your order has shipped from our warehouse. Thank you for your patience.<br>
+            byte[] fileContent = System.IO.File.ReadAllBytes(@"wwwroot/uploads/EmailImage.png");
+            string base64 = Convert.ToBase64String(fileContent);
+
+            var htmlMsg = @$"<html><body><h1>Your order has been confirmed!<img src=""data:image/png;base64,{base64}"" alt=""Confirmation Image""><br>Please allow up to 3-5 days processing time before your order ships. You will receive a shipment confirmation email when your order has shipped from our warehouse. Thank you for your patience.<br>
                 </h1><a href='{HtmlEncoder.Default.Encode(orderUrl)}'>Click here</a></h1></body>";
+
+
             var subject = "Order Confirmation";
             await _emailSender.SendEmailAsync(user.Email, subject, htmlMsg);
             _logger.LogInformation("Order confirmation sent");

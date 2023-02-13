@@ -91,7 +91,7 @@ namespace Binned.Pages.Payment
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
-            _logger.LogInformation(TempData["code"].ToString());
+            //_logger.LogInformation(TempData["code"].ToString());
             if (totalAmt <= 0)
             {
                 TempData["FlashMessage.Type"] = "danger";
