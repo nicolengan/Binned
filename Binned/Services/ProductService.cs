@@ -9,6 +9,12 @@ namespace Binned.Services
         {
             _context = context;
         }
+        public List<Product> GetAvailProducts()
+        {
+            var availProducts = from product in _context.Products where product.Availability == "Y" select product;
+            return availProducts.ToList();
+        }
+
         public List<Product> GetAll()
         {
             return _context.Products.OrderBy(m => m.ProductName).ToList();
