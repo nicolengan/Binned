@@ -16,6 +16,8 @@ namespace Binned.Pages.Payment
         private readonly CartService _cartService;
         private readonly UserManager<BinnedUser> _userManager;
         private readonly ILogger<SuccessModel> _logger;
+        private Model.Product OurProduct { get; set; } = new();
+
 
         public SuccessModel(UserManager<BinnedUser> userManager, OrderService orderService, ILogger<SuccessModel> logger, CartService cartService)
         {
@@ -47,6 +49,7 @@ namespace Binned.Pages.Payment
 
             _orderService.UpdateStatusById(orderId, "Paid");
             _cartService.ClearCart(username);
+            OurProduct.Availability = "N";
 
 
             return Page();

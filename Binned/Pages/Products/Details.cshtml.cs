@@ -75,5 +75,6 @@ namespace Binned.Pages.Products
             }
             return Page();
         }
+
     }
 }
