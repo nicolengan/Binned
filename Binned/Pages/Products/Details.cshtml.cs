@@ -2,9 +2,11 @@ using Binned.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Binned.Model;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Binned.Pages.Products
 {
+    [Authorize(Roles = "Admin")]
     public class DetailsModel : PageModel
     {
         private readonly ProductService _productService;
