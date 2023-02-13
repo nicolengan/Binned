@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Binned.Pages.User
 {
+    [IgnoreAntiforgeryToken]
     public class OrdersModel : PageModel
     {
         [BindProperty]
@@ -26,15 +27,25 @@ namespace Binned.Pages.User
             var user = await userManager.GetUserAsync(User);
             var username = user.UserName;
             OrderList = _orderService.GetOrderByUserId(username);
-            foreach (var i in OrderList)
-            {
-                _logger.LogInformation($"{i.Products}");
-                foreach (var b in i.Products)
-                {
-                    _logger.LogInformation($"{b.ProductName}");
-                }
-            }
             return Page();
         }
+        public async Task<ActionResult> OnGetOrderPartial(string status)
+        {
+            var user = await userManager.GetUserAsync(User);
+            var username = user.UserName;
+            if (status == "All Orders" || status == null)
+            {
+                //_logger.LogInformation("all orders");
+                OrderList = _orderService.GetOrderByUserId(username);
+            }
+            else if (status != null)
+            {
+                //_logger.LogInformation($"status not null {status}");
+                OrderList = _orderService.FilterOrder(username, status);
+                _logger.LogInformation($"length {OrderList.Count()}");
+            }
+            return Partial("_OrdersPartial", OrderList);
+        }
+
     }
 }

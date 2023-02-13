@@ -1,0 +1,17 @@
+﻿@page
+@model Binned.Pages.errors.custom404Model
+@{
+    ViewData["title"] = "Page does not exists";
+}
+<div class="container" style="text-align: center; color: #FF0000;">
+    <div class="row">
+        <div class="col-6">
+            <h1 style="font-size: 150px; color: #FF0000; margin-bottom: 0px;">404</h1>
+            <p style="font-size: 45px; ">We couldn't find this page.</p>
+        </div>
+        <div class="col-6">
+            <img src="~/./uploads/donpen.png" class="img-fluid w-100 h-100" />
+        </div>
+    </div>
+    <a class="row btn btn-secondary" asp-page="/Index">Head back to main page!</a>
+</div>

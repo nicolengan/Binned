@@ -8,8 +8,8 @@
         aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
 </button>
-<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-    <ul class="navbar-nav flex-grow-1">
+<div class="navbar-collapse collapse d-sm-inline-flex">
+    <ul class="navbar-nav">
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
         </li>
@@ -24,6 +24,22 @@
             </li>
         }
     </ul>
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="dropdown">
+            <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; color: black;">
+                Admin
+            </a>
+
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" asp-page="/Admin/Orders">Orders</a></li>
+                <li><a class="dropdown-item" asp-page="/Admin/Code/PromoCode">Code</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+        </div>
+    }
+    </div>
     <ul class="navbar-nav justify-content-end">
         <li class="nav-item d-flex align-items-center">
             <a class="" asp-area="" asp-page="/User/Wishlist"><i class="bi bi-suit-heart-fill h3 text-black-50"></i></a>
@@ -42,29 +58,29 @@
             <a id="manage" class="nav-link text-dark" asp-page="/Account/Manage/Dashboard" title="Manage">Hello @UserManager.GetUserName(User)!</a>
         </li>
 
-        <div class="dropdown d-flex align-items-center ms-2">
-            <a class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-fill h3"></i></a>
+            <div class="dropdown d-flex align-items-center ms-2">
+                <a class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-fill h3"></i></a>
 
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" asp-page="/User/Orders">My Orders</a></li>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" asp-page="/User/Orders">My Orders</a></li>
 
-                <li class="dropdown-item">
-                    <form id="logoutForm" class="form-inline" asp-area="" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-                        <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                    </form>
-                </li>
+                    <li class="dropdown-item">
+                        <form id="logoutForm" class="form-inline" asp-area="" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                            <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                        </form>
+                    </li>
 
-            </ul>
+                </ul>
 
-        </div>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" id="register" asp-area="" asp-page="/Account/Register">Register</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" id="login" asp-area="" asp-page="/Account/Login">Login</a>
-        </li>
-    }
-</ul>
+            </div>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" id="register" asp-area="" asp-page="/Account/Register">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" id="login" asp-area="" asp-page="/Account/Login">Login</a>
+            </li>
+        }
+    </ul>

@@ -1,6 +1,8 @@
+using Binned.Areas.Identity.Data;
 using Binned.Model;
 using Binned.Pages.Payment;
 using Binned.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -14,17 +16,27 @@ namespace Binned.Pages.User
         //public string Button { get; set; }
         private readonly OrderService _orderService;
         private readonly ILogger<OrderDetailsModel> _logger;
-        public OrderDetailsModel(OrderService orderService, ILogger<OrderDetailsModel> logger)
+        private readonly UserManager<BinnedUser> userManager;
+        public OrderDetailsModel(OrderService orderService, ILogger<OrderDetailsModel> logger, UserManager<BinnedUser> userManager)
         {
+            this.userManager = userManager;
             _orderService = orderService;
             _logger = logger;
         }
-        public IActionResult OnGet(string id)
+        public async Task<IActionResult> OnGet(string id)
         {
+            var user = await userManager.GetUserAsync(User);
             if (ModelState.IsValid)
             {
                 OneOrder = _orderService.GetOrderById(id);
-                return Page();
+                if (user.Email == OneOrder.UserId)
+                {
+                    return Page();
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden);
+                }
             }
             return Redirect("/Account/Orders");
 
