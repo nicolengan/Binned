@@ -4,35 +4,47 @@
     ViewData["Title"] = "Home page";
 }
 
-<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="img/about/carousel3.jpg" class="d-block " alt="...">
-        </div>
-        <div class="carousel-item">
-            <img src="img/about/carousel2.jpg" class="d-block " alt="...">
-        </div>
-        <div class="carousel-item">
-            <img src="img/about/carousel1.jpg" class="d-block " alt="...">
-        </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-</div>
+<head>
+     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<img src="~/uploads/carouselpic.png" />
 
 <!-- Container (The Band Section) -->
 <div id="band" class="container text-center">
     <p><em>Sustainablity is for everyone</em></p>
     <p></p>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <img class="card-img-top" src="" alt="">
+
+                <div class="card-body" style="background-color: #B7F1F9;">
+                    <h5 class="card-title">Shop Now</h5>
+                    <p class="card-text">
+                        Thrift from brands you love!
+                    </p>
+                    <a asp-page="/User/productDisplay" class="btn btn-outline-dark btn-sm">
+                        <i class="bi bi-cash"> Shop</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <img class="card-img-top" src="" alt="">
+
+                <div class="card-body" style="background-color: #F9B7F9;">
+                    <h5 class="card-title">Register</h5>
+                    <p class="card-text">
+                        Enjoy shopping now~
+                    </p>
+                    <a asp-page="/Account/Register" class="btn btn-outline-dark btn-sm">
+                        <i class="bi bi-door-open"> Register</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

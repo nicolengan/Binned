@@ -22,6 +22,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
+                            <th scope="col"></th>
                             <th scope="col">Product Name</th>
                             <th scope="col">Price</th>
                             <th> </th>
@@ -32,6 +33,13 @@
                         @foreach (var wishlistitem in Model.Wishlist.Items)
                         {
                             <tr>
+                                <td>
+                                    @if (wishlistitem.Product.ImageURL != null)
+                                    {
+                                        <img src="@wishlistitem.Product.ImageURL" alt="Poster" class="img-fluid"
+                                     onerror="this.src='/uploads/product.png'">
+                                    }
+                                </td>
                                 <td>@wishlistitem.Product.ProductName</td>
                                 <td>@wishlistitem.Product.ProductPrice</td>
                                 <td class="text-right">
@@ -44,10 +52,9 @@
                                 </td>
                                 <td class="text-right">
                                     <form asp-page-handler="RemoveFromWishlist" method="post">
-                                        <button class="btn btn-sm btn-info"><i class="bi bi-trash"></i></button>
+                                        <button type="submit" class="btn btn-sm btn-info"><i class="bi bi-trash h5"></i></button>
                                         <input type="hidden" asp-for="@wishlistitem.Id" name="wishlistItemId" />
                                     </form>
-
                                 </td>
                             </tr>
                         }
