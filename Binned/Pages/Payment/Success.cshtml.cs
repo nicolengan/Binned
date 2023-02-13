@@ -34,7 +34,6 @@ namespace Binned.Pages.Payment
             _wishlistService = wishlistService;
             _emailSender = emailSender;
             _emailSender = emailSender;
-            OurProduct.Availability = "N";
         }
         [BindProperty]
         public Cart Cart { get; set; }
@@ -54,6 +53,7 @@ namespace Binned.Pages.Payment
             Wishlist = await _wishlistService.GetWishlistByUserName(username);
 
             _orderService.UpdateStatusById(orderId, "Paid");
+            _cartService.UpdateAvailabilityById(orderId, "N");
             await _cartService.ClearCart(username);
             await _wishlistService.ClearCart(username);
 

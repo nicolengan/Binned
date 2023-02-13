@@ -2,6 +2,9 @@ using Binned.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Binned.Model;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Binned.Areas.Identity.Data;
 
 namespace Binned.Pages.Products
 {
