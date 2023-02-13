@@ -5,9 +5,11 @@ using Binned.Model;
 using Stripe;
 using Microsoft.Extensions.Logging;
 using Binned.Pages.Payment;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Binned.Pages.Products
 {
+    [Authorize(Roles = "Admin")]
     public class AddProductModel : PageModel
     {
         private readonly Services.ProductService _productService;

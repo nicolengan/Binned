@@ -2,9 +2,11 @@ using Binned.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Binned.Model;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Binned.Pages.Products
 {
+    [Authorize(Roles = "Admin")]
     public class IndexModel : PageModel
     {
         private readonly WishlistService _wishlistService;
@@ -35,6 +37,12 @@ namespace Binned.Pages.Products
         {
             await _wishlistService.AddItem("test", productId);
             return RedirectToPage("/User/Wishlist");
+        }
+        public async Task<IActionResult> OnPostDeleteProductAsync(Product product)
+        {
+            await _productService.RemoveItem(product);
+
+            return RedirectToPage("/Products/Index");
         }
     }
     

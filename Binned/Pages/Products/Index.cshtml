@@ -5,14 +5,28 @@
 }
 <h1 class="display-4">@ViewData["Title"]</h1>
 
-<table class="table mt-3">
+<table id="table"
+       class="table mt-3"
+       data-toggle="table"
+       data-search="true"
+       data-toolbar="#toolbar"
+       data-show-columns="true"
+       data-pagination="true"
+       data-sortable="true">
     <thead>
         <tr>
+            <th data-field="ProductId"><span name="productId">Product ID</span></th>
+            <th data-field="ProductName" data-sortable="true">Product Name</th>
+            <th data-field="ProductSize" data-sortable="true">Product Size</th>
+            <th data-field="ProductAvailability" data-sortable="true">Availability</th>
+            <th data-field="action"></th>
+        </tr>
+        @*<tr>
             <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductId)</th>
             <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductName)</th>
             <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductSize)</th>
             <th></th>
-        </tr>
+        </tr>*@
     </thead>
     <tbody>
         @{
@@ -22,8 +36,15 @@
                     <td>@item.ProductId</td>
                     <td>@item.ProductName</td>
                     <td>@item.ProductSize</td>
+                    <td>@item.Availability</td>
                     <td>
                         <a asp-page="/Products/Details" asp-route-id="@item.ProductId">View</a>
+                    </td>
+                    <td>
+                        <form asp-page-handler="DeleteProduct" method="post">
+                            <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash h5"></i></button>
+                            <input type="hidden" asp-for="@item.ProductId" name="productId" />
+                        </form>
                     </td>
                 </tr>
             }

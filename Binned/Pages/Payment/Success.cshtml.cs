@@ -25,6 +25,7 @@ namespace Binned.Pages.Payment
         private readonly IEmailSender _emailSender;
         private readonly ILogger<SuccessModel> _logger;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private Model.Product OurProduct { get; set; } = new();
 
         public SuccessModel(UserManager<BinnedUser> userManager, OrderService orderService, ILogger<SuccessModel> logger, CartService cartService, IEmailSender emailSender, IWebHostEnvironment webHostEnvironment)
         {
@@ -60,6 +61,8 @@ namespace Binned.Pages.Payment
                     pageHandler: "Email",
                     values: new { email = user.Email, orderId = orderId },
                     protocol: Request.Scheme);
+            _cartService.ClearCart(username);
+            OurProduct.Availability = "N";
 
             string FilePath = Directory.GetCurrentDirectory() + "\\Templates\\orderTemplate.html";
             StreamReader str = new StreamReader(FilePath);

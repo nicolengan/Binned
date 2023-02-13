@@ -26,7 +26,7 @@ namespace Binned.Pages.User
 
         public void OnGet()
         {
-            ProductList = _productService.GetAll();
+            ProductList = _productService.GetAvailProducts();
         }
 
         public async Task<IActionResult> OnPostAddToCartAsync(int productId)
