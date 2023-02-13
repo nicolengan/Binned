@@ -1,11 +1,24 @@
 ﻿@page
+@using Microsoft.AspNetCore.Identity
+@using Binned.Areas.Identity.Data
+
+@inject SignInManager<BinnedUser> SignInManager
 @model Binned.Pages.User.productDisplayModel
 @{
 }
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4"></main>
 <div class="container">
     <div class="container m-4">
         <div class="row">
+            @if (SignInManager.IsSignedIn(User) == false)
+            {
+                <div class="w3-panel w3-pale-yellow w3-border">
+                    <h3>Alert</h3>
+                    <p>Please Sign in to add into cart or wishlist!</p>
+                </div>
+            }
+
             @foreach (var item in Model.ProductList)
             {
                 <div class="col-sm-4">
@@ -30,20 +43,23 @@
                                 <p class="text" asp-for="@item.ProductPrice">$@item.ProductPrice</p>
                             </div>
                         </div>
-                        <div class="d-flex flex-row justify-content-end m-2">
-                                    <form asp-page-handler="AddToWishlist" method="post" name="addToWishlistForm" id="add_wishlist_form" class="mx-2">
-                                        <a href="javascript:;" onclick="parentNode.submit();" class="btn btn-outline-danger btn-sm">
-                                            <i class="bi bi-suit-heart-fill h5"></i>
-                                        </a>
-                                        <input type="hidden" asp-for="@item.ProductId" name="productId" />
-                                    </form>
-                                    <form asp-page-handler="AddToCart" method="post" name="addToCartForm" id="add_cart_form">
-                                        <a href="javascript:;" onclick="parentNode.submit();" class="btn btn-outline-primary btn-sm">
-                                            <i class="bi bi-basket2-fill h5"></i>
-                                        </a>
-                                        <input type="hidden" asp-for="@item.ProductId" name="productId" />
-                                    </form>
-                        </div>
+                        @if (SignInManager.IsSignedIn(User))
+                        {   
+                            <div class="d-flex flex-row justify-content-end m-2">
+                                <form asp-page-handler="AddToWishlist" method="post" name="addToWishlistForm" id="add_wishlist_form" class="mx-2">
+                                    <a href="javascript:;" onclick="parentNode.submit();" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-suit-heart-fill h5"></i>
+                                    </a>
+                                    <input type="hidden" asp-for="@item.ProductId" name="productId" />
+                                </form>
+                                <form asp-page-handler="AddToCart" method="post" name="addToCartForm" id="add_cart_form">
+                                    <a href="javascript:;" onclick="parentNode.submit();" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-basket2-fill h5"></i>
+                                    </a>
+                                    <input type="hidden" asp-for="@item.ProductId" name="productId" />
+                                </form>
+                            </div>
+                        }
                     </div>
                 </div>
 

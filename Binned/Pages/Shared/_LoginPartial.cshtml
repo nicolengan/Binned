@@ -22,31 +22,16 @@
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Orders">Admin</a>
             </li>
-        }
-    </ul>
-
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <div class="dropdown">
-            <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; color: black;">
-                Admin
-            </a>
-
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" asp-page="/Admin/Orders">Orders</a></li>
-                <li><a class="dropdown-item" asp-page="/Admin/Code/PromoCode">Code</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            @*signed in user*@
+            <ul class="navbar-nav justify-content-end">
+                <li class="nav-item d-flex align-items-center">
+                    <a class="" asp-area="" asp-page="/User/Wishlist"><i class="bi bi-suit-heart-fill h3 text-black-50"></i></a>
+                </li>
+                <li class="nav-item d-flex align-items-center ms-2">
+                    <a class="" asp-area="" asp-page="/User/Cart"><i class="bi bi-basket2-fill h3 text-black-50"></i></a>
+                </li>
             </ul>
-        </div>
-    }
-    </div>
-    <ul class="navbar-nav justify-content-end">
-        <li class="nav-item d-flex align-items-center">
-            <a class="" asp-area="" asp-page="/User/Wishlist"><i class="bi bi-suit-heart-fill h3 text-black-50"></i></a>
-        </li>
-        <li class="nav-item d-flex align-items-center ms-2">
-            <a class="" asp-area="" asp-page="/Cart"><i class="bi bi-basket2-fill h3 text-black-50"></i></a>
-        </li>
+        }
     </ul>
 
 </div>

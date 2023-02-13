@@ -28,7 +28,7 @@ namespace Binned.Pages.Products
         public async Task<IActionResult> OnPostAddToCartAsync(int productId)
         {
             await _cartService.AddItem("test", productId);
-            return RedirectToPage("/Cart");
+            return RedirectToPage("/User/Cart");
         }
 
         public async Task<IActionResult> OnPostAddToWishlistAsync(int productId)

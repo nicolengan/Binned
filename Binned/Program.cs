@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using static Binned.Pages.RegisterModel;
+using FluentAssertions.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -29,6 +30,10 @@ builder.Services.AddScoped<Binned.Services.ProductService>();
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<MyDbContext>();*/
 
+builder.Services.ConfigureApplicationCookie(Config =>
+{
+    Config.LoginPath = "/Login";
+});
 
 builder.Services.AddIdentity<BinnedUser, IdentityRole>(
 options =>
@@ -80,6 +85,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 
+// error pages 404
+app.UseStatusCodePagesWithRedirects("/errors/{0}");
 
 app.MapRazorPages();
 
