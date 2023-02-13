@@ -22,6 +22,7 @@ namespace Binned.Pages.Payment
         private readonly UserManager<BinnedUser> _userManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<SuccessModel> _logger;
+        private Model.Product OurProduct { get; set; } = new();
 
         public SuccessModel(UserManager<BinnedUser> userManager, OrderService orderService, ILogger<SuccessModel> logger, CartService cartService, IEmailSender emailSender)
         {
@@ -31,6 +32,7 @@ namespace Binned.Pages.Payment
             _cartService = cartService;
             _emailSender = emailSender;
             _emailSender = emailSender;
+            OurProduct.Availability = "N";
         }
         [BindProperty]
         public Cart Cart { get; set; }
