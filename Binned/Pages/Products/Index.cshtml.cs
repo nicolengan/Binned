@@ -2,11 +2,10 @@ using Binned.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Binned.Model;
-using Microsoft.AspNetCore.Identity;
-using Binned.Areas.Identity.Data;
 
 namespace Binned.Pages.Products
 {
+    [Authorize(Roles = "Admin")]
     public class IndexModel : PageModel
     {
         private readonly WishlistService _wishlistService;

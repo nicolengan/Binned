@@ -15,18 +15,11 @@
        data-sortable="true">
     <thead>
         <tr>
-            <th data-field="ProductId"><span name="productId">Product ID</span></th>
-            <th data-field="ProductName" data-sortable="true">Product Name</th>
-            <th data-field="ProductSize" data-sortable="true">Product Size</th>
-            <th data-field="ProductAvailability" data-sortable="true">Availability</th>
-            <th data-field="action"></th>
+            <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductId)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductName)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductSize)</th>
+            <th></th>
         </tr>
-        @*<tr>
-        <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductId)</th>
-        <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductName)</th>
-        <th>@Html.DisplayNameFor(model => model.ProductList[0].ProductSize)</th>
-        <th></th>
-        </tr>*@
     </thead>
     <tbody>
         @{

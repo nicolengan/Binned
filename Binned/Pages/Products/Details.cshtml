@@ -26,14 +26,6 @@
     <div class="row mb-3">
         <label class="col-sm-2 col-form-label" asp-for="OurProduct.ProductSize"></label>
         <div class="col-sm-10 d-flex align-items-center">
-            @*<div class="form-check form-check-inline">
-            @Html.RadioButtonFor(m => m.OurProduct.ProductSize, "XXS", new {@class = "form-check-input"})
-            <label class="form-check-label">XXS</label>
-            </div>
-            <div class="form-check form-check-inline">
-            @Html.RadioButtonFor(m => m.OurProduct.ProductSize, "XS", new {@class = "form-check-input"})
-            <label class="form-check-label">XS</label>
-            </div>*@
             <div class="form-check form-check-inline">
                 @Html.RadioButtonFor(m => m.OurProduct.ProductSize, "S", new {@class = "form-check-input"})
                 <label class="form-check-label">S</label>
@@ -109,6 +101,7 @@
         <a class="btn btn-secondary ms-2" href="/Products">Cancel</a>
     </div>
 </form>
+
 
 <script>
     function showImgPreview(input) {
