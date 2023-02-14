@@ -22,6 +22,7 @@ builder.Services.AddScoped<WishlistService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<Binned.Services.ProductService>();
+builder.Services.AddScoped<Binned.Services.AccountService>();
 
 
 /*builder.Services.AddDefaultIdentity<BinnedUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -90,6 +91,6 @@ using (var scope = app.Services.CreateScope())
     var roleMgr = services.GetRequiredService<RoleManager<IdentityRole>>();
 
 //    RolesManagement.Initialize(context, userMgr, roleMgr).Wait();
-//}
+}
 
 app.Run();

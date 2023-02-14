@@ -1,11 +1,13 @@
 using Binned.Model;
 using Binned.Pages.Payment;
 using Binned.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Binned.Pages.Admin
 {
+    [Authorize(Roles = "Admin")]
     public class DetailsModel : PageModel
     {
         private readonly OrderService _orderService;

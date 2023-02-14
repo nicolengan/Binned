@@ -19,9 +19,15 @@
 
         @if (SignInManager.IsSignedIn(User))
         {
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Orders">Admin</a>
-            </li>
+            <div class="dropdown d-flex align-items-center ms-2">
+                <a class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;color: black">Admin</a>
+
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" asp-page="/Admin/Orders">Orders</a></li>
+                    <li><a class="dropdown-item" asp-page="/Admin/Roles">Manage Roles</a></li>
+                </ul>
+
+            </div>
         }
     </ul>
     <ul class="navbar-nav justify-content-end">
