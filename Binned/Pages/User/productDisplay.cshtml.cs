@@ -33,7 +33,13 @@ namespace Binned.Pages.User
         {
             var user = await userManager.GetUserAsync(User);
             var username = user.UserName;
-            await _cartService.AddItem(username, productId);
+            var x = await _cartService.AddItem(username, productId);
+            if (x == false)
+            {
+                TempData["FlashMessage.Type"] = "danger";
+                TempData["FlashMessage.Text"] = "Item unavailable";
+                return RedirectToPage("/User/productDisplay");
+            }
             //await _cartService.AddItem("test", productId);
             return RedirectToPage("/User/Cart");
         }

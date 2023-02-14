@@ -79,7 +79,7 @@ namespace Binned.Services
                 .ToList();
         }
 
-        public async Task AddItem(string userName, int productId)
+        public async Task<bool> AddItem(string userName, int productId)
         {
 
             var cart = await GetCartByUserName(userName);
@@ -98,11 +98,14 @@ namespace Binned.Services
                            Price = product.ProductPrice
                        }
                     );
+                    _context.SaveChanges();
+                    return true;
                 }
             }
             _context.SaveChanges();
+            return false;
         }
-       
+
 
         public void UpdateAvailabilityById(string id, string status)
         {
