@@ -1,5 +1,6 @@
 ﻿using Binned.Model;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Specialized;
 
 namespace Binned.Services
 {
@@ -24,7 +25,7 @@ namespace Binned.Services
 
             if (cart != null)
                 return cart;
-
+                
             // if it is first attempt create new
             var newCart = new Cart
             {
@@ -40,6 +41,13 @@ namespace Binned.Services
             CartItem? item = _context.CartItems.FirstOrDefault(x => x.Id.Equals(id));
             return item;
 
+
+        }
+
+        public Cart? GetCartIDByUsername(string Username)
+        {
+            Cart? item = _context.Carts.FirstOrDefault(x => x.UserName.Equals(Username));
+            return item;
         }
 
         public CartItem? GetCartItemByProductId(int id)
@@ -56,12 +64,23 @@ namespace Binned.Services
 
         }
 
+        public Order? GetOrderStatusByStatus(string status)
+        {
+            //getting order status column
+            Order? itemstatus = _context.Orders.FirstOrDefault(x => x.Status.Equals(status));
+            return itemstatus;
+
+        }
+
+
         public async Task AddItem(string userName, int productId)
         {
 
             var cart = await GetCartByUserName(userName);
             Product product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
             var itemexist = _context.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
+            var Avail = product.Availability;
+
 
             if (itemexist == null)
             {
@@ -82,6 +101,15 @@ namespace Binned.Services
             var cartitem = GetCartItemById(CartItemId);
 
             _context.CartItems.Remove(cartitem);
+
+            await _context.SaveChangesAsync();
+        }
+        public async Task ClearCart(string userName)
+        {
+            var cart = await GetCartByUserName(userName);
+            var cartitem =  GetCartIDByUsername(userName); 
+            cart.Items.Clear();
+            cartitem.Items.Clear();
 
             await _context.SaveChangesAsync();
         }

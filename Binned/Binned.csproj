@@ -17,12 +17,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Moment.js" Version="2.29.4" />
     <PackageReference Include="RestSharp" Version="108.0.3" />
     <PackageReference Include="Stripe.net" Version="41.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Pages\Payment\Payment.cshtml" />
     <None Include="Pages\Payment\Failure.cshtml" />
     <None Include="Pages\Payment\Success.cshtml" />
   </ItemGroup>

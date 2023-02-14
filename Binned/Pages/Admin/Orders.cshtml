@@ -3,39 +3,49 @@
 @{
     ViewData["Title"] = "All Orders";
 }
-@*<table id="table">
-    <thead>
-        <tr>
-            <th data-field="orderId">Order ID</th>
-            <th data-field="UserId">Item Name</th>
-            <th data-field="price">Item Price</th>
-        </tr>
-    </thead>
-</table>*@
-@*<script>
-    var $table = $('#table')
+<div class="row my-5 m-3">
 
-    $(function () {
-        var data = @Model.jsonString
-        $table.bootstrapTable({ data: data })
-    })
-</script>*@
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                Total Orders<br>
+                @Model.TotalOrders.Count() | <span id="increase">@Model.increase</span><span id="sign">%</span>
 
-
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                Pending Orders<br>
+                @Model.TotalOrders.Where(item => item.Status != "Delivered").Count()
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                Delivered Orders<br>
+                @Model.TotalOrders.Where(item => item.Status == "Delivered").Count()
+            </div>
+        </div>
+    </div>
+</div>
+<div id="toolbar">
+    <button id="thisMonth" class="btn btn-secondary">This Month</button>
+    <button id="lastMonth" class="btn btn-secondary">Last Month</button>
+    <button id="reset" class="btn btn-secondary">Reset</button>
+</div>
 <table id="table"
        class="table mt-3"
        data-toggle="table"
        data-search="true"
+       data-toolbar="#toolbar"
        data-show-columns="true"
        data-pagination="true"
        data-sortable="true">
     <thead>
         <tr>
-@*            <th>@Html.DisplayNameFor(model => model.OrderList[0].OrderId)</th>
-            <th>@Html.DisplayNameFor(model => model.OrderList[0].UserId)</th>
-            <th>@Html.DisplayNameFor(model => model.OrderList[0].OrderDate)</th>
-            <th>@Html.DisplayNameFor(model => model.OrderList[0].Status)</th>
-            <th></th>*@
             <th data-field="OrderId"><span name="orderId">Order ID</span></th>
             <th data-field="UserId" data-sortable="true">Email</th>
             <th data-field="OrderDate" data-sortable="true">Order Date</th>
@@ -46,7 +56,7 @@
     </thead>
     <tbody>
         @{
-            @foreach (var item in Model.OrderList)
+            @foreach (var item in Model.TotalOrders)
             {
                 <tr>
 
@@ -54,9 +64,7 @@
                     <td>@item.UserId</td>
                     <td>@item.OrderDate.ToShortDateString()</td>
                     <td>@item.Status</td>
-                    <td >@item.Amount</td>
-
-
+                    <td>@item.Amount</td>
                     <td>
                         <a asp-page="/Admin/Details" asp-route-id="@item.OrderId">View</a>
                     </td>
@@ -67,3 +75,56 @@
     </tbody>
 </table>
 
+<script>
+    $(document).ready(function () {
+        console.log("ready!");
+        var element = $("#increase")
+        var text = element.text()
+        console.log("text " + text)
+        if (text > 0) {
+            element.css('color', 'green')
+            $("#sign").css('color', 'green')
+
+        }
+        else if (text < 0) {
+            element.css('color', 'red')
+            $("#sign").css('color', 'red')
+
+        }
+    })
+
+    $(function () {
+        var month = moment().month();
+
+        var $table = $('#table')
+        var $reset = $('#reset')
+        var $thisMonth = $('#thisMonth')
+        var $lastMonth = $('#lastMonth')
+
+        $thisMonth.click(function () {
+            $table.bootstrapTable('filterBy', {}, {
+                'filterAlgorithm': (row, filters) => {
+                    console.log("this")
+                    var date = row.OrderDate
+                    var currMonth = moment(date, 'YYYY/MM/DD').month()
+                    console.log(currMonth)
+                    return currMonth === month
+                }
+            })
+        })
+        $lastMonth.click(function () {
+            $table.bootstrapTable('filterBy', {}, {
+                'filterAlgorithm': (row, filters) => {
+                    console.log("last")
+                    var date = row.OrderDate
+                    var currMonth = moment(date, 'YYYY/MM/DD').month()
+                    console.log(currMonth)
+                    return currMonth === month - 1
+                }
+            })
+        })
+        $reset.click(function () {
+            location.reload();
+        })
+    })
+</script>

@@ -2,6 +2,8 @@ using Binned.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Binned.Model;
+using Binned.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace Binned.Pages.User
 {
@@ -10,8 +12,10 @@ namespace Binned.Pages.User
         private readonly WishlistService _wishlistService;
         private readonly CartService _cartService;
         private readonly ProductService _productService;
-        public productDisplayModel(ProductService productService, CartService cartService, WishlistService wishlistService)
+        private readonly UserManager<BinnedUser> userManager;
+        public productDisplayModel(UserManager<BinnedUser> userManager, ProductService productService, CartService cartService, WishlistService wishlistService)
         {
+            this.userManager = userManager;
             _wishlistService = wishlistService;
             _cartService = cartService;
             _productService = productService;
@@ -27,13 +31,18 @@ namespace Binned.Pages.User
 
         public async Task<IActionResult> OnPostAddToCartAsync(int productId)
         {
-            await _cartService.AddItem("test", productId);
-            return RedirectToPage("/Cart");
+            var user = await userManager.GetUserAsync(User);
+            var username = user.UserName;
+            await _cartService.AddItem(username, productId);
+            //await _cartService.AddItem("test", productId);
+            return RedirectToPage("/User/Cart");
         }
 
         public async Task<IActionResult> OnPostAddToWishlistAsync(int productId)
         {
-            await _wishlistService.AddItem("test", productId);
+            var user = await userManager.GetUserAsync(User);
+            var username = user.UserName;
+            await _wishlistService.AddItem(username, productId);
             return RedirectToPage("/User/Wishlist");
         }
     }

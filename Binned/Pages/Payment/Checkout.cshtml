@@ -1,5 +1,6 @@
 ﻿@page
 @model Binned.Pages.Payment.CheckoutModel
+@Html.AntiForgeryToken()
 @{
     ViewData["Title"] = "Your cart";
     // add validation https://learn.microsoft.com/en-us/aspnet/web-pages/overview/ui-layouts-and-themes/validating-user-input-in-aspnet-web-pages-sites
@@ -10,7 +11,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
-                    <li class="breadcrumb-item"><a asp-page="/Cart">Cart</a></li>
+                    <li class="breadcrumb-item"><a asp-page="/User/Cart">Cart</a></li>
                     <li class="breadcrumb-item active" aria-current="page">CheckOut</li>
                 </ol>
             </nav>
@@ -24,7 +25,7 @@
                 <span class="text-muted">@ViewData["Title"]</span>
                 @*<span class="badge badge-secondary badge-pill">@Model.OneCart.Items.Count</span>*@
             </h4>
-            <ul class="list-group mb-3 sticky-top">
+            <ul id="myList" class="list-group mb-3 sticky-top">
                 @foreach (var item in Model.OneCart.Items)
                 {
                     <li class="list-group-item d-flex justify-content-between lh-condensed">
@@ -48,34 +49,26 @@
                 </div>
                 <span class="text-muted">$5</span>
                 </li>*@
-                @*                <li class="list-group-item d-flex justify-content-between bg-light">
-                <div class="text-success">
-                <h6 class="my-0">Promo code</h6>
-                <small>EXAMPLECODE</small>
-                </div>
-                <span class="text-success">-$5</span>
-                </li>*@
-                <li class="list-group-item d-flex justify-content-end">
+                <li id="totalList" class="list-group-item d-flex justify-content-end">
                     <span class="mx-2">Total (SGD)</span>
-                    
-                    <strong>$@Model.OneCart.TotalPrice</strong>
-                    
+
+                    <strong id="totalBefore">$@Model.OneCart.TotalPrice</strong>
+
                 </li>
             </ul>
-@*            <form class="card p-2">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Promo code">
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-secondary">Redeem</button>
-                    </div>
+            <div class="input-group">
+                <input id="code" type="text" class="form-control" placeholder="Promo code">
+                <div class="input-group-append">
+                    <button id="redeem" class="btn btn-secondary">Redeem</button>
                 </div>
-            </form>*@
+            </div>
         </div>
         <div class="col-md-8 order-md-1">
             <h4 class="mb-3">Billing address</h4>
             <form method="post">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="row">
+                    <input id="totalAfter" asp-for="totalAmt" type="hidden" />
                     <div class="col-md-6 mb-3">
                         <label for="firstName">First name</label>
                         <input type="text" class="form-control" asp-for="ShippingInfo.FirstName">
@@ -107,18 +100,10 @@
                     <input type="text" value="" class="form-control" placeholder="123456" asp-for="ShippingInfo.PostalCode">
                     <span asp-validation-for="ShippingInfo.PostalCode" class="text-danger"></span>
                 </div>
-@*                <hr class="mb-4">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input">
-                    <label class="custom-control-label" for="same-address">Shipping address is the same as my billing address</label>
-                </div>
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input">
-                    <label class="custom-control-label" for="save-info">Save this information for next time</label>
-                </div>*@
 
                 <hr class="mb-4">
-                @if (@Model.OneCart.TotalPrice > 0) {
+                @if (@Model.OneCart.TotalPrice > 0)
+                {
                     <button type="submit" class="btn btn-primary btn-lg btn-block">Continue to checkout</button>
                 }
                 else
@@ -130,7 +115,41 @@
         </div>
     </div>
 </div>
-
+<script>
+    var val1
+    $("#redeem").click(function () {
+        val1 = $("#code").val()
+        console.log(val1)
+        $.ajax({
+            type: "GET",
+            url: "/Payment/Checkout?handler=Code",
+            data: { name: val1 },
+            dataType: "text",
+            headers: {
+                RequestVerificationToken:
+                    $('input:hidden[name="__RequestVerificationToken"]').val()
+            }
+        }).done(function (result) {
+            obj = JSON.parse(result);
+            var discount = obj["code"]
+            if (discount != 0) {
+                if (!$('#promoItem').length) {
+                    $("#myList").find(' > li:nth-last-child(1)').before('<li id="promoItem" class="list-group-item d-flex justify-content-between bg-light"><div class="text-success"><h6 class="my-0">Promo code</h6><small id="codetext">EXAMPLECODE</small></div><span id="discountValue" class="text-success">-$5</span></li>')
+                }
+                var total = @Model.OneCart.TotalPrice
+                $('#discountValue').text("-$" + (discount * total).toFixed(2))
+                total = (total * (1 - discount)).toFixed(2)
+                $('#totalBefore').text("$" + total)
+                $('#codetext').text(val1)
+                $('#totalAfter').val(total)
+                $('#redeem').addClass('disabled');
+            }
+        });
+    });
+    $('#code').keyup(function () {
+        $('#redeem').removeClass('disabled')
+    });
+</script>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
