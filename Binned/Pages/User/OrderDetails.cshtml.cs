@@ -6,14 +6,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Stripe;
 
 namespace Binned.Pages.User
 {
     [Authorize]
     public class OrderDetailsModel : PageModel
     {
-        [BindProperty]
-        public Order? OneOrder { get; set; }
         //[BindProperty]
         //public string Button { get; set; }
         private readonly OrderService _orderService;
@@ -25,12 +24,21 @@ namespace Binned.Pages.User
             _orderService = orderService;
             _logger = logger;
         }
+        [BindProperty]
+        public Order? OneOrder { get; set; }
+        [BindProperty]
+        public string subtotal { get; set; }
         public async Task<IActionResult> OnGet(string id)
         {
             var user = await userManager.GetUserAsync(User);
             if (ModelState.IsValid)
             {
                 OneOrder = _orderService.GetOrderById(id);
+                _logger.LogInformation(OneOrder.PromoCode?.Name);
+                foreach (var products in OneOrder.Products)
+                {
+                    subtotal += products.ProductPrice;
+                }
                 if (user.Email == OneOrder.UserId)
                 {
                     return Page();

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Binned.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230210163546_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230214024916_EditedOrder")]
+    partial class EditedOrder
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -128,7 +128,7 @@ namespace Binned.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CartId")
+                    b.Property<int>("CartId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -175,6 +175,9 @@ namespace Binned.Migrations
                     b.Property<int>("PostalCode")
                         .HasColumnType("int");
 
+                    b.Property<int?>("PromoCodeId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("ShipDate")
                         .HasColumnType("date");
 
@@ -187,6 +190,8 @@ namespace Binned.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("OrderId");
+
+                    b.HasIndex("PromoCodeId");
 
                     b.ToTable("Orders");
                 });
@@ -238,9 +243,8 @@ namespace Binned.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("date");
@@ -248,8 +252,12 @@ namespace Binned.Migrations
                     b.Property<double>("Discount")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("ExpireDate")
+                    b.Property<DateTime>("ExpiryDate")
                         .HasColumnType("date");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -453,9 +461,11 @@ namespace Binned.Migrations
 
             modelBuilder.Entity("Binned.Model.CartItem", b =>
                 {
-                    b.HasOne("Binned.Model.Cart", null)
+                    b.HasOne("Binned.Model.Cart", "Cart")
                         .WithMany("Items")
-                        .HasForeignKey("CartId");
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Binned.Model.Product", "Product")
                         .WithMany()
@@ -463,7 +473,18 @@ namespace Binned.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Cart");
+
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Binned.Model.Order", b =>
+                {
+                    b.HasOne("Binned.Model.PromoCode", "PromoCode")
+                        .WithMany()
+                        .HasForeignKey("PromoCodeId");
+
+                    b.Navigation("PromoCode");
                 });
 
             modelBuilder.Entity("Binned.Model.WishlistItem", b =>

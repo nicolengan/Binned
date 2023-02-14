@@ -22,6 +22,7 @@ namespace Binned.Services
         public Order? GetOrderById(string id)
         {
             Order? order = _context.Orders
+                .Include(i => i.PromoCode)
                 .Include(i => i.Products)
                 .FirstOrDefault(x => x.OrderId.Equals(id));
             return order;
@@ -30,6 +31,7 @@ namespace Binned.Services
         public List<Order> GetOrderByUserId(string userId)
         {
             return _context.Orders
+                .Include(i => i.PromoCode)
                 .Include(i => i.Products)
                 .Where(item => item.UserId == userId)
                 .OrderByDescending(p => p.OrderDate)

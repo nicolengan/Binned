@@ -172,6 +172,9 @@ namespace Binned.Migrations
                     b.Property<int>("PostalCode")
                         .HasColumnType("int");
 
+                    b.Property<int?>("PromoCodeId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("ShipDate")
                         .HasColumnType("date");
 
@@ -184,6 +187,8 @@ namespace Binned.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("OrderId");
+
+                    b.HasIndex("PromoCodeId");
 
                     b.ToTable("Orders");
                 });
@@ -468,6 +473,15 @@ namespace Binned.Migrations
                     b.Navigation("Cart");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Binned.Model.Order", b =>
+                {
+                    b.HasOne("Binned.Model.PromoCode", "PromoCode")
+                        .WithMany()
+                        .HasForeignKey("PromoCodeId");
+
+                    b.Navigation("PromoCode");
                 });
 
             modelBuilder.Entity("Binned.Model.WishlistItem", b =>

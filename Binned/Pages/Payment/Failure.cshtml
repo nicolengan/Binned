@@ -1,5 +1,18 @@
 ﻿@page
 @model Binned.Pages.Payment.FailureModel
 @{
+    ViewData["Title"] = "Failure";
 }
-<h1>Unsuccessful</h1>
+
+<div class="container" style="text-align: center; color: #FF0000;">
+    <div class="row">
+        <div class="col-6">
+            <h1 style="font-size: 75px; margin-bottom: 0px;">Payment unsuccessful</h1>
+            <p style="font-size: 45px; ">Your order has been marked as "To Pay". Please attempt to make your payment again.</p>
+        </div>
+        <div class="col-6">
+            <img src="~/./uploads/donpen_happy.png" class="img-fluid w-100 h-100" />
+        </div>
+    </div>
+    <a class="row btn btn-secondary" asp-page="/User/Orders">Head back to orders page!</a>
+</div>

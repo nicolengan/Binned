@@ -119,7 +119,6 @@ namespace Binned.Pages.Payment
             {
                 ProductList.Add(i.Product);
             }
-
             NewOrder = new Order
             {
                 OrderId = RandomString(10),
@@ -133,6 +132,13 @@ namespace Binned.Pages.Payment
                 LastName = ShippingInfo.LastName,
                 Amount = totalAmt
             };
+            var name = TempData["code"].ToString();
+            if (name != null)
+            {
+                var code = _codeService.GetCodeByName(name);
+                NewOrder.PromoCode = code;
+                _logger.LogInformation(code.Name);
+            }
 
             _orderService.AddOrder(NewOrder);
 
@@ -164,6 +170,7 @@ namespace Binned.Pages.Payment
                     // maybe add customer email so they dont have to retype
                   },
                 },
+                    CustomerEmail = user.Email,
                     Mode = "payment",
                     SuccessUrl = $"{domain}/Payment/Success",
                     CancelUrl = $"{domain}/Payment/Failure",

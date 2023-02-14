@@ -88,21 +88,22 @@ namespace Binned.Services
             var wishlist = await GetWishlistByUserName(userName);
             Product product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
             var itemexist = _context.WishlistItems.FirstOrDefault(ci => ci.ProductId == productId);
+            var Avail = product.Availability;
 
-            if (itemexist == null)
+            if (Avail == "Y")
             {
-                wishlist.Items.Add(
-                   new WishlistItem
-                   {
-                       ProductId = productId,
-                       Price = product.ProductPrice
-                   }
-                );
+                if (itemexist == null)
+                {
+                    wishlist.Items.Add(
+                       new WishlistItem
+                       {
+                           ProductId = productId,
+                           Price = product.ProductPrice
+                       }
+                    );
+                }
             }
-            else
-            {
 
-            }
             _context.SaveChanges();
         }
 
