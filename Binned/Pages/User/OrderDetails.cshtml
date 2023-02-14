@@ -104,6 +104,11 @@
             <div class="row my-3 me-5 d-flex flex-row justify-content-end h5">
                 Total: $@Model.OneOrder.Amount
             </div>
+            <script>
+                var total = @Model.OneOrder.PromoCode?.Discount * @Model.subtotal
+                    console.log(total)
+                $("#total").append("-$" + total.toFixed(2))
+            </script>
         }
         else
         {
@@ -115,12 +120,3 @@
 
     </div>
 </div>
-
-<script>
-    if (@Model.subtotal != null) {
-        var total = @Model.OneOrder.PromoCode.Discount * @Model.subtotal
-            console.log(total)
-        $("#total").append("-$" + total.toFixed(2))
-    }
-
-</script>
