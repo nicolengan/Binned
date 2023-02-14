@@ -64,36 +64,63 @@ namespace Binned.Services
 
         }
 
-        public Order? GetOrderStatusByStatus(string status)
+        public Order? GetOrderIdByUsername(string UN)
         {
             //getting order status column
-            Order? itemstatus = _context.Orders.FirstOrDefault(x => x.Status.Equals(status));
-            return itemstatus;
+            Order? item = _context.Orders.FirstOrDefault(x => x.UserId.Equals(UN));
+            return item;
 
         }
-
+        public List<Order> GetOrderByUserId(string userId)
+        {
+            return _context.Orders
+                .Include(i => i.Products)
+                .Where(item => item.UserId == userId)
+                .ToList();
+        }
 
         public async Task AddItem(string userName, int productId)
         {
 
             var cart = await GetCartByUserName(userName);
             Product product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
-            var itemexist = _context.CartItems.Include(c => c.Cart).Where(x => x.Cart.UserName == userName).FirstOrDefault(ci => ci.ProductId == productId);
+            var itemexist = _context.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
             var Avail = product.Availability;
 
-
-            if (itemexist == null)
+            if (Avail == "Y")
             {
-                cart.Items.Add(
-                   new CartItem
-                   {
-                       ProductId = productId,
-                       Price = product.ProductPrice
-                   }
-                );
+                if (itemexist == null)
+                {
+                    cart.Items.Add(
+                       new CartItem
+                       {
+                           ProductId = productId,
+                           Price = product.ProductPrice
+                       }
+                    );
+                }
+            }
+            _context.SaveChanges();
+        }
+       
+
+        public void UpdateAvailabilityById(string id, string status)
+        {
+            var current = _context.Orders
+                .Include(item => item.Products)
+                 .FirstOrDefault(item => item.OrderId == id);
+            var productList = current?.Products;
+
+            foreach (var i in productList)
+            {
+                if (productList != null)
+                {
+                    i.Availability = status;
+
+                    _context.SaveChanges();
+                }
             }
 
-            _context.SaveChanges();
         }
 
         public async Task RemoveItem(int CartItemId)

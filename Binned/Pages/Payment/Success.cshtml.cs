@@ -3,12 +3,10 @@ using Binned.Model;
 using Binned.Pages.Admin;
 using Binned.Services;
 using FluentAssertions.Equivalency;
-using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using sib_api_v3_sdk.Model;
 using Stripe;
 using Stripe.Checkout;
 using System.Net.Mail;
@@ -25,10 +23,9 @@ namespace Binned.Pages.Payment
         private readonly UserManager<BinnedUser> _userManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<SuccessModel> _logger;
-        private readonly IWebHostEnvironment _webHostEnvironment;
         private Model.Product OurProduct { get; set; } = new();
 
-        public SuccessModel(UserManager<BinnedUser> userManager, OrderService orderService, ILogger<SuccessModel> logger, CartService cartService, WishlistService wishlistService, IEmailSender emailSender, IWebHostEnvironment webHostEnvironment)
+        public SuccessModel(UserManager<BinnedUser> userManager, OrderService orderService, ILogger<SuccessModel> logger, CartService cartService, WishlistService wishlistService, IEmailSender emailSender)
         {
             _orderService = orderService;
             _logger = logger;
@@ -36,17 +33,13 @@ namespace Binned.Pages.Payment
             _cartService = cartService;
             _wishlistService = wishlistService;
             _emailSender = emailSender;
-            _webHostEnvironment = webHostEnvironment;
-            OurProduct.Availability = "N";
+            _emailSender = emailSender;
         }
         [BindProperty]
         public Cart Cart { get; set; }
         public Wishlist Wishlist { get; set; }
         public async Task<IActionResult> OnGet()
         {
-            TempData["FlashMessage.Type"] = "success";
-            TempData["FlashMessage.Text"] = "Payment successful, confirmation sent to your email.";
-
             var orderId = TempData["id"].ToString();
 
             _logger.LogInformation($"orderId: {orderId}");
@@ -58,27 +51,32 @@ namespace Binned.Pages.Payment
             Cart = await _cartService.GetCartByUserName(username);
 
             Wishlist = await _wishlistService.GetWishlistByUserName(username);
-            _orderService.UpdateStatusById(orderId, "To Ship");
+
+            _orderService.UpdateStatusById(orderId, "Paid");
+            _cartService.UpdateAvailabilityById(orderId, "N");
             await _cartService.ClearCart(username);
             await _wishlistService.ClearCart(username);
 
             var orderUrl = Url.Page(
                     "/User/OrderDetails",
-                    pageHandler: "Email",
+            pageHandler: null,
                     values: new { email = user.Email, orderId = orderId },
                     protocol: Request.Scheme);
-            _cartService.ClearCart(username);
-            OurProduct.Availability = "N";
 
-            string FilePath = Directory.GetCurrentDirectory() + "\\Templates\\orderTemplate.html";
-            StreamReader str = new StreamReader(FilePath);
-            string MailText = str.ReadToEnd();
-            str.Close();
-            MailText = MailText.Replace("[username]", user.FirstName).Replace("[ViewOrder]", HtmlEncoder.Default.Encode(orderUrl));
+            byte[] fileContent = System.IO.File.ReadAllBytes(@"wwwroot/uploads/EmailImage.png");
+            string base64 = Convert.ToBase64String(fileContent);
+
+            var htmlMsg = @$"<html><body><h1>Your order has been confirmed!<img src=""data:image/png;base64,{base64}"" alt=""Confirmation Image""><br>Please allow up to 3-5 days processing time before your order ships. You will receive a shipment confirmation email when your order has shipped from our warehouse. Thank you for your patience.<br>
+                </h1><a href='{HtmlEncoder.Default.Encode(orderUrl)}'>Click here</a></h1></body>";
+
 
             var subject = "Order Confirmation";
-            await _emailSender.SendEmailAsync(user.Email, subject, MailText);
+            await _emailSender.SendEmailAsync(user.Email, subject, htmlMsg);
             _logger.LogInformation("Order confirmation sent");
+
+            TempData["FlashMessage.Type"] = "success";
+            TempData["FlashMessage.Text"] = "Order confirmation sent to your email.";
+
             return Page();
         }
     }
