@@ -76,12 +76,12 @@ namespace Binned.Pages
 
             [Required]
             [StringLength(255)]
-            [Display(Name = "Firstname")]
+            [Display(Name = "First Name")]
             public string FirstName { get; set; }
 
             [Required]
             [StringLength(255)]
-            [Display(Name = "Lastname")]
+            [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
 
@@ -109,12 +109,13 @@ namespace Binned.Pages
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
+            [Display(Name = "Confirm Password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string? ConfirmPassword { get; set; }
 
+
             [DataType(DataType.Text)]
-            [Display(Name = "Admin Number")]
+            [Display(Name = "Admin Number (Enter 0 if don't have)")]
             public string AdmNo { get; set; }
         }
 
@@ -222,7 +223,7 @@ namespace Binned.Pages
                     }*/
 
                     //Add users to role, incomplete
-                    if (Input.AdmNo == "211717C")
+                    if (Input.AdmNo.ToLower() == "211717c" || Input.AdmNo.ToLower() == "214247c"|| Input.AdmNo.ToLower() == "213041g"|| Input.AdmNo.ToLower() == "213270u")
                     {
                         result = await _userManager.AddToRoleAsync(user, "Admin");
                     }

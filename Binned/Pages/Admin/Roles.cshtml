@@ -1,0 +1,39 @@
+﻿@page
+@model Binned.Pages.Admin.RolesModel
+@{
+    ViewData["Title"] = "Manage Roles";
+}
+
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            @*<!--<th>@Html.DisplayNameFor(model => model.AccountList[0].FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.AccountList[0].LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.AccountList[0].Email)</th>-->*@
+            <th>@Html.DisplayNameFor(model => model.RoleList[0].Email)</th>
+            <th>@Html.DisplayNameFor(model => model.RoleList[0].Role)</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            @foreach (var role in Model.RoleList)
+            {
+                <tr>
+                    @*<!--<td>@item.FirstName</td>
+                    <td>@item.LastName</td>
+                    <td>@item.Email</td>-->*@
+
+                    <td>@role.Email</td>
+                    <td>@role.Role</td>
+
+
+                    <td>
+                        <a asp-page="/Admin/AccountDetails" asp-route-id="@role.Id">View</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
