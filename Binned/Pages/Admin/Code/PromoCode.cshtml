@@ -42,7 +42,7 @@
                     </td>
                 </tr>
             }
-        }
+        }   
     </tbody>
 </table>
 
@@ -118,6 +118,19 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Active</label>
+                        <div class="col-sm-10">
+                            <div class="form-check form-check-inline">
+                                <input type="radio" id="ActiveTrue" class="form-check-input" asp-for="EditInput.Active" value="True">
+                                <label class="form-check-label">True</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" id="ActiveFalse" class="form-check-input" asp-for="EditInput.Active" value="False">
+                                <label class="form-check-label">False</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label class="col-sm-2 col-form-label">Discount</label>
                         <div class="col-sm-10">
                             <input type="range" id="editPercentage" class="form-range" min="0" max="100" step="5" oninput="this.nextElementSibling.value = this.value + '%'">
@@ -153,7 +166,7 @@
                 valid = false
             }
         });
-        if (valid){
+        if (valid) {
             console.log("hi")
             $('#form').submit();
         }
@@ -212,4 +225,4 @@
 @section Scripts
     {
     @*<script></script>*@
-}
+    }

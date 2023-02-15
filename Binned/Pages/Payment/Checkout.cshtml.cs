@@ -132,7 +132,7 @@ namespace Binned.Pages.Payment
                 LastName = ShippingInfo.LastName,
                 Amount = totalAmt
             };
-            var name = TempData["code"].ToString();
+            var name = TempData["code"]?.ToString();
             if (name != null)
             {
                 var code = _codeService.GetCodeByName(name);
@@ -141,6 +141,7 @@ namespace Binned.Pages.Payment
             }
 
             _orderService.AddOrder(NewOrder);
+            _cartService.UpdateAvailabilityById(NewOrder.OrderId, "N");
 
             var port = HttpContext.Features.Get<IHttpConnectionFeature>()?.LocalPort;
             var domain = $"https://localhost:{port}";

@@ -24,6 +24,7 @@ namespace Binned.Pages
         }
 
         public Model.Cart Cart { get; set; } = new Model.Cart();
+        public bool valid { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -31,6 +32,21 @@ namespace Binned.Pages
             var username = user.UserName;
             Cart = await _cartService.GetCartByUserName(username);
             Console.WriteLine(username);
+
+            foreach (var i in Cart.Items)
+            {
+                if (i.Product.Availability == "N")
+                {
+                    Console.WriteLine(i.Product.Availability);
+                    valid = false;
+                    Console.WriteLine(valid);
+                }
+                else
+                {
+                    valid = true;
+                }
+            }
+
             return Page();
         }
         public async Task<IActionResult> OnPostRemoveFromCartAsync(int CartItemId)

@@ -69,7 +69,7 @@
                 <div class="col-sm-12  col-md-6">
                     <a asp-page="/User/productDisplay" class="btn btn-primary">Continue Shopping</a>
                 </div>
-                @if (Model.Cart.Items.Count != 0)
+                @if (Model.Cart.Items.Count != 0 && Model.valid)
                 {
                     <div class="col-sm-12 col-md-6 text-right">
                         <a asp-page="/Payment/Checkout" class="btn btn-primary">Check Out</a>

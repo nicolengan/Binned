@@ -20,13 +20,9 @@ namespace Binned.Services
             foreach (var code in codeList)
             {
                 int result = DateTime.Compare(code.ExpiryDate, DateTime.Now);
-                if (result < 0)
+                if (result < 0 && code.Active == true)
                 {
                     code.Active = false;
-                }
-                else if (result > 0)
-                {
-                    code.Active = true;
                 }
                 _context.SaveChanges();
             }

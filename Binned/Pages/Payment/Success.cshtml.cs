@@ -54,6 +54,7 @@ namespace Binned.Pages.Payment
 
             _orderService.UpdateStatusById(orderId, "To Ship");
             _cartService.UpdateAvailabilityById(orderId, "N");
+            OurProduct.Availability = "N";
             await _cartService.ClearCart(username);
             await _wishlistService.ClearCart(username);
 

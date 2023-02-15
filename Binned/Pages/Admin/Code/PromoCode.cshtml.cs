@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Stripe;
+using Microsoft.Extensions.Logging;
 
 namespace Binned.Pages.Admin.Code
 {
@@ -29,8 +30,8 @@ namespace Binned.Pages.Admin.Code
         public AddInput AddInput { get; set; }
         [BindProperty]
         public EditInput? EditInput { get; set; }
-        public PromoCode NewCode { get; set; }
-        public PromoCode EditCode { get; set; }
+        public PromoCode? NewCode { get; set; }
+        public PromoCode? EditCode { get; set; }
         public void OnGet()
         {
             CodeList = _codeService.GetAll();
@@ -74,11 +75,13 @@ namespace Binned.Pages.Admin.Code
         {
             if (ModelState.IsValid)
             {
+
                 EditCode = _codeService.GetCodeByName(EditInput.Name);
                 EditCode.Name = EditInput.Name;
                 EditCode.ExpiryDate = (DateTime)EditInput.ExpiryDate;
+                EditCode.Active = (bool)EditInput.Active;
                 EditCode.Discount = (double)EditInput.Discount;
-                _logger.LogInformation(EditCode.Name);
+                _logger.LogInformation(EditInput.Active.ToString());
                 _codeService.UpdateCode(EditCode);
                 CodeList = _codeService.GetAll();
             }
@@ -99,5 +102,6 @@ namespace Binned.Pages.Admin.Code
         [Column(TypeName = "date")]
         public DateTime? ExpiryDate { get; set; }
         public double? Discount { get; set; }
+        public bool? Active { get; set; }
     }
 }
